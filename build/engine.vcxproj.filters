@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<Filter Include="Includes">
+			<UniqueIdentifier>{D1BE8B6B-B10B-42E3-896A-9FEA89BF63EF}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="Source">
+			<UniqueIdentifier>{90FD4D1C-2869-4429-AD55-071E990B6188}</UniqueIdentifier>
+		</Filter>
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\Engine.h">
+			<Filter>Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\IInput.h">
+			<Filter>Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\SDLInput.h">
+			<Filter>Includes</Filter>
+		</ClInclude>
+	</ItemGroup>
+	<ItemGroup>
+		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp">
+			<Filter>Source</Filter>
+		</ClCompile>
+		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\SDLInput.cpp">
+			<Filter>Source</Filter>
+		</ClCompile>
+	</ItemGroup>
+	<ItemGroup>
+	</ItemGroup>
+	<ItemGroup>
+	</ItemGroup>
+	<ItemGroup>
+	</ItemGroup>
+</Project>
