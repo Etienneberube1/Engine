@@ -1,65 +1,7 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: Le répertoire intermédiaire (x64\Debug\) contient des fichiers partagés provenant d'un autre projet (Solomons-Key.vcxproj). Cela peut entraîner un comportement de nettoyage et de regénération incorrect.
   Engine.cpp
-  SDLInput.cpp
-C:\Users\2230090\source\repos\project 1\Engin\Source\SDLInput.cpp(11,4): error C2065: 'm_IsRunning' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\SDLInput.cpp(15,2): error C2065: '_keyStates' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Includes\IInput.h(2,1): error C2011: 'IInput' : redéfinition du type 'class' (compilation du fichier source C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp)
-C:\Users\2230090\source\repos\project 1\Engin\Includes\IInput.h(1,7): message : voir la déclaration de 'IInput' (compilation du fichier source C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp)
-C:\Users\2230090\source\repos\project 1\Engin\Includes\SDLInput.h(2,31): error C2504: 'IInput' : classe de base non définie (compilation du fichier source C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp)
-C:\Users\2230090\source\repos\project 1\Engin\Includes\SDLInput.h(6,15): error C3668: 'SdlInput::Update' : la méthode comprenant le spécificateur de substitution 'override' n'a substitué aucune méthode de la classe de base (compilation du fichier source C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp)
-C:\Users\2230090\source\repos\project 1\Engin\Includes\SDLInput.h(7,15): error C3668: 'SdlInput::IsKeyDown' : la méthode comprenant le spécificateur de substitution 'override' n'a substitué aucune méthode de la classe de base (compilation du fichier source C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp)
-C:\Users\2230090\source\repos\project 1\Engin\Includes\SDLInput.h(8,15): error C3668: 'SdlInput::IsButtonDown' : la méthode comprenant le spécificateur de substitution 'override' n'a substitué aucune méthode de la classe de base (compilation du fichier source C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp)
-C:\Users\2230090\source\repos\project 1\Engin\Includes\SDLInput.h(9,15): error C3668: 'SdlInput::GetMousePosition' : la méthode comprenant le spécificateur de substitution 'override' n'a substitué aucune méthode de la classe de base (compilation du fichier source C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp)
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(6,20): error C2143: erreur de syntaxe : absence de ';' avant '*'
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(6,20): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(6,34): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(7,18): error C2143: erreur de syntaxe : absence de ';' avant '*'
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(7,18): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(7,30): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(9,15): error C2065: 'SDL_INIT_EVERYTHING' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(9,6): error C3861: 'SDL_Init' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(10,11): error C3861: 'SDL_GetError' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(10,3): error C3861: 'SDL_Log' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(13,11): error C2065: 'SDL_WINDOWPOS_CENTERED' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(14,11): error C2065: 'SDL_WINDOWPOS_CENTERED' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(15,2): error C2065: 'Uint32' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(15,9): error C2146: erreur de syntaxe : absence de ';' avant l'identificateur '_flag'
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(15,9): error C2065: '_flag' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(15,17): error C2065: 'SDL_WINDOW_RESIZABLE' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(17,49): error C2065: '_flag' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(17,12): error C3861: 'SDL_CreateWindow' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(19,11): error C3861: 'SDL_GetError' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(19,3): error C3861: 'SDL_Log' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(23,2): error C2065: '_flag' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(23,10): error C2065: 'SDL_RENDERER_ACCELERATED' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(24,46): error C2065: '_flag' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(24,14): error C3861: 'SDL_CreateRenderer' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(26,11): error C3861: 'SDL_GetError' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(26,3): error C3861: 'SDL_Log' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(30,24): error C2440: '=' : impossible de convertir de 'SdlInput *' en 'IInput *'
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(30,24): message : Les types pointés ne sont pas liés ; la conversion nécessite un reinterpret_cast, un cast de style C ou un cast de style fonction entre parenthèses.
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(55,19): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(55,19): error C2143: erreur de syntaxe : absence de ';' avant '*'
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(55,34): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(58,7): error C2027: utilisation du type non défini 'IInput'
-C:\Users\2230090\source\repos\project 1\Engin\Includes\IInput.h(1,7): message : voir la déclaration de 'IInput'
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(64,17): error C2065: 'SDL_SCANCODE_D' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(72,2): error C3861: 'SDL_SetRenderDrawColor' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(73,2): error C3861: 'SDL_RenderClear' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(75,2): error C3861: 'SDL_SetRenderDrawColor' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(76,2): error C2065: 'SDL_Rect' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(76,11): error C2146: erreur de syntaxe : absence de ';' avant l'identificateur 'get_rect'
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(76,11): error C2065: 'get_rect' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(76,20): error C3079: une liste d'initialiseurs ne peut pas être utilisée en tant qu'opérande droit de cet opérateur d'assignation
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(77,2): error C2065: 'get_rect' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(78,2): error C2065: 'get_rect' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(79,2): error C2065: 'get_rect' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(80,2): error C2065: 'get_rect' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(81,33): error C2065: 'get_rect' : identificateur non déclaré
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(81,2): error C3861: 'SDL_RenderDrawRect' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(83,2): error C3861: 'SDL_RenderPresent' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(91,3): warning C4150: suppression de pointeur vers type incomplet 'IInput' ; aucun destructeur appelé
-C:\Users\2230090\source\repos\project 1\Engin\Includes\IInput.h(1,7): message : voir la déclaration de 'IInput'
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(93,2): error C3861: 'SDL_DestroyRenderer' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(94,2): error C3861: 'SDL_DestroyWindow' : identificateur introuvable
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(95,2): error C3861: 'SDL_Quit' : identificateur introuvable
+C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(55,19): warning C4244: 'initialisation' : conversion de 'unsigned long' en 'float', perte possible de données
+C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(70,10): warning C4244: 'argument' : conversion de 'float' en 'DWORD', perte possible de données
+C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(107,15): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(108,15): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+  engine.vcxproj -> C:\Users\2230090\source\repos\project 1\build\x64\Debug\engine.lib

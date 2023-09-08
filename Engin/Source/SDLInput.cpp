@@ -1,5 +1,8 @@
 #include "SDLInput.h"
 #include <SDL.h>
+
+using namespace project;
+
 void SdlInput::Update()
 {
 	SDL_Event _event;
@@ -12,12 +15,12 @@ void SdlInput::Update()
 			break;
 		}
 	}
-	_keyStates = SDL_GetKeyboardState(nullptr);
+	m_KeyStates = SDL_GetKeyboardState(nullptr);
 }
 
 bool SdlInput::IsKeyDown(int keycode)
 {
-	return false;
+	return m_KeyStates[static_cast<int>(keycode)];
 }
 
 bool SdlInput::IsButtonDown(int button)

@@ -2,10 +2,10 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="Includes">
-			<UniqueIdentifier>{D1BE8B6B-B10B-42E3-896A-9FEA89BF63EF}</UniqueIdentifier>
+			<UniqueIdentifier>{224EE17A-37A5-4960-820B-DEBA72D224DD}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="Source">
-			<UniqueIdentifier>{90FD4D1C-2869-4429-AD55-071E990B6188}</UniqueIdentifier>
+			<UniqueIdentifier>{0F6CDCFE-3D4B-4AC7-B1F0-CE9AF4029FEC}</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
