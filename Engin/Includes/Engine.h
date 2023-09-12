@@ -1,9 +1,11 @@
 #pragma once
 #include <string>
-
 #include "IInput.h"
+#include "Ilogger.h"
+
 namespace project {
 	class Engine final {
+	public:
 	public:
 		bool Init(const char* name, int w, int h);
 		void Start(void);
@@ -16,6 +18,7 @@ namespace project {
 
 	private:
 		IInput* m_Input;
+		IILogger* m_Logger;
 		bool m_IsInit = false;
 	};
 }

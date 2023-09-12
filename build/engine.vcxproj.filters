@@ -2,17 +2,32 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="Includes">
-			<UniqueIdentifier>{224EE17A-37A5-4960-820B-DEBA72D224DD}</UniqueIdentifier>
+			<UniqueIdentifier>{B1843B64-E592-48FE-A8A6-E84D843241A7}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="Source">
-			<UniqueIdentifier>{0F6CDCFE-3D4B-4AC7-B1F0-CE9AF4029FEC}</UniqueIdentifier>
+			<UniqueIdentifier>{5ECA6318-B11E-4F74-ACA3-48169D2857CC}</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\Engine.h">
 			<Filter>Includes</Filter>
 		</ClInclude>
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\IGraphics.h">
+			<Filter>Includes</Filter>
+		</ClInclude>
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\IInput.h">
+			<Filter>Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\ILogger.h">
+			<Filter>Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\LogConsole.h">
+			<Filter>Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\Logs.h">
+			<Filter>Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\SDLGraphics.h">
 			<Filter>Includes</Filter>
 		</ClInclude>
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\SDLInput.h">
@@ -21,6 +36,15 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp">
+			<Filter>Source</Filter>
+		</ClCompile>
+		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\LogConsole.cpp">
+			<Filter>Source</Filter>
+		</ClCompile>
+		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\Logs.cpp">
+			<Filter>Source</Filter>
+		</ClCompile>
+		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\SDLGraphics.cpp">
 			<Filter>Source</Filter>
 		</ClCompile>
 		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\SDLInput.cpp">

@@ -4,8 +4,9 @@
 #include "SDLInput.h"
 #include "SDL.h"
 #include<windows.h>  
-
-
+#include <iostream>
+#include "Logs.h"
+#include "LogConsole.h"
 Uint32 FPS = 60;
 Uint32 MS_PER_SEC = 1000 / FPS;
 
@@ -38,6 +39,23 @@ bool project::Engine::Init(const char* name, int w, int h) {
 	m_IsInit = true;
 
 	m_Input = new SdlInput();
+
+
+#if DEBUG
+
+	m_Logger = new LogConsole();
+	m_Logger->WriteLogText("Engine init");
+
+#elif RELEASE
+
+	m_Logger = new Logs();
+	m_Logger->WriteLogText("Engine Initialize");
+
+#endif  
+
+	
+
+	
 	return true;
 }
 void project::Engine::Start(void) {
@@ -47,7 +65,6 @@ void project::Engine::Start(void) {
 			return;
 		}
 	}
-	
 	clock_t _end = clock();
 	while (m_Input->m_IsRunning) {
 		const clock_t _start = clock();

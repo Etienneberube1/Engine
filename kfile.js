@@ -1,4 +1,4 @@
-let project = new Project("Solomons Key");
+let project = new Project("Game");
 
 project.kore = false;
 

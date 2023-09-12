@@ -1,7 +1,7 @@
-﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: Le répertoire intermédiaire (x64\Debug\) contient des fichiers partagés provenant d'un autre projet (Solomons-Key.vcxproj). Cela peut entraîner un comportement de nettoyage et de regénération incorrect.
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: Le répertoire intermédiaire (x64\Debug\) contient des fichiers partagés provenant d'un autre projet (Game.vcxproj, Solomons-Key.vcxproj). Cela peut entraîner un comportement de nettoyage et de regénération incorrect.
   Engine.cpp
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(55,19): warning C4244: 'initialisation' : conversion de 'unsigned long' en 'float', perte possible de données
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(70,10): warning C4244: 'argument' : conversion de 'float' en 'DWORD', perte possible de données
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(107,15): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(108,15): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(72,19): warning C4244: 'initialisation' : conversion de 'unsigned long' en 'float', perte possible de données
+C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(87,10): warning C4244: 'argument' : conversion de 'float' en 'DWORD', perte possible de données
+C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(124,15): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp(125,15): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
   engine.vcxproj -> C:\Users\2230090\source\repos\project 1\build\x64\Debug\engine.lib

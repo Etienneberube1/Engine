@@ -2,10 +2,10 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="Game">
-			<UniqueIdentifier>{E1C5582C-534E-4EF9-8C0A-24725FF8EF65}</UniqueIdentifier>
+			<UniqueIdentifier>{47A2470B-EB6F-4853-BF3B-2B38FC56C917}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="Game\Source">
-			<UniqueIdentifier>{D8045A90-8AA5-466E-94B5-19723F364159}</UniqueIdentifier>
+			<UniqueIdentifier>{19731A85-A2B2-4F34-86E1-D0C38D3A64E0}</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
