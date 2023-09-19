@@ -1,63 +1,32 @@
-
+#include "SDLGraphics.h"
 #include "Engine.h"
 #include <time.h>
 #include "SDLInput.h"
-#include "SDL.h"
-#include<windows.h>  
 #include <iostream>
 #include "Logs.h"
 #include "LogConsole.h"
-Uint32 FPS = 60;
-Uint32 MS_PER_SEC = 1000 / FPS;
 
-static SDL_Renderer* _renderer = NULL;
-static SDL_Window* _window = NULL;
+float FPS = 60;
+float MS_PER_SEC = 1000 / FPS;
 
+bool project::Engine::Init(const char* name, int w, int h) 
+{
+#if _DEBUG
+	m_Logger = new LogConsole();
+	m_Logger->WriteLogText("Engine init");
+#elif RELEASE
+	m_Logger = new Logs();
+	m_Logger->WriteLogText("Engine Initialize");
+#endif  
 
-bool project::Engine::Init(const char* name, int w, int h) {
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-		SDL_Log(SDL_GetError());
-		return false;
-	}
-	int _x = SDL_WINDOWPOS_CENTERED;
-	int _y = SDL_WINDOWPOS_CENTERED;
-	Uint32 _flag = SDL_WINDOW_RESIZABLE;
-
-	_window = SDL_CreateWindow(name, _x, _y, w, h, _flag);
-	if (!_window) {
-		SDL_Log(SDL_GetError());
-		return false;
-	}
-
-	_flag = SDL_RENDERER_ACCELERATED;
-	_renderer = SDL_CreateRenderer(_window, -1, _flag);
-	if (!_renderer){
-		SDL_Log(SDL_GetError());
-		return false;
-	}
-
-	m_IsInit = true;
+	m_Graphics = new SDLGraphics;
+	m_Graphics->Initialize("Game", 800, 800);
 
 	m_Input = new SdlInput();
 
-
-#if DEBUG
-
-	m_Logger = new LogConsole();
-	m_Logger->WriteLogText("Engine init");
-
-#elif RELEASE
-
-	m_Logger = new Logs();
-	m_Logger->WriteLogText("Engine Initialize");
-
-#endif  
-
-	
-
-	
 	return true;
 }
+
 void project::Engine::Start(void) {
 	
 	if (!m_IsInit) {
@@ -81,15 +50,14 @@ void project::Engine::Start(void) {
 		{
 			break;
 		}
-
-
 		if (sleepTime > 0) {
 			Sleep(sleepTime);
 		}
 	}
 	Shutdown();
 }
-static const Uint8* _keyStates = NULL;
+
+//static const Uint8* _keyStates = NULL;
 
 void project::Engine::ProcessInput(void)
 {
@@ -116,19 +84,10 @@ void project::Engine::Update(float dt)
 
 void project::Engine::Render(void)
 {
-	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
-	SDL_RenderClear(_renderer);
-
-	SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);
-	SDL_Rect get_rect = { 0 };
-	get_rect.x = x;
-	get_rect.y = y;
-	get_rect.h = 100;
-	get_rect.w = 100;
-	SDL_RenderDrawRect(_renderer, &get_rect);
-
-	SDL_RenderPresent(_renderer);
-
+	m_Graphics->SetColor(Color::Black);
+	m_Graphics->Clear();
+	m_Graphics->SetColor(Color::Black);
+	m_Graphics->Present();
 }
 
 void project::Engine::Shutdown(void)
@@ -137,7 +96,5 @@ void project::Engine::Shutdown(void)
 	{
 		delete m_Input;
 	}
-	SDL_DestroyRenderer(_renderer);
-	SDL_DestroyWindow(_window);
-	SDL_Quit();
+	m_Graphics->Shutdown();
 }

@@ -27,7 +27,7 @@
 		</ProjectConfiguration>
 	</ItemGroup>
 	<PropertyGroup Label="Globals">
-		<ProjectGuid>{197C6D8B-9F28-4106-B431-566261FE496F}</ProjectGuid>
+		<ProjectGuid>{90B40E44-0A94-4CC2-A5B7-2F245155EFEA}</ProjectGuid>
 		<VCProjectVersion>16.0</VCProjectVersion>
 		<WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
 	</PropertyGroup>
@@ -218,21 +218,28 @@
 			</Manifest>
 		</ItemDefinitionGroup>
 	<ItemGroup>
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\Color.h" />
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\Engine.h" />
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\Entity.h" />
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\IGraphics.h" />
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\IInput.h" />
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\ILogger.h" />
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\IWorld.h" />
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\LogConsole.h" />
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\Logs.h" />
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\SDLGraphics.h" />
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\SDLInput.h" />
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\WorldService.h" />
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\Color.cpp" />
 		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp" />
+		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\Entity.cpp" />
 		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\LogConsole.cpp" />
 		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\Logs.cpp" />
 		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\SDLGraphics.cpp" />
 		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\SDLInput.cpp" />
+		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\WorldService.cpp" />
 	</ItemGroup>
 	<ItemGroup>
 	</ItemGroup>

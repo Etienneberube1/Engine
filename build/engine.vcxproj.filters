@@ -2,14 +2,20 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="Includes">
-			<UniqueIdentifier>{B1843B64-E592-48FE-A8A6-E84D843241A7}</UniqueIdentifier>
+			<UniqueIdentifier>{CB1B38CF-B352-467E-A3F4-58755F402477}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="Source">
-			<UniqueIdentifier>{5ECA6318-B11E-4F74-ACA3-48169D2857CC}</UniqueIdentifier>
+			<UniqueIdentifier>{CADDBC30-C9BB-4D5A-88F5-99D93F2F62E8}</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\Color.h">
+			<Filter>Includes</Filter>
+		</ClInclude>
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\Engine.h">
+			<Filter>Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\Entity.h">
 			<Filter>Includes</Filter>
 		</ClInclude>
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\IGraphics.h">
@@ -19,6 +25,9 @@
 			<Filter>Includes</Filter>
 		</ClInclude>
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\ILogger.h">
+			<Filter>Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\IWorld.h">
 			<Filter>Includes</Filter>
 		</ClInclude>
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\LogConsole.h">
@@ -33,9 +42,18 @@
 		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\SDLInput.h">
 			<Filter>Includes</Filter>
 		</ClInclude>
+		<ClInclude Include="C:\Users\2230090\source\repos\project 1\Engin\Includes\WorldService.h">
+			<Filter>Includes</Filter>
+		</ClInclude>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\Color.cpp">
+			<Filter>Source</Filter>
+		</ClCompile>
 		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\Engine.cpp">
+			<Filter>Source</Filter>
+		</ClCompile>
+		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\Entity.cpp">
 			<Filter>Source</Filter>
 		</ClCompile>
 		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\LogConsole.cpp">
@@ -48,6 +66,9 @@
 			<Filter>Source</Filter>
 		</ClCompile>
 		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\SDLInput.cpp">
+			<Filter>Source</Filter>
+		</ClCompile>
+		<ClCompile Include="C:\Users\2230090\source\repos\project 1\Engin\Source\WorldService.cpp">
 			<Filter>Source</Filter>
 		</ClCompile>
 	</ItemGroup>
