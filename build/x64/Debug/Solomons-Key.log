@@ -1,2 +1,0 @@
-﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: Le répertoire intermédiaire (x64\Debug\) contient des fichiers partagés provenant d'un autre projet (engine.vcxproj). Cela peut entraîner un comportement de nettoyage et de regénération incorrect.
-  Solomons-Key.vcxproj -> C:\Users\2230090\source\repos\project 1\build\x64\Debug\Solomons-Key.exe
