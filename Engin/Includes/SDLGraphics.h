@@ -1,7 +1,12 @@
 #pragma once
 #include "IGraphics.h"
+#include <map>
 
 
+struct  SDL_Renderer;
+struct SDL_Window;
+struct SDL_Texture;
+typedef struct _TTF_Font TTF_Font;
 namespace project {
 	class SDLGraphics : public IGraphics {
 	public:
@@ -21,9 +26,17 @@ namespace project {
 		virtual void DrawTexture(size_t id, const Color& color) override;
 		virtual void GetTextureSize(size_t id, int* w, int* h) override;
 		virtual size_t LoadFont(const std::string& filename, int fontSize) override;
-		virtual void DrawString(const std::string& text, size_t fontId, float x, float y, const Color& color) override;
+		virtual void DrawString(const std::string& text, size_t fontId, float x, float y, float w, float h,const Color& color) override;
 		virtual void GetTextSize(const std::string& text, size_t fontId, int* w, int* h) override;
 	private:
+		SDL_Renderer* _renderer = NULL;
+		SDL_Window* _window = NULL;
+
+		std::map<size_t, SDL_Texture*> _textureCache;
+
+		std::map<size_t, TTF_Font*> _fontCache;
+		SDL_Texture* _textureBuffer;
+
 		bool m_IsInit = false;
 	};
 }

@@ -9,6 +9,7 @@ namespace project {
 		static const Color& Green;
 		static const Color& Blue;
 		static const Color& Black;
+		static const Color& White;
 
 		uchar red = 255;
 		uchar green = 255;

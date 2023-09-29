@@ -1,10 +1,16 @@
-#include "SDLGraphics.h"
+#pragma once
 #include "Engine.h"
 #include <time.h>
-#include "SDLInput.h"
 #include <iostream>
+
+#include "Ilogger.h"
+#include "IGraphics.h"
+#include "Entity.h"
+#include "IWorld.h"
+#include "SDLInput.h"
 #include "Logs.h"
 #include "LogConsole.h"
+#include "SDLGraphics.h"
 
 float FPS = 60;
 float MS_PER_SEC = 1000 / FPS;
@@ -12,17 +18,25 @@ float MS_PER_SEC = 1000 / FPS;
 bool project::Engine::Init(const char* name, int w, int h) 
 {
 #if _DEBUG
-	m_Logger = new LogConsole();
+	m_Logger = new LogConsole;
 	m_Logger->WriteLogText("Engine init");
 #elif RELEASE
 	m_Logger = new Logs();
 	m_Logger->WriteLogText("Engine Initialize");
 #endif  
-
-	m_Graphics = new SDLGraphics;
+	m_Graphics = new SDLGraphics();
 	m_Graphics->Initialize("Game", 800, 800);
 
+
+	m_Square1 = new Entity("Square1", 100, 100, 100, 100, Color::Green);
+	m_Square1->Draw();
+
 	m_Input = new SdlInput();
+
+	m_Graphics->LoadFont("assets/ARCADECLASSIC.TTF", 50);
+	
+	m_IsInit = true;
+
 
 	return true;
 }
@@ -56,38 +70,37 @@ void project::Engine::Start(void) {
 	}
 	Shutdown();
 }
+void project::Engine::LoadTexture()
+{
+}
 
-//static const Uint8* _keyStates = NULL;
 
 void project::Engine::ProcessInput(void)
 {
 	m_Input->Update();
+#if _DEBUG
+	if(m_Input->IsKeyDown((static_cast<int>(EKey::EKEY_ESCAPE)))) {
+		m_Input->m_IsRunning = false;
+	}
+#endif
 }
 
-static float x = 0.0f;
-static float y = 0.0f;
 void project::Engine::Update(float dt)
 {
-	if (m_Input->IsKeyDown(static_cast<int>(EKey::EKEY_RIGHT))) {
-		x += 100.0f * dt;
-	}
-	else if (m_Input->IsKeyDown(static_cast<int>(EKey::EKEY_LEFT))) {
-		x -= 100.0f * dt;
-	}
-	else if (m_Input->IsKeyDown(static_cast<int>(EKey::EKEY_DOWN))) {
-		y += 100.0f * dt;
-	}
-	else if (m_Input->IsKeyDown(static_cast<int>(EKey::EKEY_UP))) {
-		y -= 100.0f * dt;
-	}
+	m_Square1->Update(dt);
+	m_Square1->Draw();
 }
 
 void project::Engine::Render(void)
 {
 	m_Graphics->SetColor(Color::Black);
 	m_Graphics->Clear();
-	m_Graphics->SetColor(Color::Black);
+
+	m_Square1->Draw();
+	m_Graphics->DrawString("SCORE 100", m_Graphics->LoadFont("assets/ARCADECLASSIC.TTF", 30), 350, 0, 100, 50, Color::Blue);
+
 	m_Graphics->Present();
+
 }
 
 void project::Engine::Shutdown(void)

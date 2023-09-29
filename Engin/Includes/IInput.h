@@ -1,5 +1,6 @@
 #pragma once
 
+
 enum class EKey {
 	EKEY_RIGHT = 79,
 	EKEY_LEFT = 80,
@@ -11,6 +12,8 @@ enum class EKey {
 	EKEY_TAB = 43,
 	EKEY_SPACE = 44
 };
+
+
 
 namespace project {
 

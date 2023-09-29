@@ -7,6 +7,7 @@ project.addProvider = function(proj, isRoot=false){
     if(sdl2){
         fs.copyFileSync("./sdl/lib/SDL2.dll", "./Deployment/SDL2.dll");
         fs.copyFileSync("./sdl/lib/SDL2_image.dll", "./Deployment/SDL2_image.dll");
+        fs.copyFileSync("./sdl/lib/SDL2_ttf.dll", "./Deployment/SDL2_ttf.dll");
 
         if(!isRoot){
             proj.addDefine("USE_SDL");
@@ -15,6 +16,7 @@ project.addProvider = function(proj, isRoot=false){
         proj.addLib("./sdl/lib/SDL2");
         proj.addLib("./sdl/lib/SDL2main");
         proj.addLib("./sdl/lib/SDL2_image");
+        proj.addLib("./sdl/lib/SDL2_ttf");
 
     }
 };
