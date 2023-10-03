@@ -7,6 +7,7 @@ struct  SDL_Renderer;
 struct SDL_Window;
 struct SDL_Texture;
 typedef struct _TTF_Font TTF_Font;
+
 namespace project {
 	class SDLGraphics : public IGraphics {
 	public:

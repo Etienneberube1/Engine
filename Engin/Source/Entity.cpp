@@ -38,6 +38,12 @@ namespace project {
 		else if (input->IsKeyDown((static_cast<int>(EKey::EKEY_DOWN)))) {
 			m_posY += 100.0f * dt;
 		}
+		
+
+		if (input->IsKeyDown((static_cast<int>(EKey::EKEY_SPACE)))) {
+			project::IAudio* audio = Engine::Get().Audio();
+			audio->PlaySFX(audio->LoadSound("assets/audio/clicksound.wav"), 0);
+		}
 	}
 
 	void Entity::Draw() {

@@ -22,5 +22,7 @@ namespace project {
 		float m_width;
 		float m_heigth;
 		std::string m_entityName;
+
+
 	};
 }

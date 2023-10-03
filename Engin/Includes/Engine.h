@@ -4,6 +4,7 @@
 #include "ILogger.h"
 #include "IGraphics.h"
 #include "IWorld.h"
+#include "IAudio.h"
 
 namespace project {
 	class Engine final {
@@ -31,6 +32,7 @@ namespace project {
 		void Start(void);
 
 		IWorld* World() const { return m_World; }
+		IAudio* Audio() const { return m_Audio; }
 		IInput* Input() const { return m_Input; }
         IGraphics* Graphics() const { return m_Graphics; }
         IILogger* Logger() const { return m_Logger; }
@@ -40,12 +42,14 @@ namespace project {
 		void Render(void);
 		void Shutdown(void);
 		void LoadTexture(void);
+		void LoadAudio(void);
 
 		IGraphics* m_Graphics = nullptr;
 		IInput* m_Input = nullptr;
 		IILogger* m_Logger = nullptr;
 		Entity* m_Square1 = nullptr;
 		IWorld* m_World = nullptr;
+		IAudio* m_Audio = nullptr;
 		bool m_IsInit = false;
 	};
 }

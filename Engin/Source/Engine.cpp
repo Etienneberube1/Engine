@@ -11,6 +11,8 @@
 #include "Logs.h"
 #include "LogConsole.h"
 #include "SDLGraphics.h"
+#include "SDL_mixer.h"
+#include "SDLMixer.h"
 
 float FPS = 60;
 float MS_PER_SEC = 1000 / FPS;
@@ -24,6 +26,8 @@ bool project::Engine::Init(const char* name, int w, int h)
 	m_Logger = new Logs();
 	m_Logger->WriteLogText("Engine Initialize");
 #endif  
+
+
 	m_Graphics = new SDLGraphics();
 	m_Graphics->Initialize("Game", 800, 800);
 
@@ -31,11 +35,16 @@ bool project::Engine::Init(const char* name, int w, int h)
 	m_Square1 = new Entity("Square1", 100, 100, 100, 100, Color::Green);
 	m_Square1->Draw();
 
+	m_Audio = new SDLMixer();
+
 	m_Input = new SdlInput();
 
-	m_Graphics->LoadFont("assets/ARCADECLASSIC.TTF", 50);
-	
+	LoadAudio();
+
 	m_IsInit = true;
+
+	// open the audio
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024);
 
 
 	return true;
@@ -43,6 +52,9 @@ bool project::Engine::Init(const char* name, int w, int h)
 
 void project::Engine::Start(void) {
 	
+	m_Audio->PlayMusic(m_Audio->LoadMusic("assets/audio/soundtrack.mp3"),0);
+
+
 	if (!m_IsInit) {
 		if (!Init("Unknown title", 800, 800)) {
 			return;
@@ -74,10 +86,16 @@ void project::Engine::LoadTexture()
 {
 }
 
+void project::Engine::LoadAudio()
+{
+	m_Audio->LoadMusic("assets/audio/soundtrack.mp3");
+	m_Audio->LoadSound("assets/audio/clicksound.wav");
+}
 
 void project::Engine::ProcessInput(void)
 {
 	m_Input->Update();
+
 #if _DEBUG
 	if(m_Input->IsKeyDown((static_cast<int>(EKey::EKEY_ESCAPE)))) {
 		m_Input->m_IsRunning = false;
@@ -97,7 +115,7 @@ void project::Engine::Render(void)
 	m_Graphics->Clear();
 
 	m_Square1->Draw();
-	m_Graphics->DrawString("SCORE 100", m_Graphics->LoadFont("assets/ARCADECLASSIC.TTF", 30), 350, 0, 100, 50, Color::Blue);
+	m_Graphics->DrawString("Press space to play sound", m_Graphics->LoadFont("assets/ARCADECLASSIC.TTF", 30), 100, 0, 600, 50, Color::Blue);
 
 	m_Graphics->Present();
 
@@ -109,5 +127,9 @@ void project::Engine::Shutdown(void)
 	{
 		delete m_Input;
 	}
+
+	Mix_CloseAudio();
+
 	m_Graphics->Shutdown();
+
 }
