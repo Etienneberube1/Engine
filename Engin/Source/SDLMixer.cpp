@@ -3,6 +3,22 @@
 
 namespace project {
 
+	void SDLMixer::ShutDown()
+	{
+		for (auto sound : _soundCache)
+		{
+			Mix_FreeChunk(sound.second);
+		}
+		for (auto music : _musicCache)
+		{
+			Mix_FreeMusic(music.second);
+		}
+		_soundCache.clear();
+		_musicCache.clear();
+		delete& _soundCache;
+		delete& _musicCache;
+		Mix_CloseAudio();
+	}
 	size_t SDLMixer::LoadMusic(const std::string& filename)
 	{
 		size_t musicID = std::hash<std::string>()(filename);

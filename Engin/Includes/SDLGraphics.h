@@ -33,10 +33,11 @@ namespace project {
 		SDL_Renderer* _renderer = NULL;
 		SDL_Window* _window = NULL;
 
-		std::map<size_t, SDL_Texture*> _textureCache;
+		std::map<size_t, SDL_Texture*> &_textureCache = *new std::map<size_t, SDL_Texture*>;
 
-		std::map<size_t, TTF_Font*> _fontCache;
-		SDL_Texture* _textureBuffer;
+		std::map<size_t, TTF_Font*> &_fontCache = *new std::map<size_t, TTF_Font*>;
+
+		SDL_Texture* _textureBuffer = nullptr;
 
 		bool m_IsInit = false;
 	};

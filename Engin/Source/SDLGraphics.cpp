@@ -38,13 +38,24 @@ namespace project {
 		return true;
 	}
 	void SDLGraphics::Shutdown() {
+
+		for (auto texture : _textureCache)
+		{
+			SDL_DestroyTexture(texture.second);
+		}
+		delete &_textureCache;
+
+		for (auto font : _fontCache)
+		{
+			TTF_CloseFont(font.second);
+		}
+		delete &_fontCache;
+
+
 		SDL_DestroyRenderer(_renderer);
 		SDL_DestroyWindow(_window);
-
 		TTF_Quit();
-
 		SDL_Quit();
-
 	}
 	void SDLGraphics::SetColor(const Color& color) {
 		SDL_SetRenderDrawColor(_renderer, color.red, color.green, color.blue, color.alpha);

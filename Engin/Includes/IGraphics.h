@@ -7,6 +7,7 @@ namespace project {
 
 	struct RectI
 	{
+
 		int x;
 		int y;
 		int w;
@@ -14,6 +15,9 @@ namespace project {
 	};
 	struct RectF
 	{
+		RectF() :RectF(0, 0, 0, 0) {}
+		RectF(int x, int y, int w, int h) : RectF(static_cast<float>(x), static_cast<float>(y), static_cast<float>(w), static_cast<float>(h)) {}
+		RectF(float _x, float _y, float _w, float _h) : x(_x), y(_y), w(_w), h(_h) {}
 		float x;
 		float y;
 		float w;

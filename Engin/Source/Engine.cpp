@@ -13,6 +13,10 @@
 #include "SDLGraphics.h"
 #include "SDL_mixer.h"
 #include "SDLMixer.h"
+#include "vld.h"
+
+
+
 
 float FPS = 60;
 float MS_PER_SEC = 1000 / FPS;
@@ -123,13 +127,28 @@ void project::Engine::Render(void)
 
 void project::Engine::Shutdown(void)
 {
-	if (m_Input != nullptr)
-	{
+	if (m_Input != nullptr) {
 		delete m_Input;
 	}
+	if (m_Audio != nullptr) {
+		m_Audio->ShutDown();
+		delete m_Audio;
+	}
+	if (m_Logger != nullptr) {
+		delete m_Logger;
+	}
+	if (m_Square1 != nullptr) {
+		delete m_Square1;
+	}
+	if (m_World != nullptr) {
+		delete m_World;
+	}
 
-	Mix_CloseAudio();
+
 
 	m_Graphics->Shutdown();
-
+	if (m_Graphics != nullptr) {
+		delete m_Graphics;
+		m_Graphics = nullptr;
+	}
 }

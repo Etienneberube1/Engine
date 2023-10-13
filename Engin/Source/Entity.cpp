@@ -12,7 +12,7 @@ namespace project {
 	}
 
 	Entity::~Entity() {
-	
+
 	}
 
 
