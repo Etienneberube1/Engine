@@ -142,7 +142,6 @@ namespace project {
 		else
 		{
 			project::IILogger* logger = Engine::Get().Logger();
-			logger->WriteLogText("ERROR LOADING FONT");
 		}
 	}
 	void SDLGraphics::DrawString(const std::string& text, size_t fontId, float x, float y,float w, float h,const Color& color) {

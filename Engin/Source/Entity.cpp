@@ -7,7 +7,7 @@ namespace project {
 
 
 	Entity::Entity(std::string name, float posX, float posY, float widht, float height, const Color& color)
-		:m_posX(posX), m_posY(posY), m_entityName(name), m_heigth(height), m_width(widht)
+		:m_posX(posX), m_posY(posY), m_entityName(name), m_heigth(height), m_width(widht), m_color(color)
 	{
 	}
 
@@ -49,9 +49,9 @@ namespace project {
 	void Entity::Draw() {
 
 		project::IGraphics* GFX = Engine::Get().Graphics();
-		GFX->DrawRect(m_posX, m_posY, m_width, m_heigth, Color::Green);
+		GFX->DrawRect(m_posX, m_posY, m_width, m_heigth, m_color);
 
-		GFX->DrawTexture(GFX->LoadTexture("assets/player.png"), { 300, 300, 500, 500 }, Color::White);
+		//GFX->DrawTexture(GFX->LoadTexture("assets/player.png"), { 300, 300, 500, 500 }, Color::White);
 	}
 
 	void Entity::Destroy() {

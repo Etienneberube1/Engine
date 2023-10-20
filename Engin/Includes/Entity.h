@@ -21,6 +21,7 @@ namespace project {
 		float m_posY;
 		float m_width;
 		float m_heigth;
+		Color m_color;
 		std::string m_entityName;
 
 

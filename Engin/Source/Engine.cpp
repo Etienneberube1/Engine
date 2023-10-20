@@ -13,10 +13,12 @@
 #include "SDLGraphics.h"
 #include "SDL_mixer.h"
 #include "SDLMixer.h"
-#include "vld.h"
+//#include "vld.h"
 
 
 
+#include "BaseScene.h"
+#include "MenuScene.h"
 
 float FPS = 60;
 float MS_PER_SEC = 1000 / FPS;
@@ -36,20 +38,30 @@ bool project::Engine::Init(const char* name, int w, int h)
 	m_Graphics->Initialize("Game", 800, 800);
 
 
-	m_Square1 = new Entity("Square1", 100, 100, 100, 100, Color::Green);
-	m_Square1->Draw();
-
 	m_Audio = new SDLMixer();
 
 	m_Input = new SdlInput();
 
 	LoadAudio();
 
-	m_IsInit = true;
 
 	// open the audio
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024);
 
+
+	// SCENE
+	m_World = new WorldService();
+	
+
+	m_menuScene = new MenuScene();
+	m_World->Register("Scene_1", m_menuScene);
+
+	m_baseScene = new BaseScene();
+	m_World->Register("Scene_2", m_baseScene);
+
+	m_World->Load("Scene_1");
+
+	m_IsInit = true;
 
 	return true;
 }
@@ -109,8 +121,11 @@ void project::Engine::ProcessInput(void)
 
 void project::Engine::Update(float dt)
 {
-	m_Square1->Update(dt);
-	m_Square1->Draw();
+	m_World->Update(dt);
+	if (m_Input->IsKeyDown((static_cast<int>(EKey::EKEY_SPACE)))) {
+		std::cout << "loaded scene";
+		m_World->Load("Scene_2");
+	}
 }
 
 void project::Engine::Render(void)
@@ -118,7 +133,8 @@ void project::Engine::Render(void)
 	m_Graphics->SetColor(Color::Black);
 	m_Graphics->Clear();
 
-	m_Square1->Draw();
+	m_World->Draw();
+
 	m_Graphics->DrawString("Press space to play sound", m_Graphics->LoadFont("assets/ARCADECLASSIC.TTF", 30), 100, 0, 600, 50, Color::Blue);
 
 	m_Graphics->Present();
@@ -137,14 +153,9 @@ void project::Engine::Shutdown(void)
 	if (m_Logger != nullptr) {
 		delete m_Logger;
 	}
-	if (m_Square1 != nullptr) {
-		delete m_Square1;
-	}
-	if (m_World != nullptr) {
-		delete m_World;
-	}
-
-
+	//if (m_World != nullptr) {
+	//	delete m_World;
+	//}
 
 	m_Graphics->Shutdown();
 	if (m_Graphics != nullptr) {

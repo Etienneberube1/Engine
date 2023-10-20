@@ -1,5 +1,6 @@
 #pragma once
 #include "WorldService.h"
+#include <iostream>
 
 namespace project {
 
@@ -17,6 +18,7 @@ namespace project {
 	}
 
 	void WorldService::Draw() {
+		//std::cout << "2";
 		for (auto entity : m_entityList) {
 			entity->Draw();
 		}
@@ -26,9 +28,39 @@ namespace project {
 		m_entityList.emplace_back(entity);
 	}
 
+
 	void WorldService::Destroy() {
 		for (auto entity : m_entityList) {
 			entity->Destroy();
 		}
 	}
+
+
+	void WorldService::Load(const std::string& scene)
+	{
+		if (m_Scenes.count(scene) > 0) {
+			Unload();
+			m_CurrentScene = m_Scenes[scene];
+			m_CurrentScene->Load();
+		}
+	}
+
+	void WorldService::Register(const std::string& name, IScene* scene)
+	{
+		if (m_Scenes.count(name) == 0) {
+			m_Scenes[name] = scene;
+		}
+	}
+
+	void WorldService::Unload()
+	{
+		if (m_CurrentScene != nullptr) {
+			for (auto entity : m_entityList) {
+				entity->Destroy();
+				delete entity;
+			}
+			m_entityList.clear();
+		}
+	}
+
 }

@@ -6,6 +6,11 @@
 #include "IWorld.h"
 #include "IAudio.h"
 
+#include "IScene.h"
+#include "BaseScene.h"
+#include "MenuScene.h"
+#include "WorldService.h"
+
 namespace project {
 	class Engine final {
 
@@ -51,5 +56,8 @@ namespace project {
 		IWorld* m_World = nullptr;
 		IAudio* m_Audio = nullptr;
 		bool m_IsInit = false;
+
+		BaseScene* m_baseScene = nullptr;
+		MenuScene* m_menuScene = nullptr;
 	};
 }
