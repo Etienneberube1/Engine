@@ -3,7 +3,12 @@
 #include <iostream>
 
 namespace project {
-
+	Entity* WorldService::Create(const std::string& name, float posX, float posY, float widht, float height, const Color& color)
+	{
+		Entity* entity = new Entity(name, posX, posY, widht, height, color);
+		Add(entity);
+		return entity;
+	}
 
 	void WorldService::Start() {
 		for (auto entity : m_entityList) {
@@ -18,7 +23,6 @@ namespace project {
 	}
 
 	void WorldService::Draw() {
-		//std::cout << "2";
 		for (auto entity : m_entityList) {
 			entity->Draw();
 		}
@@ -47,6 +51,7 @@ namespace project {
 
 	void WorldService::Register(const std::string& name, IScene* scene)
 	{
+		std::cout << m_Scenes.size();
 		if (m_Scenes.count(name) == 0) {
 			m_Scenes[name] = scene;
 		}

@@ -1,3 +1,5 @@
+#pragma once
+
 typedef unsigned char uchar;
 namespace project {
 	class Color

@@ -9,6 +9,7 @@ namespace project {
 	{
 	public:
 		virtual ~IWorld() = default;
+		virtual Entity* Create(const std::string& name,float posX, float posY, float widht, float height, const Color& color) = 0;
 		virtual void Start() = 0;
 		virtual void Update(float dt) = 0;
 		virtual void Draw() = 0;

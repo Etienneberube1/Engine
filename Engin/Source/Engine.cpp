@@ -59,7 +59,8 @@ bool project::Engine::Init(const char* name, int w, int h)
 	m_baseScene = new BaseScene();
 	m_World->Register("Scene_2", m_baseScene);
 
-	m_World->Load("Scene_1");
+	m_World->Load("Scene_2");
+	m_Logger->WriteLogText("loaded scene");
 
 	m_IsInit = true;
 
