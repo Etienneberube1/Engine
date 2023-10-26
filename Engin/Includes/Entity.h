@@ -17,12 +17,13 @@ namespace project {
 	class Entity final {
 	public:
 
-		Entity(std::string name, float posX, float posY, float widht, float height, const Color& color);
+		Entity(std::string name, float posX, float posY, float widht, float height,float speed, const Color& color);
 		~Entity();
 		virtual void Start();
 		virtual void Update(float dt);
 		virtual void Draw();
 		virtual void Destroy();
+		virtual void SetPosition(float posX, float posY);
 
 		template<typename T> inline T* AddComponent();
 
@@ -33,12 +34,14 @@ namespace project {
 		virtual float GetWidth() { return m_width; }
 		virtual float GetHeight() { return m_heigth; }
 		virtual Color GetColor() { return m_color; }
+		virtual float GetSpeed() { return m_speed; }
 	private:
 		float m_posX;
 		float m_posY;
 		float m_width;
 		float m_heigth;
 		Color m_color;
+		float m_speed;
 		std::string m_entityName;
 
 		std::vector<IUpdatable*> m_Updatables = *new std::vector<IUpdatable*>();
@@ -51,7 +54,7 @@ namespace project {
 	inline T* Entity::AddComponent()
 	{
 		T* cmp = new T(this);
-		std::cout << "added comp";
+		std::cout << "added comp" << std::endl;
 		m_Components.emplace(&typeid(T), cmp);
 
 		IDrawable* drawCmp = dynamic_cast<IDrawable*>(cmp);

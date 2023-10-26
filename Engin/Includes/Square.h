@@ -16,6 +16,5 @@ namespace project {
 		float m_Y;
 		float m_W;
 		float m_H;
-		//const Color m_color;
 	};
 }

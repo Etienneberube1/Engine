@@ -54,13 +54,11 @@ bool project::Engine::Init(const char* name, int w, int h)
 	
 
 	m_menuScene = new MenuScene();
-	m_World->Register("Scene_1", m_menuScene);
+	m_World->Register("MenuScene", m_menuScene);
 
 	m_baseScene = new BaseScene();
-	m_World->Register("Scene_2", m_baseScene);
+	m_World->Register("BaseScene", m_baseScene);
 
-	m_World->Load("Scene_2");
-	m_Logger->WriteLogText("loaded scene");
 
 	m_IsInit = true;
 
@@ -69,6 +67,9 @@ bool project::Engine::Init(const char* name, int w, int h)
 
 void project::Engine::Start(void) {
 	
+	m_World->Load("MenuScene");
+	std::cout << "loaded scene" << std::endl;
+
 	m_Audio->PlayMusic(m_Audio->LoadMusic("assets/audio/soundtrack.mp3"),0);
 
 
@@ -80,7 +81,7 @@ void project::Engine::Start(void) {
 	clock_t _end = clock();
 	while (m_Input->m_IsRunning) {
 		const clock_t _start = clock();
-		float dt = (_start - _end)* 0.001f;
+		float dt = (_end - _start)* 0.001f;
 		float sleepTime = clock() - (_start + MS_PER_SEC);
 		
 		ProcessInput();
@@ -124,8 +125,8 @@ void project::Engine::Update(float dt)
 {
 	m_World->Update(dt);
 	if (m_Input->IsKeyDown((static_cast<int>(EKey::EKEY_SPACE)))) {
-		std::cout << "loaded scene";
-		m_World->Load("Scene_2");
+		std::cout << "loaded scene" << std::endl;
+		m_World->Load("BaseScene");
 	}
 }
 
