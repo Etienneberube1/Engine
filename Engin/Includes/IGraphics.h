@@ -2,11 +2,16 @@
 
 #include <string>
 #include "Color.h"
+#include <vector>
+#include <map>
 
 namespace project {
 
 	struct RectI
 	{
+		RectI() : RectI(0, 0, 0, 0) {}
+		RectI(float x, float y, float w, float h) : RectI(static_cast<int>(x), static_cast<int>(y), static_cast<int>(w), static_cast<int>(h)) {}
+		RectI(int _x, int _y, int _w, int _h) : x(_x), y(_y), w(_w), h(_h) {}
 
 		int x;
 		int y;
@@ -28,6 +33,10 @@ namespace project {
 		bool h;
 		bool v;
 	};
+
+	typedef std::vector<std::vector<int>> TLayer;
+	typedef std::map<std::string, TLayer> TTilemap;
+	typedef std::vector<RectI> TTileset;
 
 	class IGraphics {
 	public:
@@ -51,7 +60,11 @@ namespace project {
 		virtual size_t LoadFont(const std::string& filename, int fontSize) = 0;
 		virtual void DrawString(const std::string& text, size_t fontId, float x, float y, float w, float h, const Color& color) = 0;
 		virtual void GetTextSize(const std::string& text, size_t fontId, int* w, int* h) = 0;
-
+		virtual void LoadTiledSet(const std::string& image, int tileW, int tileH, int col, int count) = 0;
+		virtual void RenderFrame() = 0;
+		virtual void DrawTiles(int tileW, int tileH) = 0;
+		virtual void AddLayer(const std::string& layerName, TLayer* layer) = 0;
+		
 	};
 
 }

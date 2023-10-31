@@ -5,7 +5,7 @@
 #include "IGraphics.h"
 #include "IWorld.h"
 #include "IAudio.h"
-
+#include "Color.h"
 #include "IScene.h"
 #include "BaseScene.h"
 #include "MenuScene.h"

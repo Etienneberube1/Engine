@@ -1,5 +1,5 @@
 build/**
 Deployment/**
-!Deployment/Keepme
-!Deployment/assets
+!Deployment/Keepme/**
+!Deployment/assets/**
 

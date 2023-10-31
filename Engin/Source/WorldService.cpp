@@ -3,9 +3,9 @@
 #include <iostream>
 
 namespace project {
-	Entity* WorldService::Create(const std::string& name, float posX, float posY, float widht, float height,float speed, const Color& color)
+	Entity* WorldService::Create(const std::string& name, float posX, float posY, float widht, float height, const Color& color)
 	{
-		Entity* entity = new Entity(name, posX, posY, widht, height, speed, color);
+		Entity* entity = new Entity(name, posX, posY, widht, height, color);
 		Add(entity);
 		return entity;
 	}

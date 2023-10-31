@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Engine.h"
 
 project::Component::Component(Entity* entity)
     :m_Entity(entity)
@@ -9,20 +10,20 @@ project::Component::Component(Entity* entity)
 
 project::IAudio* project::Component::Audio() const
 {
-    return nullptr;
+    return project::Engine::Get().Audio();
 }
 
 project::IInput* project::Component::Input() const
 {
-    return nullptr;
+    return project::Engine::Get().Input();
 }
 
 project::IGraphics* project::Component::Graphics() const
 {
-    return nullptr;
+    return project::Engine::Get().Graphics();
 }
 
 project::IILogger* project::Component::Logger() const
 {
-    return nullptr;
+    return project::Engine::Get().Logger();
 }

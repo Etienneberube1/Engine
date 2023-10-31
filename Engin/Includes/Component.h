@@ -11,9 +11,8 @@ namespace project {
 
 	class Component
 	{
-	private:
-		Component() = default;
 	public:
+		Component() = default;
 		Component(Entity* entity);
 		virtual ~Component() = default;
 		virtual void Start() {}

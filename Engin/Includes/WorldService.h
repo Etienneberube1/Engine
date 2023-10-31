@@ -11,7 +11,7 @@ namespace project {
 	class WorldService : public IWorld
 	{
 	public:
-		virtual Entity* Create(const std::string& name,float posX, float posY, float widht, float height,float speed, const Color& color) override;
+		virtual Entity* Create(const std::string& name,float posX, float posY, float widht, float height, const Color& color) override;
 		virtual void Start() override;
 		virtual void Update(float dt) override;
 		virtual void Draw() override;

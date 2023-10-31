@@ -4,6 +4,7 @@
 #include "Engine.h"
 #include "Square.h"
 #include "Controller.h"
+#include "Sprite.h"
 
 namespace project {
 
@@ -11,14 +12,22 @@ namespace project {
 	{
 		project::IWorld* world = Engine::Get().World();
 
-		Entity* e3 = new Entity("e1", 100.0f, 100.0f, 50.0f, 50.0f,100.0f, Color::Green);
-		//Entity* e4 = new Entity("e2", 200.0f, 200.0f, 50.0f, 50.0f, Color::White);
+		Entity* player = new Entity("e1", 500.0f, 100.0f, 50.0f, 50.0f, Color::Green);
 
-		world->Add(e3);
+		world->Add(player);
 
-		e3->AddComponent<Square>();
-		e3->AddComponent<Controller>();
-		//world->Add(e4);
+		RectF rect = { };
+
+		rect.x = player->GetPosX();
+		rect.y = player->GetPosY();
+		rect.w = player->GetWidth();
+		rect.h = player->GetHeight();
+		
+
+		player->AddComponent<Sprite>()->SetSpriteValue("assets/player.png", rect, player->GetColor());
+		player->AddComponent<Controller>()->SetSpeedValue(100.0f);
+
+		
 	}
 
 }

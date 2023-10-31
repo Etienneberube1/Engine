@@ -12,6 +12,7 @@ namespace project {
 		virtual void Update(float dt) override;
 		virtual void Start() override;
 		virtual void Destroy() override;
+		virtual void SetSpeedValue(float speed);
 	private:
 		float m_posX;
 		float m_posY;

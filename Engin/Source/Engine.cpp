@@ -23,7 +23,7 @@
 float FPS = 60;
 float MS_PER_SEC = 1000 / FPS;
 
-bool project::Engine::Init(const char* name, int w, int h) 
+bool project::Engine::Init(const char* name, int w, int h)
 {
 #if _DEBUG
 	m_Logger = new LogConsole;
@@ -35,7 +35,7 @@ bool project::Engine::Init(const char* name, int w, int h)
 
 
 	m_Graphics = new SDLGraphics();
-	m_Graphics->Initialize("Game", 800, 800);
+	m_Graphics->Initialize("Game", 800, 608);
 
 
 	m_Audio = new SDLMixer();
@@ -51,7 +51,7 @@ bool project::Engine::Init(const char* name, int w, int h)
 
 	// SCENE
 	m_World = new WorldService();
-	
+
 
 	m_menuScene = new MenuScene();
 	m_World->Register("MenuScene", m_menuScene);
@@ -66,11 +66,58 @@ bool project::Engine::Init(const char* name, int w, int h)
 }
 
 void project::Engine::Start(void) {
-	
+
 	m_World->Load("MenuScene");
 	std::cout << "loaded scene" << std::endl;
 
-	m_Audio->PlayMusic(m_Audio->LoadMusic("assets/audio/soundtrack.mp3"),0);
+	m_Audio->PlayMusic(m_Audio->LoadMusic("assets/audio/soundtrack.mp3"), 0);
+
+	m_Graphics->LoadTiledSet("assets/balloonTerrain.png", 32, 32, 25, 450);
+
+	TLayer* terrain = new TLayer{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,1,2,3,4,0,0,0,0,0,0,0,0,0,1,2,3,4,0,0,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,0,0,1,3,2,3,2,3,2,3,4,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+						{28,27,28,27,28,29,0,0,0,0,0,0,0,0,0,0,0,0,0,26,28,27,28,27,28},
+						{53,52,53,52,53,54,0,0,0,0,0,0,0,0,0,0,0,0,0,51,53,52,53,52,53},
+						{78,77,78,77,78,79,0,0,0,0,0,0,0,0,0,0,0,0,0,76,78,77,78,77,78},
+						{101,102,103,104,103,101,102,103,104,102,103,104,103,104,101,102,103,104,101,101,103,102,103,102,103 } };
+
+	m_Graphics->AddLayer("terrain", terrain);
+
+	TLayer* background = new TLayer{
+		{126, 0, 0, 0, 0, 126, 0, 0, 0, 0, 0, 0, 0, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 126, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 127, 0, 128, 0, 0, 0, 0, 0, 0, 0, 126, 0, 31, 32, 33, 34, 0},
+		{0, 0, 126, 127, 0, 0, 0, 126, 0, 0, 0, 0, 0, 0, 126, 0, 128, 0, 0, 0, 56, 57, 58, 59, 0},
+		{126, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127, 0, 0, 0, 0, 0, 0, 81, 82, 83, 84, 0},
+		{0,0,0,0,0,126,0,0,0,0,0,0,0,0,0,0,0,0,0,0,106,107,108,109,0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 126, 0, 0, 0, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 0},
+		{0, 31, 32, 33, 34, 0, 0, 128, 0, 0, 0, 0, 126, 127, 0, 0, 127, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0,56,57,58,59,0,0,0,0,0,0,0,0,0,0,0,0,0,128,0,127,0,0,0,0},
+		{0, 81, 82, 83, 84, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127},
+		{0, 106, 107, 108, 109, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127, 0, 0, 0, 0, 0},
+		{0, 0, 0, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 126, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 126, 127, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 126, 127, 0, 0, 0, 0, 126, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 126, 0, 0, 0, 0, 126, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} };
+
+	m_Graphics->AddLayer("background", background);
 
 
 	if (!m_IsInit) {
@@ -81,9 +128,9 @@ void project::Engine::Start(void) {
 	clock_t _end = clock();
 	while (m_Input->m_IsRunning) {
 		const clock_t _start = clock();
-		float dt = (_end - _start)* 0.001f;
+		float dt = (_end - _start) * 0.001f;
 		float sleepTime = clock() - (_start + MS_PER_SEC);
-		
+
 		ProcessInput();
 		Update(dt);
 		Render();
@@ -115,7 +162,7 @@ void project::Engine::ProcessInput(void)
 	m_Input->Update();
 
 #if _DEBUG
-	if(m_Input->IsKeyDown((static_cast<int>(EKey::EKEY_ESCAPE)))) {
+	if (m_Input->IsKeyDown((static_cast<int>(EKey::EKEY_ESCAPE)))) {
 		m_Input->m_IsRunning = false;
 	}
 #endif
@@ -135,6 +182,8 @@ void project::Engine::Render(void)
 	m_Graphics->SetColor(Color::Black);
 	m_Graphics->Clear();
 
+
+	m_Graphics->DrawTiles(32, 32);
 	m_World->Draw();
 
 	m_Graphics->DrawString("Press space to play sound", m_Graphics->LoadFont("assets/ARCADECLASSIC.TTF", 30), 100, 0, 600, 50, Color::Blue);
@@ -155,9 +204,9 @@ void project::Engine::Shutdown(void)
 	if (m_Logger != nullptr) {
 		delete m_Logger;
 	}
-	//if (m_World != nullptr) {
-	//	delete m_World;
-	//}
+	if (m_World != nullptr) {
+		delete m_World;
+	}
 
 	m_Graphics->Shutdown();
 	if (m_Graphics != nullptr) {

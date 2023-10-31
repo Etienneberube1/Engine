@@ -33,6 +33,7 @@ namespace project {
 
 		TTF_Init();
 
+
 		m_IsInit = true;
 
 		return true;
@@ -88,6 +89,7 @@ namespace project {
 	void SDLGraphics::DrawLine(float x1, float y1, float x2, float y2, const Color& color) {
 		SDL_RenderDrawLine(_renderer, x1, y1, x2, y2);
 	}
+
 	size_t SDLGraphics::LoadTexture(const std::string& filename) {
 
 		size_t textureID = std::hash<std::string>()(filename);
@@ -170,5 +172,80 @@ namespace project {
 	}
 	void SDLGraphics::GetTextSize(const std::string& text, size_t fontId, int* w, int* h) {
 	
+	}
+	void SDLGraphics::LoadTiledSet(const std::string& image, int tileW, int tileH, int col, int count)
+	{
+		m_TilesetTexture = IMG_LoadTexture(_renderer, image.c_str());
+		if (m_TilesetTexture)
+		{
+			for (int i = 0; i < count; i++)
+			{
+				int _y = i / col;
+				int _x = i - _y * col;
+
+				RectI _tile(
+					_x * tileW,
+					_y * tileH,
+					tileW,
+					tileH);
+
+				m_Tileset.push_back(_tile);
+			}
+		}
+
+	}
+	void SDLGraphics::RenderFrame()
+	{
+		int testIdx = 32;
+		SDL_Rect _src{
+		m_Tileset[testIdx].x,
+		m_Tileset[testIdx].y,
+		m_Tileset[testIdx].w,
+		m_Tileset[testIdx].h
+		};
+		SDL_Rect _dst{
+		10, 10, 32, 32
+		};
+		SDL_RenderCopyEx(_renderer, m_TilesetTexture,
+			&_src, &_dst, 0.0, nullptr, SDL_FLIP_NONE);
+
+	}
+
+	void SDLGraphics::DrawTiles(int tileW, int tileH)
+	{
+
+		for (auto layer : m_Tilemap)
+		{
+			for (int y = 0; y < layer.second.size(); y++)
+			{
+				for (int x = 0; x < layer.second[y].size(); x++)
+				{
+					int _index = layer.second[y][x] -1;
+					if (_index >= 0)
+					{
+						SDL_Rect _src{
+						m_Tileset[_index].x,
+						m_Tileset[_index].y,
+						m_Tileset[_index].w,
+						m_Tileset[_index].h
+						};
+						SDL_Rect _dst{
+						x * tileW,
+						y * tileH,
+						tileW, tileH
+						};
+						SDL_RenderCopyEx(_renderer, m_TilesetTexture,
+							&_src, &_dst, 0.0, nullptr, SDL_FLIP_NONE);
+					}
+				}
+			}
+		}
+	}
+
+	void SDLGraphics::AddLayer(const std::string& layerName, TLayer* layer)
+	{
+		if (m_Tilemap.count(layerName) == 0) {
+			m_Tilemap[layerName] = *layer;
+		}
 	}
 }

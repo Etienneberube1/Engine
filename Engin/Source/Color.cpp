@@ -1,5 +1,6 @@
 #pragma once
 #include "Color.h"
+
 namespace project {
 	const Color& Color::Red = Color(uchar(255), uchar(0), uchar(0), uchar(255));
 	const Color& Color::Green = Color(uchar(0), uchar(255), uchar(0), uchar(255));

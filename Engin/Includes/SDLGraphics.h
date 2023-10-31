@@ -8,6 +8,7 @@ struct SDL_Window;
 struct SDL_Texture;
 typedef struct _TTF_Font TTF_Font;
 
+
 namespace project {
 	class SDLGraphics : public IGraphics {
 	public:
@@ -29,6 +30,11 @@ namespace project {
 		virtual size_t LoadFont(const std::string& filename, int fontSize) override;
 		virtual void DrawString(const std::string& text, size_t fontId, float x, float y, float w, float h,const Color& color) override;
 		virtual void GetTextSize(const std::string& text, size_t fontId, int* w, int* h) override;
+		virtual void LoadTiledSet(const std::string& image, int tileW, int tileH, int col, int count) override;
+		virtual void RenderFrame() override;
+		virtual void DrawTiles(int tileW, int tileH) override;
+		virtual void AddLayer(const std::string& layerName, TLayer* layer) override;
+
 	private:
 		SDL_Renderer* _renderer = NULL;
 		SDL_Window* _window = NULL;
@@ -38,6 +44,11 @@ namespace project {
 		std::map<size_t, TTF_Font*> &_fontCache = *new std::map<size_t, TTF_Font*>;
 
 		SDL_Texture* _textureBuffer = nullptr;
+
+		SDL_Texture* m_TilesetTexture = nullptr;
+		TTileset m_Tileset;
+		TTilemap m_Tilemap;
+
 
 		bool m_IsInit = false;
 	};

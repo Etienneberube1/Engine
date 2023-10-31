@@ -1,13 +1,12 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "Color.h"
 #include "IUpdatable.h"
 #include "IDrawable.h"
 #include <map>
 #include <typeinfo>
 #include <cstdlib>
-
+#include "Color.h"
 
 namespace project {
 	struct SDLGraphics;
@@ -17,7 +16,7 @@ namespace project {
 	class Entity final {
 	public:
 
-		Entity(std::string name, float posX, float posY, float widht, float height,float speed, const Color& color);
+		Entity(std::string name, float posX, float posY, float widht, float height, const Color& color);
 		~Entity();
 		virtual void Start();
 		virtual void Update(float dt);
