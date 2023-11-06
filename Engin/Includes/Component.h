@@ -5,7 +5,6 @@
 #include "ILogger.h"
 #include "Entity.h"
 
-struct Entity;
 
 namespace project {
 

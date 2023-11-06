@@ -70,8 +70,11 @@ namespace project {
 
 
 	template<typename T>
-	inline T* Entity::GetComponent()
-	{
-		return nullptr;
+	inline T* Entity::GetComponent() {
+		auto it = m_Components.find(&typeid(T));
+		if (it != m_Components.end()) {
+			return static_cast<T*>(it->second);
+		}
+		return nullptr; // If the component was not found
 	}
 }

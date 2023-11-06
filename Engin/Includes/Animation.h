@@ -1,46 +1,81 @@
 #pragma once
 #include "Component.h"
+#include <vector>
 #include <map>
+#include "IDrawable.h"
+#include "IUpdatable.h"
+
+
+//namespace project {
+//
+//    class AnimationClip {
+//    public:
+//        bool loop;
+//        float frameDuration;
+//        std::vector<RectF> frames;
+//    };    
+//
+//    class Animation : public Component, public IDrawable, IUpdatable{
+//    public:
+//        Animation();
+//
+//        void AddAnimationClip(const std::string& name, const std::vector<std::string>& frameNames, float frameDuration);
+//        // Add a frame to a specific animation clip
+//        void AddFrame(const std::string& animationName, const std::string& frameName, float frameTime);
+//
+//        // Set whether a specific animation should loop
+//        void SetLoop(const std::string& animationName, bool shouldLoop);
+//
+//        // Start playing an animation by name
+//        void Play(const std::string& animationName);
+//
+//        // Stop the current animation
+//        void Stop();
+//
+//        // Update method to be called every frame with the time elapsed
+//        void Update(float deltaTime) ;
+//
+//        void draw();
+//
+//    private:
+//        std::map<std::string, AnimationClip> animationClips;
+//        std::string currentAnimationName;
+//        size_t currentFrameIndex;
+//        float accumulator; // Time accumulated towards the next frame
+//        bool isPlaying;
+//    };
+//}
+
 
 namespace project {
 
-	class Animation : public Component, public IUpdatable, public IDrawable {
+	struct Clip {
+		std::string name;
+		int start;
+		int count;
+		float delay;
+	};
+
+	class Animation :  public IDrawable,public IUpdatable {
 	public:
-
-		struct AnimationClip {
-			int startFrame; // The index of the first frame in the clip
-			int frameCount; // Number of frames in the clip
-			float frameDelay; // Delay between frames
-			bool loop; // Should the animation loop
-			int currentFrame; // Current frame of the animation
-			float accumulator; // Accumulates the time that has passed for frame switching
-
-			AnimationClip(int start, int count, float delay)
-				: startFrame(start), frameCount(count), frameDelay(delay),
-				loop(false), currentFrame(start), accumulator(0.0f) {}
-		};
-
 		Animation(Entity* entity);
-		~Animation() = default;
-
-		virtual void Update(float dt) override;
-		virtual void Draw() override;
-		virtual void Start() override;
-		virtual void Destroy() override;
+		virtual ~Animation() = default;
 
 		void InitAnimation(int frameInRows, int frameWidth, int frameHeight);
 		void AddClip(const std::string& name, int start, int count, float delay);
 		void Stop();
 		void Play(const std::string& name, bool loop);
 
+		virtual void Draw() override;
+		virtual void Update(float dt) override; 
+
 	private:
-
-
-		std::map<std::string, AnimationClip> clips; // Stores all the animation clips
-		std::string currentClip; // The name of the currently playing clip
-		bool isPlaying; // Is the animation currently playing?
-		int rows;          // Number of frame rows in the sprite sheet
-		int frameWidth;    // Width of each frame
-		int frameHeight;   // Height of each frame
+		std::map<std::string, Clip> m_clips;
+		bool m_isPlaying;
+		bool m_loop;
+		float m_timer;
+		Clip* m_currentClip;
+		int m_currentFrameIndex;
 	};
+
 }

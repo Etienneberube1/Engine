@@ -5,6 +5,8 @@
 #include "Square.h"
 #include "Controller.h"
 #include "Sprite.h"
+#include "Animation.h"
+#include "Atlas.h"
 
 namespace project {
 
@@ -26,6 +28,9 @@ namespace project {
 
 		player->AddComponent<Sprite>()->SetSpriteValue("assets/player.png", rect, player->GetColor());
 		player->AddComponent<Controller>()->SetSpeedValue(100.0f);
+
+		//player->AddComponent<Atlas>()->AddFrame("run", 0,0, 43, 64);
+		//player->AddComponent<Animation>()->AddAnimationClip("run", , 0.1f);
 
 		
 	}
