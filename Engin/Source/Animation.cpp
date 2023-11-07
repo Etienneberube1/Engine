@@ -1,101 +1,27 @@
 #include "Animation.h"
 #include "Atlas.h"
+#include <string>
 
-//project::Animation::Animation()
-//	: currentFrameIndex(0), accumulator(0.0f), isPlaying(false)
-//{
-//   
-//}
-//
-//void project::Animation::AddAnimationClip(const std::string& name, const std::vector<std::string>& frameNames, float frameDuration) {
-//    AnimationClip clip;
-//    clip.frameDuration = frameDuration;
-//
-//    Atlas* atlas = m_Entity->GetComponent<Atlas>();
-//    if (!atlas) return;
-//
-//    for (const auto& frameName : frameNames) {
-//        RectF frame = atlas->GetFrame(frameName);
-//        clip.frames.push_back(frame);
-//    }
-//
-//    animationClips[name] = clip;
-//}
-//
-//void project::Animation::AddFrame(const std::string& animationName, const std::string& frameName, float frameTime)
-//{
-//	animationClips[animationName].frames.emplace_back(frameName, frameTime);
-//}
-//
-//void project::Animation::SetLoop(const std::string& animationName, bool shouldLoop)
-//{
-//	animationClips[animationName].loop = shouldLoop;
-//}
-//
-//void project::Animation::Play(const std::string& animationName)
-//{
-//	currentAnimationName = animationName;
-//	isPlaying = true;
-//	currentFrameIndex = 0;  // Restart from the first frame
-//	accumulator = 0.0f;     // Reset the time accumulator
-//}
-//
-//void project::Animation::Stop()
-//{
-//	isPlaying = false;
-//}
-//
-//void project::Animation::Update(float deltaTime)
-//{
-//    if (!isPlaying) return;
-//
-//    auto it = animationClips.find(currentAnimationName);
-//    if (it == animationClips.end()) return;
-//
-//    auto& currentAnimation = it->second;
-//
-//    accumulator += deltaTime;
-//    if (accumulator >= currentAnimation.frameDuration) {
-//        accumulator -= currentAnimation.frameDuration;
-//        currentFrameIndex++;
-//
-//        if (currentFrameIndex >= currentAnimation.frames.size()) {
-//            if (currentAnimation.loop) {
-//                currentFrameIndex = 0; // Loop to start
-//            }
-//            else {
-//                currentFrameIndex = currentAnimation.frames.size() - 1; // Stay on last frame
-//                isPlaying = false; // Stop playing
-//            }
-//        }
-//
-//        Atlas* atlas = m_Entity->GetComponent<Atlas>();
-//        if (!atlas) return;
-//
-//        atlas->SetCurrentFrame(currentAnimation.frames[currentFrameIndex]);
-//
-//    }
-//}
-//
-//void project::Animation::draw()
-//{
-//    if (!isPlaying) return;
-//
-//    //const RectF &frameRect = animationClips[currentAnimationName].frames[currentFrameIndex];
-//
-//    //Graphics()->DrawTexture(Graphics()->LoadTexture("anim_playerFly.png"), frameRect, Color::White);
-//}
+
 namespace project {
 
-	Animation::Animation(Entity* entity) : m_isPlaying(false), m_loop(false), m_timer(0.0f), m_currentClip(nullptr), m_currentFrameIndex(0)
-	{}
-
-	void Animation::InitAnimation(int frameInRows, int frameWidth, int frameHeight) {
-		// TODO: Implement the initialization logic, likely setting up the total frames in the atlas based on rows, width, and height.
+	Animation::Animation(Entity* entity) 
+		: Component(entity), m_isPlaying(false), m_loop(false), m_timer(0.0f), m_currentClip(nullptr), m_currentFrameIndex(0)
+	{
 	}
 
-	void Animation::AddClip(const std::string& name, int start, int count, float delay) {
-		m_clips[name] = { name, start, count, delay };
+	void Animation::InitAnimation(int frameInRows, int frameWidth, int frameHeight) {
+		
+		for (int i = 0; i < frameInRows; i++) {
+			int x = (i % frameInRows) * frameWidth;
+			int y = (i / frameInRows) * frameHeight;
+			std::string frameName = "frame_" + std::to_string(i);
+
+
+			Atlas* atlas = m_Entity->GetComponent<Atlas>();
+			if (!atlas) return;
+			atlas->AddFrame(frameName, x, y, frameWidth, frameHeight);
+		}
 	}
 
 	void Animation::Stop() {
@@ -109,12 +35,43 @@ namespace project {
 			m_currentClip = &m_clips[name];
 			m_currentFrameIndex = m_currentClip->start;
 			m_timer = m_currentClip->delay;
-			//SetFrame(name); // or based on your frame naming logic
+
+			std::string frameName = "frame_" + std::to_string(m_currentFrameIndex);
+
+			Atlas* atlas = m_Entity->GetComponent<Atlas>();
+			if (!atlas) return;
+			atlas->SetFrame(frameName);
 		}
+	}
+	void Animation::AddClip(const std::string& name, int start, int count, float delay) {
+		Clip newClip;
+		newClip.start = start;
+		newClip.count = count;
+		newClip.delay = delay;
+
+		m_clips[name] = newClip;
 	}
 
 	void Animation::Draw()
 	{
+		if (m_isPlaying && m_currentClip) {
+			// Fetch the Atlas component from the parent entity
+			Atlas* atlas = m_Entity->GetComponent<Atlas>();
+			if (!atlas) {
+				// No Atlas component attached to this entity, can't draw
+				return;
+			}
+
+			// Set the frame based on the current frame index using the Atlas
+			std::string frameName = "frame_" + std::to_string(m_currentFrameIndex);
+			atlas->SetFrame(frameName);
+
+			// Call the base Sprite's Draw method to handle the rendering.
+			Sprite* sprite = m_Entity->GetComponent<Sprite>();
+
+			if (!sprite) return;
+			sprite->Draw();
+		}
 	}
 
 	void Animation::Update(float dt) {
@@ -131,10 +88,15 @@ namespace project {
 						return;
 					}
 				}
-				//SetFrame(/* Your frame name logic */);
+				std::string frameName = "frame_" + std::to_string(m_currentFrameIndex);
+
+				Atlas* atlas = m_Entity->GetComponent<Atlas>();
+				if (!atlas) return;
+				atlas->SetFrame(frameName);
+
+
 				m_timer = m_currentClip->delay;
 			}
 		}
 	}
-
 }
