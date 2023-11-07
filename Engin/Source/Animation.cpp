@@ -6,7 +6,7 @@
 namespace project {
 
 	Animation::Animation(Entity* entity) 
-		: Component(entity), m_isPlaying(false), m_loop(false), m_timer(0.0f), m_currentClip(nullptr), m_currentFrameIndex(0)
+		: Atlas(entity), m_isPlaying(false), m_loop(false), m_timer(0.0f), m_currentClip(nullptr), m_currentFrameIndex(0)
 	{
 	}
 
@@ -58,7 +58,7 @@ namespace project {
 			// Fetch the Atlas component from the parent entity
 			Atlas* atlas = m_Entity->GetComponent<Atlas>();
 			if (!atlas) {
-				// No Atlas component attached to this entity, can't draw
+				// No Atlas component attached to this entity
 				return;
 			}
 
@@ -95,7 +95,7 @@ namespace project {
 				atlas->SetFrame(frameName);
 
 
-				m_timer = m_currentClip->delay;
+				m_timer = 0.1f;
 			}
 		}
 	}

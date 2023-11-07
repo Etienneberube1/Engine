@@ -11,31 +11,37 @@ namespace project {
 	}
 
 	void WorldService::Start() {
-		for (auto entity : m_entityList) {
-			entity->Start();
+		for (auto entity : m_entityLists) {
+			entity.second->Start();
 		}
 	}
 
 	void WorldService::Update(float dt) {
-		for (auto entity : m_entityList) {
-			entity->Update(dt);
+		for (auto entity : m_entityLists) {
+			entity.second->Update(dt);
 		}
 	}
 
 	void WorldService::Draw() {
-		for (auto entity : m_entityList) {
-			entity->Draw();
+		for (auto entity : m_entityLists) {
+			entity.second->Draw();
 		}
 	}
 
 	void WorldService::Add(Entity* entity) {
-		m_entityList.emplace_back(entity);
+
+		m_entityLists[entity->GetName()] = entity;
+	}
+
+	Entity* WorldService::GetEntity(std::string name) 
+	{
+		return m_entityLists.find(name)->second;
 	}
 
 
 	void WorldService::Destroy() {
-		for (auto entity : m_entityList) {
-			entity->Destroy();
+		for (auto entity : m_entityLists) {
+			entity.second->Destroy();
 		}
 	}
 
@@ -60,11 +66,11 @@ namespace project {
 	void WorldService::Unload()
 	{
 		if (m_CurrentScene != nullptr) {
-			for (auto entity : m_entityList) {
-				entity->Destroy();
-				delete entity;
+			for (auto entity : m_entityLists) {
+				entity.second->Destroy();
+				delete entity.second;
 			}
-			m_entityList.clear();
+			m_entityLists.clear();
 		}
 	}
 

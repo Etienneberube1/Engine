@@ -64,7 +64,6 @@ namespace project {
 		virtual void RenderFrame() = 0;
 		virtual void DrawTiles(int tileW, int tileH) = 0;
 		virtual void AddLayer(const std::string& layerName, TLayer* layer) = 0;
-		
 	};
 
 }

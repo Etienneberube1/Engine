@@ -2,7 +2,7 @@
 #include "Component.h"
 #include <vector>
 #include <map>
-
+#include "Atlas.h"
 
 namespace project {
 
@@ -12,7 +12,7 @@ namespace project {
 		float delay;
 	};
 
-	class Animation :  public Component, public IDrawable, public IUpdatable {
+	class Animation :  public Atlas, public IDrawable, public IUpdatable {
 	public:
 		Animation(Entity* entity);
 		virtual ~Animation() = default;
@@ -22,8 +22,8 @@ namespace project {
 		void Stop();
 		void Play(const std::string& name, bool loop);
 
-		virtual void Draw();
-		virtual void Update(float dt); 
+		virtual void Draw() override;
+		virtual void Update(float dt) override; 
 
 	private:
 		std::map<std::string, Clip> m_clips;

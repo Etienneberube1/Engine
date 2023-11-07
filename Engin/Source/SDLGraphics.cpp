@@ -107,22 +107,22 @@ namespace project {
 	void SDLGraphics::DrawTexture(size_t id, const RectI& src, const RectF& dst, double angle, const Flip& flip, const Color& color) {
 
 		// Convert dst from RectF to SDL_Rect
-		SDL_Rect dstRect{ static_cast<int>(dst.x), static_cast<int>(dst.y), static_cast<int>(dst.w), static_cast<int>(dst.h) };
+		SDL_Rect dstRect = { static_cast<int>(dst.x), static_cast<int>(dst.y), static_cast<int>(dst.w), static_cast<int>(dst.h) };
 
 		// Convert src from RectI to SDL_Rect
-		SDL_Rect srcRect{ src.x, src.y, src.w, src.h };
+		SDL_Rect srcRect = { static_cast<int>(src.x), static_cast<int>(src.y), static_cast<int>(src.w), static_cast<int>(src.h) };
 
-		//SDL_RendererFlip sdlFlip = SDL_FLIP_NONE;
-		//if (flip == Flip::v) {
-		//	sdlFlip = SDL_FLIP_HORIZONTAL;
-		//}
-		//else if (flip == Flip::h) {
-		//	sdlFlip = SDL_FLIP_VERTICAL;
-		//}
+		SDL_RendererFlip sdlFlip = SDL_FLIP_NONE;
+		if (flip.h == true) {
+			sdlFlip = SDL_FLIP_HORIZONTAL;
+		}
+		else if (flip.v == true) {
+			sdlFlip = SDL_FLIP_VERTICAL;
+		}
 
 		SDL_Texture* texture = _textureCache[id];
 
-		SDL_RenderCopyEx(_renderer, texture, &srcRect, &dstRect, angle, nullptr, SDL_FLIP_VERTICAL);
+		SDL_RenderCopyEx(_renderer, texture, &srcRect, &dstRect, angle, nullptr, sdlFlip);
 	}
 	void SDLGraphics::DrawTexture(size_t id, const RectF& dst, const Color& color) {
 		

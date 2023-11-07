@@ -23,7 +23,6 @@ namespace project {
 		virtual void Draw();
 		virtual void Destroy();
 		virtual void SetPosition(float posX, float posY);
-
 		template<typename T> inline T* AddComponent();
 
 		template<typename T> inline T* GetComponent();
@@ -34,6 +33,7 @@ namespace project {
 		virtual float GetHeight() { return m_heigth; }
 		virtual Color GetColor() { return m_color; }
 		virtual float GetSpeed() { return m_speed; }
+		virtual std::string GetName() { return m_entityName; }
 	private:
 		float m_posX;
 		float m_posY;

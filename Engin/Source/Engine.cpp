@@ -128,7 +128,7 @@ void project::Engine::Start(void) {
 	clock_t _end = clock();
 	while (m_Input->m_IsRunning) {
 		const clock_t _start = clock();
-		float dt = (_end - _start) * 0.001f;
+		float dt = (_start - _end ) * 0.001f;
 		float sleepTime = clock() - (_start + MS_PER_SEC);
 
 		ProcessInput();
@@ -175,6 +175,12 @@ void project::Engine::Update(float dt)
 		std::cout << "loaded scene" << std::endl;
 		m_World->Load("BaseScene");
 	}
+
+
+
+
+
+
 }
 
 void project::Engine::Render(void)

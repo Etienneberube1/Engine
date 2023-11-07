@@ -4,6 +4,8 @@
 #include <string>
 #include "SDLGraphics.h"
 #include "Component.h"
+#include "BoxCollider.h"
+#include "WorldService.h"
 
 namespace project {
 
@@ -30,6 +32,16 @@ namespace project {
 		for (auto cmp : m_Updatables) {
 			cmp->Update(dt);
 		}
+		
+		BoxCollider* boxCollider = GetComponent<BoxCollider>();
+		if (!boxCollider) return;
+
+		project::IWorld* world = Engine::Get().World();
+		Entity* entity = world->GetEntity("enemy1");
+
+		if (entity) {
+			boxCollider->CheckRectCollision(entity->GetPosX(), entity->GetPosY(), entity->GetWidth(), entity->GetHeight());
+		}
 	}
 
 	void Entity::Draw() {
@@ -49,6 +61,8 @@ namespace project {
 		m_posX = posX;
 		m_posY = posY;
 	}
+
+
 
 
 

@@ -17,6 +17,8 @@ namespace project {
 		virtual void Add(Entity* entity) = 0;
 		virtual void Load(const std::string& scene) = 0;
 		virtual void Register(const std::string& name, IScene* scene) = 0;
+		virtual Entity* GetEntity(std::string name) = 0;
+
 	};
 }
 
