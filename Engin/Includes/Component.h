@@ -4,7 +4,7 @@
 #include "IInput.h"
 #include "ILogger.h"
 #include "Entity.h"
-
+#include "IWorld.h"
 
 namespace project {
 
@@ -17,6 +17,7 @@ namespace project {
 		virtual void Start() {}
 		virtual void Destroy() {}
 
+		virtual IWorld* World() const;
 		virtual IAudio* Audio() const;
 		virtual IInput* Input() const;
 		virtual IGraphics* Graphics() const;

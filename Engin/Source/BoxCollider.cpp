@@ -30,13 +30,12 @@ void project::BoxCollider::Destroy()
 {
 }
 
-void project::BoxCollider::CheckRectCollision(float x, float y, float w, float h)
+bool project::BoxCollider::CheckRectCollision(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2)
 {
-	if (m_Entity->GetPosX() <= (x + w) ||
-		(m_Entity->GetPosX() + m_Entity->GetWidth()) >= x ||
-		m_Entity->GetPosX() <= (y + h) ||
-		(m_Entity->GetPosY() + m_Entity->GetHeight()) >= y) 
+	if (x1 <= (x2 + w2) && (x1 + w1) >= x2 && x1 <= (y2 + h2) && (x1 + h1) >= y2) 
 	{
-		std::cout << "Collsion\n";
+		return true;
 	}
+
+	return false;
 }

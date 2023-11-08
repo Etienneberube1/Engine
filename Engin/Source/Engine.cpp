@@ -14,7 +14,7 @@
 #include "SDL_mixer.h"
 #include "SDLMixer.h"
 //#include "vld.h"
-
+#include "BoxCollider.h"
 
 
 #include "BaseScene.h"
@@ -52,7 +52,6 @@ bool project::Engine::Init(const char* name, int w, int h)
 	// SCENE
 	m_World = new WorldService();
 
-
 	m_menuScene = new MenuScene();
 	m_World->Register("MenuScene", m_menuScene);
 
@@ -67,8 +66,6 @@ bool project::Engine::Init(const char* name, int w, int h)
 
 void project::Engine::Start(void) {
 
-	m_World->Load("MenuScene");
-	std::cout << "loaded scene" << std::endl;
 
 	m_Audio->PlayMusic(m_Audio->LoadMusic("assets/audio/soundtrack.mp3"), 0);
 
@@ -119,6 +116,8 @@ void project::Engine::Start(void) {
 
 	m_Graphics->AddLayer("background", background);
 
+	m_World->Load("MenuScene");
+	std::cout << "loaded scene" << std::endl;
 
 	if (!m_IsInit) {
 		if (!Init("Unknown title", 800, 800)) {
@@ -171,16 +170,21 @@ void project::Engine::ProcessInput(void)
 void project::Engine::Update(float dt)
 {
 	m_World->Update(dt);
+
 	if (m_Input->IsKeyDown((static_cast<int>(EKey::EKEY_SPACE)))) {
 		std::cout << "loaded scene" << std::endl;
 		m_World->Load("BaseScene");
 	}
 
 
+	Entity* player = m_World->GetEntity("player");
+	Entity* enemy1 = m_World->GetEntity("enemy1");
 
+	BoxCollider* playerBox = player->GetComponent<BoxCollider>();
 
-
-
+	if (playerBox->CheckRectCollision(player->GetPosX(), player->GetPosY(), player->GetWidth(), player->GetHeight(), enemy1->GetPosX(), enemy1->GetPosY(), enemy1->GetWidth(), player->GetHeight())) {
+		std::cout << "Collsion\n";
+	}
 }
 
 void project::Engine::Render(void)

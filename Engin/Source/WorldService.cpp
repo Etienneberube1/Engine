@@ -31,6 +31,7 @@ namespace project {
 	void WorldService::Add(Entity* entity) {
 
 		m_entityLists[entity->GetName()] = entity;
+		std::cout << "added " << entity->GetName() << std::endl;
 	}
 
 	Entity* WorldService::GetEntity(std::string name) 

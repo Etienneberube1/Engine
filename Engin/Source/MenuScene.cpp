@@ -15,9 +15,9 @@ namespace project {
 	{
 		project::IWorld* world = Engine::Get().World();
 
-		Entity* player = new Entity("e1", 200.0f, 100.0f, 43.0f, 64.0f, Color::White);
+		Entity* player = world->Create("player", 200.0f, 100.0f, 43.0f, 64.0f, Color::White);
+		Entity* enemy1 = world->Create("enemy1", 300.0f, 200.0f, 50.0f, 50.0f, Color::White);
 
-		world->Add(player);
 
 		RectF rect = { };
 
@@ -27,30 +27,31 @@ namespace project {
 		rect.h = player->GetHeight();
 
 		RectI recti = {};
-		recti.x = 0;
+		recti.x = 43;
 		recti.y = 0;
 		recti.w = 43;
 		recti.h = 64;
 
 
+		auto playerSprite = player->AddComponent<Sprite>();
+		playerSprite->SetSpriteValue("assets/anim_playerFly.png", rect, Color::White);
+		playerSprite->SetSourceRect(recti);
+
 		player->AddComponent<Controller>()->SetSpeedValue(100.0f);
-
-		auto sprite = player->AddComponent<Sprite>();
-		sprite->SetSpriteValue("assets/anim_playerFly.png", rect, player->GetColor());
-
-		player->AddComponent<Atlas>()->AddFrame("test", 0, 0, 43, 64);
-		
-		sprite->SetSourceRect(recti);
-		
 		player->AddComponent<BoxCollider>();
-		
-		
+
+		auto playerAtlas = player->AddComponent<Atlas>();
+		playerAtlas->AddFrame("run", 0, 0, 43, 64);
+		playerAtlas->SetFrame("run");
 
 
-		Entity* enemy1 = new Entity("enemy1", 300.0f, 200.0f, 43.0f, 64.0f, Color::White);
+
 		enemy1->AddComponent<BoxCollider>();
 
-		world->Add(enemy1);
+
+
+		// code pour ajoiter les frames au animation
+
 		//player->AddComponent<Atlas>();
 
 		//auto atlas = player->AddComponent<Atlas>();

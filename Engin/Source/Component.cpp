@@ -8,6 +8,11 @@ project::Component::Component(Entity* entity)
     
 }
 
+project::IWorld* project::Component::World() const
+{
+    return project::Engine::Get().World();
+}
+
 project::IAudio* project::Component::Audio() const
 {
     return project::Engine::Get().Audio();
@@ -27,3 +32,4 @@ project::IILogger* project::Component::Logger() const
 {
     return project::Engine::Get().Logger();
 }
+

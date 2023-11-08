@@ -32,16 +32,6 @@ namespace project {
 		for (auto cmp : m_Updatables) {
 			cmp->Update(dt);
 		}
-		
-		BoxCollider* boxCollider = GetComponent<BoxCollider>();
-		if (!boxCollider) return;
-
-		project::IWorld* world = Engine::Get().World();
-		Entity* entity = world->GetEntity("enemy1");
-
-		if (entity) {
-			boxCollider->CheckRectCollision(entity->GetPosX(), entity->GetPosY(), entity->GetWidth(), entity->GetHeight());
-		}
 	}
 
 	void Entity::Draw() {
