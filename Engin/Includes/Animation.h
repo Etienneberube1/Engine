@@ -22,7 +22,6 @@ namespace project
 		void AddClip(const std::string& name, int start, int count, int row, float delay);
 		void Stop();
 		void Play(const std::string& name, bool loop);
-
 		virtual void Draw() override;
 		virtual void Update(float dt) override;
 
@@ -42,7 +41,6 @@ namespace project
 		int m_FramesRow = 0;
 
 		float m_Delay = 0.0f;
-	private:
 
 		size_t m_Texture;
 		bool m_Loop;

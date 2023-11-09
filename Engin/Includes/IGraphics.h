@@ -18,10 +18,10 @@ namespace project {
 		int w;
 		int h;
 
-		bool operator==(const RectI& other) const {
-			return x == other.x && y == other.y && w == other.w && h == other.h;
+		//bool operator==(const RectI& other) const {
+		//	return x == other.x && y == other.y && w == other.w && h == other.h;
 
-		};
+		//};
 	};
 
 	struct RectF

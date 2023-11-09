@@ -61,8 +61,6 @@ void project::Animation::Stop()
 
 void project::Animation::Play(const std::string& name, bool loop)
 {
-	//if (m_Frameset.second[0] == m_Framemap[name].second[0]) return;
-
 	m_NextFrame = 1;
 	m_Loop = loop;
 	m_isPlaying = true;

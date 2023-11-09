@@ -167,6 +167,8 @@ void project::Engine::ProcessInput(void)
 #endif
 }
 
+bool inScene_1 = true;
+
 void project::Engine::Update(float dt)
 {
 	m_World->Update(dt);
@@ -174,19 +176,23 @@ void project::Engine::Update(float dt)
 	if (m_Input->IsKeyDown((static_cast<int>(EKey::EKEY_SPACE)))) {
 		std::cout << "loaded scene" << std::endl;
 		m_World->Load("BaseScene");
+		inScene_1 = false;
 	}
 
+	if (inScene_1 == true)
+	{
+		Entity* player = m_World->GetEntity("player");
+		Entity* enemy1 = m_World->GetEntity("enemy1");
 
+
+		BoxCollider* playerBox = player->GetComponent<BoxCollider>();
+
+		if (playerBox->CheckRectCollision(player->GetPosX(), player->GetPosY(), player->GetWidth(), player->GetHeight(), enemy1->GetPosX(), enemy1->GetPosY(), enemy1->GetWidth(), enemy1->GetHeight())) {
+			std::cout << "Collsion" << std::endl;
+		}
+
+	}
 	
-	Entity* player = m_World->GetEntity("player");
-	Entity* enemy1 = m_World->GetEntity("enemy1");
-
-	BoxCollider* playerBox = player->GetComponent<BoxCollider>();
-
-
-	if (playerBox->CheckRectCollision(player->GetPosX(), player->GetPosY(), player->GetWidth(), player->GetHeight(), enemy1->GetPosX(), enemy1->GetPosY(), enemy1->GetWidth(), player->GetHeight())) {
-		std::cout << "Collsion\n";
-	}
 }
 
 void project::Engine::Render(void)

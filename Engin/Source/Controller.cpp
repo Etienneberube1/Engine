@@ -7,6 +7,7 @@ project::Controller::Controller(Entity* entity) : Component(entity)
 {
 	m_posX = entity->GetPosX();
 	m_posY = entity->GetPosY();
+
 }
 
 void project::Controller::Update(float dt)
@@ -17,46 +18,39 @@ void project::Controller::Update(float dt)
 		m_posX += m_speed * dt;
 		m_Entity->SetPosition(m_posX, m_posY);
 
-		Flip flip;
-		flip.v = false;
-		flip.h = true;
-		m_Entity->GetComponent<Sprite>()->SetSpriteFlip(flip);
-
-		anim->Play("fly", true);
+		m_Entity->GetComponent<Animation>()->SetFlip(false, true);
+		//m_Entity->GetComponent<Animation>()->Play("fly", true);
 	}
 	if (Input()->IsKeyDown((static_cast<int>(EKey::EKEY_LEFT)))) {
 		m_posX -= m_speed * dt;
 		m_Entity->SetPosition(m_posX, m_posY);
 
-		Flip flip;
-		flip.v = false;
-		flip.h = false;
-		m_Entity->GetComponent<Sprite>()->SetSpriteFlip(flip);
 
-		anim->Play("fly", true);
+		m_Entity->GetComponent<Animation>()->SetFlip(false, false);
+		//m_Entity->GetComponent<Animation>()->Play("fly", true);
+
 
 	}
 	if (Input()->IsKeyDown((static_cast<int>(EKey::EKEY_UP)))) {
 		m_posY -= m_speed * dt;
 		m_Entity->SetPosition(m_posX, m_posY);
 
-		anim->Play("fly", true);
+		//m_Entity->GetComponent<Animation>()->Play("fly", true);
+
 
 	}
 	if (Input()->IsKeyDown((static_cast<int>(EKey::EKEY_DOWN)))) {
 		m_posY += m_speed * dt;
 		m_Entity->SetPosition(m_posX, m_posY);
 
-		anim->Play("fly", true);
+		//m_Entity->GetComponent<Animation>()->Play("fly", true);
 	}
 
-
-	//anim->Stop();
+	//m_Entity->GetComponent<Animation>()->Play("idle", true);
 }
 
 void project::Controller::Start()
 {
-	anim = m_Entity->GetComponent<Animation>();
 }
 
 void project::Controller::Destroy()

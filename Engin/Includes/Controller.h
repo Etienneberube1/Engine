@@ -19,6 +19,5 @@ namespace project {
 		float m_posY;
 		float m_speed;
 
-		Animation* anim;
 	};
 }

@@ -16,7 +16,10 @@ namespace project {
 		project::IWorld* world = Engine::Get().World();
 
 		Entity* player = world->Create("player", 200.0f, 100.0f, 43.0f, 64.0f, Color::White);
-		Entity* enemy1 = world->Create("enemy1", 300.0f, 200.0f, 50.0f, 50.0f, Color::White);
+		Entity* enemy1 = world->Create("enemy1", 300.0f, 200.0f, 100.0f, 100.0f, Color::White);
+
+
+		enemy1->AddComponent<BoxCollider>();
 
 		RectF rect = { };
 
@@ -25,35 +28,24 @@ namespace project {
 		rect.w = player->GetWidth();
 		rect.h = player->GetHeight();
 
-		RectI recti = {};
-		recti.x = 0;
-		recti.y = 0;
-		recti.w = 43;
-		recti.h = 64;
 
-
-		enemy1->AddComponent<BoxCollider>();
-
-
+		player->AddComponent<Controller>()->SetSpeedValue(100.0f);
 		player->AddComponent<Sprite>();
 		player->AddComponent<BoxCollider>();
 		player->AddComponent<Animation>();
-		player->AddComponent<Controller>();
+
+		Sprite* playerSprite = player->GetComponent<Sprite>();
+		playerSprite->SetSpriteValue("assets/player.png", rect, Color::White);
 
 		Animation* playerAnim = player->GetComponent<Animation>();
+		playerAnim->InitAnimation(3, 43, 64);
 		playerAnim->SetPath("assets/anim_playerFly.png");
-		playerAnim->InitAnimation(5, 43, 64);
-		playerAnim->AddClip("fly", 0, 5, 0, 0.1f);
+		playerAnim->AddClip("fly", 0, 3, 0, 0.1f);
+
+		//playerAnim->InitAnimation(2, 43, 64);
+		//playerAnim->AddClip("idle", 0, 2, 0, 0.1f);
 
 		playerAnim->Play("fly", true);
-
-
-
-
-
-
-
-
 	}
 
 }
