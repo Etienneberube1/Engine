@@ -1,37 +1,55 @@
 #pragma once
 #include "Component.h"
-#include <vector>
-#include <map>
-#include "Atlas.h"
 
-namespace project {
 
-	struct Clip {
-		int start;
-		int count;
-		float delay;
-	};
+	typedef std::pair<float, std::vector<project::RectI>> TFrameset;
+	typedef std::map<std::string, TFrameset> TFramemap;
 
-	class Animation :  public Atlas, public IDrawable, public IUpdatable {
+namespace project
+{
+
+	class Animation : public Component, public IDrawable, public IUpdatable
+	{
 	public:
-		Animation(Entity* entity);
-		virtual ~Animation() = default;
+
+		Animation(Entity* _entity);
+
+		virtual ~Animation();
+
+		void SetPath(const std::string path);
 
 		void InitAnimation(int frameInRows, int frameWidth, int frameHeight);
-		void AddClip(const std::string& name, int start, int count, float delay);
+		void AddClip(const std::string& name, int start, int count, int row, float delay);
 		void Stop();
 		void Play(const std::string& name, bool loop);
 
 		virtual void Draw() override;
-		virtual void Update(float dt) override; 
+		virtual void Update(float dt) override;
+
+		void SetFlip(bool v, bool h) { m_Flip.h = v, m_Flip.h = h; }
+
 
 	private:
-		std::map<std::string, Clip> m_clips;
-		bool m_isPlaying;
-		bool m_loop;
-		float m_timer;
-		Clip* m_currentClip;
-		int m_currentFrameIndex;
-	};
 
+		TFrameset m_Frameset;
+		TFramemap m_Framemap;
+
+		int m_FrameInRows = 0;
+		int m_FrameWidth = 0;
+		int m_FrameHeight = 0;
+		int m_StartFrame = 0;
+		int m_FrameCount = 0;
+		int m_FramesRow = 0;
+
+		float m_Delay = 0.0f;
+	private:
+
+		size_t m_Texture;
+		bool m_Loop;
+		bool m_isPlaying;
+		Flip m_Flip;
+		int m_CurrentFrame;
+		float m_Time = 0.0f;
+		int m_NextFrame = 0;
+	};
 }

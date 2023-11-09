@@ -177,10 +177,12 @@ void project::Engine::Update(float dt)
 	}
 
 
+	
 	Entity* player = m_World->GetEntity("player");
 	Entity* enemy1 = m_World->GetEntity("enemy1");
 
 	BoxCollider* playerBox = player->GetComponent<BoxCollider>();
+
 
 	if (playerBox->CheckRectCollision(player->GetPosX(), player->GetPosY(), player->GetWidth(), player->GetHeight(), enemy1->GetPosX(), enemy1->GetPosY(), enemy1->GetWidth(), player->GetHeight())) {
 		std::cout << "Collsion\n";

@@ -17,7 +17,13 @@ namespace project {
 		int y;
 		int w;
 		int h;
+
+		bool operator==(const RectI& other) const {
+			return x == other.x && y == other.y && w == other.w && h == other.h;
+
+		};
 	};
+
 	struct RectF
 	{
 		RectF() :RectF(0, 0, 0, 0) {}

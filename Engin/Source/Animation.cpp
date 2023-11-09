@@ -1,102 +1,106 @@
 #include "Animation.h"
-#include "Atlas.h"
-#include <string>
 
+project::Animation::Animation(Entity* _entity)
+	: Component(_entity)
+{
+	m_Texture = 0;
+	m_CurrentFrame = 0;
+	m_Loop = false;
+	m_isPlaying = false;
+	m_Flip = Flip();
+	m_Time = 0.0f;
+	m_NextFrame = 0;
+}
 
-namespace project {
+project::Animation::~Animation()
+{
+}
 
-	Animation::Animation(Entity* entity) 
-		: Atlas(entity), m_isPlaying(false), m_loop(false), m_timer(0.0f), m_currentClip(nullptr), m_currentFrameIndex(0)
+void project::Animation::SetPath(const std::string path)
+{
+	m_Texture = Graphics()->LoadTexture(path);
+}
+
+void project::Animation::InitAnimation(int frameInRows, int frameWidth, int frameHeight)
+{
+	m_FrameInRows = frameInRows;
+	m_FrameWidth = frameWidth;
+	m_FrameHeight = frameHeight;
+}
+
+void project::Animation::AddClip(const std::string& name, int start, int count, int row, float delay)
+{
+	m_StartFrame = start;
+	m_FrameCount = count;
+	m_FramesRow = row;
+	m_Delay = delay;
+
+	TFrameset newFrameset;
+	newFrameset.first = delay;
+
+	const int _y = m_FramesRow;
+	for (int i = start; i < start + count; i++)
 	{
+		const int _x = i;
+		RectI _tile(
+			_x * m_FrameWidth,
+			_y * m_FrameHeight,
+			m_FrameWidth,
+			m_FrameHeight);
+		newFrameset.second.push_back(_tile);
 	}
 
-	void Animation::InitAnimation(int frameInRows, int frameWidth, int frameHeight) {
-		
-		for (int i = 0; i < frameInRows; i++) {
-			int x = (i % frameInRows) * frameWidth;
-			int y = (i / frameInRows) * frameHeight;
-			std::string frameName = "frame_" + std::to_string(i);
+	m_Framemap.emplace(name, newFrameset);
+	m_Frameset = newFrameset;
+}
 
+void project::Animation::Stop()
+{
+	m_isPlaying = false;
+}
 
-			Atlas* atlas = m_Entity->GetComponent<Atlas>();
-			if (!atlas) return;
-			atlas->AddFrame(frameName, x, y, frameWidth, frameHeight);
-		}
-	}
+void project::Animation::Play(const std::string& name, bool loop)
+{
+	//if (m_Frameset.second[0] == m_Framemap[name].second[0]) return;
 
-	void Animation::Stop() {
-		m_isPlaying = false;
-	}
+	m_NextFrame = 1;
+	m_Loop = loop;
+	m_isPlaying = true;
+	m_CurrentFrame = 0;
+	m_Time = 0.0f;
+	m_Frameset = m_Framemap[name];
+}
 
-	void Animation::Play(const std::string& name, bool loop) {
-		if (m_clips.find(name) != m_clips.end()) {
-			m_isPlaying = true;
-			m_loop = loop;
-			m_currentClip = &m_clips[name];
-			m_currentFrameIndex = m_currentClip->start;
-			m_timer = m_currentClip->delay;
+void project::Animation::Draw()
+{
+	float x = m_Entity->GetPosX();
+	float y = m_Entity->GetPosY();
+	float w = m_Entity->GetWidth();
+	float h = m_Entity->GetHeight();
 
-			std::string frameName = "frame_" + std::to_string(m_currentFrameIndex);
+	RectF _dst{
+		x,
+		y,
+		w,
+		h
+	};
 
-			Atlas* atlas = m_Entity->GetComponent<Atlas>();
-			if (!atlas) return;
-			atlas->SetFrame(frameName);
-		}
-	}
-	void Animation::AddClip(const std::string& name, int start, int count, float delay) {
-		Clip newClip;
-		newClip.start = start;
-		newClip.count = count;
-		newClip.delay = delay;
+	Graphics()->DrawTexture(m_Texture, m_Frameset.second[m_CurrentFrame], _dst, 0.0, m_Flip, Color::White);
+}
 
-		m_clips[name] = newClip;
-	}
-
-	void Animation::Draw()
+void project::Animation::Update(float dt)
+{
+	if (m_isPlaying)
 	{
-		if (m_isPlaying && m_currentClip) {
-			// Fetch the Atlas component from the parent entity
-			Atlas* atlas = m_Entity->GetComponent<Atlas>();
-			if (!atlas) {
-				// No Atlas component attached to this entity
-				return;
+		m_Time += dt;
+		if (m_Time > m_Frameset.first)
+		{
+			m_CurrentFrame += m_NextFrame;
+			if (m_CurrentFrame == m_Frameset.second.size() - 1 || m_CurrentFrame == 0)
+			{
+				m_NextFrame *= -1;
 			}
-
-			// Set the frame based on the current frame index using the Atlas
-			std::string frameName = "frame_" + std::to_string(m_currentFrameIndex);
-			atlas->SetFrame(frameName);
-
-			// Call the base Sprite's Draw method to handle the rendering.
-			Sprite* sprite = m_Entity->GetComponent<Sprite>();
-
-			if (!sprite) return;
-			sprite->Draw();
-		}
-	}
-
-	void Animation::Update(float dt) {
-		if (m_isPlaying) {
-			m_timer -= dt;
-			if (m_timer <= 0) {
-				m_currentFrameIndex++;
-				if (m_currentFrameIndex >= (m_currentClip->start + m_currentClip->count)) {
-					if (m_loop) {
-						m_currentFrameIndex = m_currentClip->start;
-					}
-					else {
-						Stop();
-						return;
-					}
-				}
-				std::string frameName = "frame_" + std::to_string(m_currentFrameIndex);
-
-				Atlas* atlas = m_Entity->GetComponent<Atlas>();
-				if (!atlas) return;
-				atlas->SetFrame(frameName);
-
-
-				m_timer = 0.1f;
-			}
+			m_Time = 0.0f;
 		}
 	}
 }

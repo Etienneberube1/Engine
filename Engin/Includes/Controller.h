@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Animation.h"
 
 namespace project {
 
@@ -17,5 +18,7 @@ namespace project {
 		float m_posX;
 		float m_posY;
 		float m_speed;
+
+		Animation* anim;
 	};
 }
