@@ -34,6 +34,12 @@ namespace project {
 		std::cout << "added " << entity->GetName() << std::endl;
 	}
 
+	void WorldService::DestroyEntity(std::string name)
+	{
+		//m_entityLists[name]->Destroy();
+		//delete m_entityLists[name];
+	}
+
 	Entity* WorldService::GetEntity(std::string name) 
 	{
 		return m_entityLists.find(name)->second;

@@ -170,6 +170,7 @@ void project::Engine::ProcessInput(void)
 }
 
 bool inScene_1 = true;
+int colCount = 0;
 
 void project::Engine::Update(float dt)
 {
@@ -181,6 +182,8 @@ void project::Engine::Update(float dt)
 		inScene_1 = false;
 	}
 
+
+
 	if (inScene_1 == true)
 	{
 		Entity* player = m_World->GetEntity("player");
@@ -190,7 +193,10 @@ void project::Engine::Update(float dt)
 		BoxCollider* playerBox = player->GetComponent<BoxCollider>();
 
 		if (playerBox->CheckRectCollision(player->GetPosX(), player->GetPosY(), player->GetWidth(), player->GetHeight(), enemy1->GetPosX(), enemy1->GetPosY(), enemy1->GetWidth(), enemy1->GetHeight())) {
-			std::cout << "Collsion" << std::endl;
+			m_World->DestroyEntity("enemy1");
+
+			colCount++;
+			std::cout << "Collison_" << colCount << std::endl;
 		}
 
 	}

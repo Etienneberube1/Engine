@@ -11,7 +11,7 @@ namespace project {
 
 
 	Entity::Entity(std::string name, float posX, float posY, float widht, float height, const Color& color)
-		:m_posX(posX), m_posY(posY), m_entityName(name), m_heigth(height), m_width(widht), 
+		:m_posX(posX), m_posY(posY), m_entityName(name), m_heigth(height), m_width(widht),
 		m_color(color)
 	{
 	}
@@ -29,34 +29,36 @@ namespace project {
 
 	void Entity::Update(float dt) {
 
-		for (auto cmp : m_Updatables) {
-			cmp->Update(dt);
+		if (!m_Updatables.empty())
+		{
+			for (auto cmp : m_Updatables) {
+				cmp->Update(dt);
+			}
 		}
 	}
 
 	void Entity::Draw() {
-	
-		for (auto cmp : m_Drawables) {
-			cmp->Draw();
+
+		if (!m_Drawables.empty())
+		{
+			for (auto cmp : m_Drawables) {
+				cmp->Draw();
+			}
 		}
-	
 	}
 
 	void Entity::Destroy() {
 
-		m_Updatables.clear();  
-		m_Drawables.clear();  
-
-		m_Drawables.shrink_to_fit();
-		m_Updatables.shrink_to_fit();
-
-
 		for (auto& pair : m_Components) {
-			delete pair.second; 
+			delete pair.second;
 		}
-		m_Components.clear(); 
+		m_Components.clear();
 
 		delete& m_Components;
+
+		m_Updatables.clear();
+		m_Drawables.clear();
+
 
 
 	}

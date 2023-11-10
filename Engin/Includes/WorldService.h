@@ -17,6 +17,7 @@ namespace project {
 		virtual void Draw() override;
 		virtual void Destroy() override;
 		virtual void Add(Entity* entity) override;
+		virtual void DestroyEntity(std::string name) override;
 		virtual Entity* GetEntity(std::string name) override;
 
 		void Load(const std::string& scene);
