@@ -9,7 +9,7 @@
 #include "Color.h"
 
 namespace project {
-	struct SDLGraphics;
+	class SDLGraphics;
 	class Component;
 
 

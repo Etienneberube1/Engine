@@ -44,6 +44,25 @@ namespace project {
 		for (auto entity : m_entityLists) {
 			entity.second->Destroy();
 		}
+
+		if (m_CurrentScene != nullptr)
+		{
+			delete m_CurrentScene;
+			m_CurrentScene = nullptr;
+		}
+		m_entityLists.clear();
+
+		//for (auto& pair : m_Scenes) {
+		//	if (pair.second != nullptr) {
+		//		delete pair.second;
+		//		pair.second = nullptr;
+		//	}
+		//}
+		m_Scenes.clear(); // Clear the map
+
+		delete& m_Scenes;
+
+
 	}
 
 

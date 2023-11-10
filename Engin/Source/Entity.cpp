@@ -43,7 +43,22 @@ namespace project {
 	}
 
 	void Entity::Destroy() {
-	
+
+		m_Updatables.clear();  
+		m_Drawables.clear();  
+
+		m_Drawables.shrink_to_fit();
+		m_Updatables.shrink_to_fit();
+
+
+		for (auto& pair : m_Components) {
+			delete pair.second; 
+		}
+		m_Components.clear(); 
+
+		delete& m_Components;
+
+
 	}
 
 	void Entity::SetPosition(float posX, float posY)

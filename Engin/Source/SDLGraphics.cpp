@@ -70,11 +70,11 @@ namespace project {
 	}
 	void SDLGraphics::DrawRect(float x, float y, float w, float h, const Color& color) {
 		SetColor(color);
-		SDL_Rect rect = {x, y, w, h};
-		rect.x = x;
-		rect.y = y;
-		rect.w = w;
-		rect.h = h;
+		SDL_Rect rect;
+		rect.x = static_cast<int>(x);
+		rect.y = static_cast<int>(y);
+		rect.w = static_cast<int>(w);
+		rect.h = static_cast<int>(h);
 		SDL_RenderDrawRect(_renderer, &rect);
 	}
 	void SDLGraphics::DrawRect(const RectF& rect, const Color& color) {
@@ -87,9 +87,10 @@ namespace project {
 	
 	}
 	void SDLGraphics::DrawLine(float x1, float y1, float x2, float y2, const Color& color) {
-		SDL_RenderDrawLine(_renderer, x1, y1, x2, y2);
+		SetColor(color); 
+		SDL_RenderDrawLine(_renderer, static_cast<int>(x1), static_cast<int>(y1),
+			static_cast<int>(x2), static_cast<int>(y2));
 	}
-
 	size_t SDLGraphics::LoadTexture(const std::string& filename) {
 
 		size_t textureID = std::hash<std::string>()(filename);
@@ -103,6 +104,7 @@ namespace project {
 			_textureCache[textureID] = texture;
 			return textureID;
 		}
+		return NULL;
 	}
 	void SDLGraphics::DrawTexture(size_t id, const RectI& src, const RectF& dst, double angle, const Flip& flip, const Color& color) {
 
@@ -124,13 +126,13 @@ namespace project {
 
 		SDL_RenderCopyEx(_renderer, texture, &srcRect, &dstRect, angle, nullptr, sdlFlip);
 	}
+
 	void SDLGraphics::DrawTexture(size_t id, const RectF& dst, const Color& color) {
-		
-		SDL_Rect rect{ 0 };
-		rect.x = dst.x;
-		rect.y = dst.y;
-		rect.w = dst.w;
-		rect.h = dst.h;
+		SDL_Rect rect;
+		rect.x = static_cast<int>(dst.x);
+		rect.y = static_cast<int>(dst.y);
+		rect.w = static_cast<int>(dst.w);
+		rect.h = static_cast<int>(dst.h);
 
 		SetColor(color);
 		SDL_Texture* texture = _textureCache[id];
@@ -161,30 +163,25 @@ namespace project {
 		{
 			project::IILogger* logger = Engine::Get().Logger();
 		}
+
+		return NULL;
 	}
-	void SDLGraphics::DrawString(const std::string& text, size_t fontId, float x, float y,float w, float h,const Color& color) {
-		
+	void SDLGraphics::DrawString(const std::string& text, size_t fontId, float x, float y, float w, float h, const Color& color) {
 		SDL_Rect _dst;
-		_dst.x = x;
-		_dst.y = y;
-		_dst.w = w;
-		_dst.h = h;
+		_dst.x = static_cast<int>(x);
+		_dst.y = static_cast<int>(y);
+		_dst.w = static_cast<int>(w);
+		_dst.h = static_cast<int>(h);
 
-		SDL_Color sdlcolor = {0};
-		sdlcolor.r = color.red;
-		sdlcolor.g = color.green;
-		sdlcolor.b = color.blue;
-		sdlcolor.a = color.alpha;
+		SDL_Color sdlcolor = { color.red, color.green, color.blue, color.alpha };
 
-		if (_fontCache.count(fontId) > 0)
-		{
+		if (_fontCache.count(fontId) > 0) {
 			TTF_Font* _font = _fontCache[fontId];
 			SDL_Surface* _surface = TTF_RenderText_Solid(_font, text.c_str(), sdlcolor);
 			_textureBuffer = SDL_CreateTextureFromSurface(_renderer, _surface);
 			SDL_RenderCopy(_renderer, _textureBuffer, nullptr, &_dst);
 			SDL_FreeSurface(_surface);
 		}
-
 	}
 	void SDLGraphics::GetTextSize(const std::string& text, size_t fontId, int* w, int* h) {
 	

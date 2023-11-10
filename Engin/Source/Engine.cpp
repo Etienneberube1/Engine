@@ -13,7 +13,9 @@
 #include "SDLGraphics.h"
 #include "SDL_mixer.h"
 #include "SDLMixer.h"
+
 //#include "vld.h"
+
 #include "BoxCollider.h"
 
 
@@ -71,7 +73,7 @@ void project::Engine::Start(void) {
 
 	m_Graphics->LoadTiledSet("assets/balloonTerrain.png", 32, 32, 25, 450);
 
-	TLayer* terrain = new TLayer{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+	terrain = new TLayer{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
 						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -93,7 +95,7 @@ void project::Engine::Start(void) {
 
 	m_Graphics->AddLayer("terrain", terrain);
 
-	TLayer* background = new TLayer{
+	background = new TLayer{
 		{126, 0, 0, 0, 0, 126, 0, 0, 0, 0, 0, 0, 0, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 126, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 127, 0, 128, 0, 0, 0, 0, 0, 0, 0, 126, 0, 31, 32, 33, 34, 0},
 		{0, 0, 126, 127, 0, 0, 0, 126, 0, 0, 0, 0, 0, 0, 126, 0, 128, 0, 0, 0, 56, 57, 58, 59, 0},
@@ -223,12 +225,30 @@ void project::Engine::Shutdown(void)
 		delete m_Logger;
 	}
 	if (m_World != nullptr) {
+		m_World->Destroy();
 		delete m_World;
+		m_World = nullptr;
 	}
 
-	m_Graphics->Shutdown();
 	if (m_Graphics != nullptr) {
+		m_Graphics->Shutdown();
 		delete m_Graphics;
 		m_Graphics = nullptr;
 	}
+
+	if (terrain != nullptr) {
+		delete terrain;
+	}
+
+	if (background != nullptr) {
+		delete background;
+	}
+
+	//if (m_baseScene != nullptr) {
+	//	delete m_baseScene;
+	//}
+
+	//if (m_menuScene != nullptr) {
+	//	delete m_menuScene;
+	//}
 }

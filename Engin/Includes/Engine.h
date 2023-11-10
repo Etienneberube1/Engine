@@ -59,5 +59,8 @@ namespace project {
 
 		BaseScene* m_baseScene = nullptr;
 		MenuScene* m_menuScene = nullptr;
+
+		TLayer* terrain;
+		TLayer* background;
 	};
 }

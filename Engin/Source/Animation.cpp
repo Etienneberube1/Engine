@@ -14,6 +14,8 @@ project::Animation::Animation(Entity* _entity)
 
 project::Animation::~Animation()
 {
+	m_Frameset.second.clear(); 
+	m_Framemap.clear();
 }
 
 void project::Animation::SetPath(const std::string path)

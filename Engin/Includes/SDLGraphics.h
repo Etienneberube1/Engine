@@ -10,6 +10,7 @@ typedef struct _TTF_Font TTF_Font;
 struct SDL_Rect;
 
 namespace project {
+
 	class SDLGraphics : public IGraphics {
 	public:
 		virtual bool Initialize(const char* title, int w, int h) override;

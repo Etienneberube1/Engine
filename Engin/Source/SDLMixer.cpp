@@ -32,6 +32,8 @@ namespace project {
 			_musicCache[musicID] = music;
 			return musicID;
 		}
+
+		return NULL;
 	}
 
 	size_t SDLMixer::LoadSound(const std::string& filename)
@@ -48,6 +50,7 @@ namespace project {
 			return soundID;
 		}
 
+		return NULL;
 	}
 
 	void SDLMixer::PlayMusic(size_t id)
