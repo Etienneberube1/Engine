@@ -98,7 +98,7 @@ void project::Engine::Update(float dt)
 
 void project::Engine::Render()
 {
-    m_Graphics->SetColor(Color::CORNFLOWERBLUE);
+    m_Graphics->SetColor(Color::BLACK);
     m_Graphics->Clear();
     m_World->Draw();
     m_Graphics->Present();

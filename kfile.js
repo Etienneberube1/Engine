@@ -7,6 +7,7 @@ project.addFile("Game/**");
 project.setDebugDir("Deployment");
 
 project.addIncludeDir("./Engin/includes");
+project.addIncludeDir("./Game/Includes");
 
 project.flatten();
 

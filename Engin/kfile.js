@@ -32,6 +32,7 @@ project.addDefine("KINC_STATIC_COMPILE");
 project.isStaticLib = true;
 
 project.addIncludeDir(path.resolve("./Engin/Includes"));
+project.addIncludeDir(path.resolve("./Game/Includes"));
 project.addFiles('Source/**','Includes/**');
 
 project.addProvider(project,false);
