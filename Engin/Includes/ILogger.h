@@ -1,15 +1,14 @@
 #pragma once
-#include <iostream>
-#include <fstream>
-#include <cstdlib>
-#include <Windows.h>
-#include <string.h>
+#include <string>
 
 namespace project {
 
-	class IILogger {
+	class ILogger {
 	public:
-		virtual ~IILogger() = default;
-		virtual void WriteLogText(std::string logtext) = 0;
+		virtual ~ILogger() = default;
+
+		virtual void LogMessage(const std::string& message) = 0;
+		virtual void LogError(const std::string& message) = 0;
+		virtual void LogWarning(const std::string& message) = 0;
 	};
 }

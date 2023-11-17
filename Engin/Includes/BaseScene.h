@@ -1,15 +1,17 @@
 #pragma once
-#include "IScene.h"
-#include "IDrawable.h"
+#include <string>
 
 namespace project {
 
-	class BaseScene : public IScene {
-	public:
+    class Entity;
 
-		virtual void Load() override;
-	private:
+    class BaseScene
+    {
+    public:
+        virtual ~BaseScene() = default;
+        virtual void Load() = 0;
 
-	};
-
+    protected:
+        Entity* Instantiate(const std::string& name);
+    };
 }

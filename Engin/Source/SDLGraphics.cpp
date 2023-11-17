@@ -1,264 +1,287 @@
-#pragma once
-#include "Engine.h"
-#include "SDLGraphics.h"
-#include "SDL.h"
-#include "SDL_ttf.h"
+#include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
+#include <SdlGraphics.h>
+#include <Engine.h>
 
+bool project::SdlGraphics::Initialize(const std::string& title, int w, int h)
+{
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+    {
+        const char* _msg = SDL_GetError();
+        project::Engine::Get().Logger().LogMessage(_msg);
+        return false;
+    }
 
+    int _x = SDL_WINDOWPOS_CENTERED;
+    int _y = SDL_WINDOWPOS_CENTERED;
+    Uint32 _flag = SDL_WINDOW_TOOLTIP;
+    m_Window = SDL_CreateWindow(title.c_str(), _x, _y, w, h, _flag);
 
-namespace project {
+    if (!m_Window)
+    {
+        const char* _msg = SDL_GetError();
+        project::Engine::Get().Logger().LogMessage(_msg);
+        return false;
+    }
 
-	bool SDLGraphics::Initialize(const char* title, int w, int h) {
-		if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-			SDL_Log(SDL_GetError());
-			return false;
-		}
-		int _x = SDL_WINDOWPOS_CENTERED;
-		int _y = SDL_WINDOWPOS_CENTERED;
-		Uint32 _flag = SDL_WINDOW_RESIZABLE;
+    _flag = SDL_RENDERER_ACCELERATED;
+    m_Renderer = SDL_CreateRenderer(m_Window, -1, _flag);
 
-		_window = SDL_CreateWindow(title, _x, _y, w, h, _flag);
-		if (!_window) {
-			SDL_Log(SDL_GetError());
-			return false;
-		}
+    if (!m_Renderer)
+    {
+        const char* _msg = SDL_GetError();
+        project::Engine::Get().Logger().LogMessage(_msg);
+        return false;
+    }
 
-		_flag = SDL_RENDERER_ACCELERATED;
-		_renderer = SDL_CreateRenderer(_window, -1, _flag);
-		if (!_renderer) {
-			SDL_Log(SDL_GetError());
-			return false;
-		}
+    TTF_Init();
 
-		TTF_Init();
+    return true;
+}
 
+void project::SdlGraphics::SetColor(uchar r, uchar g, uchar b, uchar a)
+{
+    SDL_SetRenderDrawColor(m_Renderer, r, g, b, a);
+}
 
-		m_IsInit = true;
+void project::SdlGraphics::SetColor(const Color& color)
+{
+    SetColor(color.red, color.green, color.blue, color.alpha);
+}
 
-		return true;
-	}
-	void SDLGraphics::Shutdown() {
+void project::SdlGraphics::Clear()
+{
+    SDL_RenderClear(m_Renderer);
+}
 
-		for (auto texture : _textureCache)
-		{
-			SDL_DestroyTexture(texture.second);
-		}
-		delete &_textureCache;
+void project::SdlGraphics::Present()
+{
+    SDL_RenderPresent(m_Renderer);
+}
 
-		for (auto font : _fontCache)
-		{
-			TTF_CloseFont(font.second);
-		}
-		delete &_fontCache;
+void project::SdlGraphics::DrawRect(float x, float y, float w, float h, const Color& color)
+{
+    SDL_Rect _rect = {
+        static_cast<int>(x),
+        static_cast<int>(y),
+        static_cast<int>(w),
+        static_cast<int>(h) };
 
+    SetColor(color);
 
-		SDL_DestroyRenderer(_renderer);
-		SDL_DestroyWindow(_window);
-		TTF_Quit();
-		SDL_Quit();
-	}
-	void SDLGraphics::SetColor(const Color& color) {
-		SDL_SetRenderDrawColor(_renderer, color.red, color.green, color.blue, color.alpha);
+    SDL_RenderDrawRect(m_Renderer, &_rect);
+}
 
-	}
-	void SDLGraphics::Clear() {
-		SDL_RenderClear(_renderer);
-	}
-	void SDLGraphics::Present() {
-		SDL_RenderPresent(_renderer);
-	}
-	void SDLGraphics::DrawRect(float x, float y, float w, float h, const Color& color) {
-		SetColor(color);
-		SDL_Rect rect;
-		rect.x = static_cast<int>(x);
-		rect.y = static_cast<int>(y);
-		rect.w = static_cast<int>(w);
-		rect.h = static_cast<int>(h);
-		SDL_RenderDrawRect(_renderer, &rect);
-	}
-	void SDLGraphics::DrawRect(const RectF& rect, const Color& color) {
+void project::SdlGraphics::DrawRect(const RectF& rect, const Color& color)
+{
+    DrawRect(rect.x, rect.y, rect.w, rect.h, color);
+}
 
-	}
-	void SDLGraphics::FillRect(float x, float y, float w, float h, const Color& color) {
-		
-	}
-	void SDLGraphics::FillRect(const RectF& rect, const Color& color) {
-	
-	}
-	void SDLGraphics::DrawLine(float x1, float y1, float x2, float y2, const Color& color) {
-		SetColor(color); 
-		SDL_RenderDrawLine(_renderer, static_cast<int>(x1), static_cast<int>(y1),
-			static_cast<int>(x2), static_cast<int>(y2));
-	}
-	size_t SDLGraphics::LoadTexture(const std::string& filename) {
+void project::SdlGraphics::FillRect(float x, float y, float w, float h, const Color& color)
+{
+    SDL_Rect _rect = {
+        static_cast<int>(x),
+        static_cast<int>(y),
+    static_cast<int>(w),
+    static_cast<int>(h) };
 
-		size_t textureID = std::hash<std::string>()(filename);
-		if (_textureCache.count(textureID) > 0 ) {
-			return textureID;
-		}
+    SetColor(color);
 
-		SDL_Texture* texture = IMG_LoadTexture(_renderer, filename.c_str());
-		if(texture != nullptr)
-		{
-			_textureCache[textureID] = texture;
-			return textureID;
-		}
-		return NULL;
-	}
-	void SDLGraphics::DrawTexture(size_t id, const RectI& src, const RectF& dst, double angle, const Flip& flip, const Color& color) {
+    SDL_RenderFillRect(m_Renderer, &_rect);
+}
 
-		// Convert dst from RectF to SDL_Rect
-		SDL_Rect dstRect = { static_cast<int>(dst.x), static_cast<int>(dst.y), static_cast<int>(dst.w), static_cast<int>(dst.h) };
+void project::SdlGraphics::FillRect(const RectF& rect, const Color& color)
+{
+    FillRect(rect.x, rect.y, rect.w, rect.h, color);
+}
 
-		// Convert src from RectI to SDL_Rect
-		SDL_Rect srcRect = { static_cast<int>(src.x), static_cast<int>(src.y), static_cast<int>(src.w), static_cast<int>(src.h) };
+void project::SdlGraphics::DrawCircle(float x, float y, float r, const Color& color)
+{
+    float tx = x;
+    float ty = y;
+    double angle = 0.0;
 
-		SDL_RendererFlip sdlFlip = SDL_FLIP_NONE;
-		if (flip.h == true) {
-			sdlFlip = SDL_FLIP_HORIZONTAL;
-		}
-		else if (flip.v == true) {
-			sdlFlip = SDL_FLIP_VERTICAL;
-		}
+    while (angle < 6.3)
+    {
+        tx = static_cast<float>(x + r * cos(angle));
+        ty = static_cast<float>(y + r * sin(angle));
+        DrawPoint(tx, ty, color);
 
-		SDL_Texture* texture = _textureCache[id];
+        angle += 0.01;
+    }
+}
 
-		SDL_RenderCopyEx(_renderer, texture, &srcRect, &dstRect, angle, nullptr, sdlFlip);
-	}
+void project::SdlGraphics::DrawPoint(float x, float y, const Color& color)
+{
+    const int _x = static_cast<int>(x);
+    const int _y = static_cast<int>(y);
+    SDL_SetRenderDrawColor(m_Renderer,
+        color.red, color.green, color.blue, color.alpha);
 
-	void SDLGraphics::DrawTexture(size_t id, const RectF& dst, const Color& color) {
-		SDL_Rect rect;
-		rect.x = static_cast<int>(dst.x);
-		rect.y = static_cast<int>(dst.y);
-		rect.w = static_cast<int>(dst.w);
-		rect.h = static_cast<int>(dst.h);
+    SDL_RenderDrawPoint(m_Renderer, _x, _y);
+}
 
-		SetColor(color);
-		SDL_Texture* texture = _textureCache[id];
-		SDL_QueryTexture(texture, nullptr, nullptr, &rect.w, &rect.h);
-		SDL_RenderCopyEx(_renderer, texture, nullptr, &rect, 0, nullptr, SDL_FLIP_NONE);
+void project::SdlGraphics::DrawLine(float x1, float y1, float x2, float y2, const Color& color)
+{
+    SetColor(color);
+    SDL_RenderDrawLine(m_Renderer,
+        static_cast<int>(x1),
+        static_cast<int>(y1),
+        static_cast<int>(x2),
+        static_cast<int>(y2));
+}
 
-	}
-	void SDLGraphics::DrawTexture(size_t id, const Color& color) {
-	}
-	void SDLGraphics::GetTextureSize(size_t id, int* w, int* h) {
-	
-	}
-	size_t SDLGraphics::LoadFont(const std::string& filename, int fontSize) {
-		
-		size_t fontID = std::hash<std::string>()(filename);
-		
-		if (_fontCache.count(fontID) > 0) {
-			return fontID;
-		}
+size_t project::SdlGraphics::LoadTexture(const std::string& filename)
+{
+    const size_t _texId = std::hash<std::string>()(filename);
+    if (m_TextureCache.count(_texId) > 0)
+    {
+        return _texId;
+    }
 
-		TTF_Font* _font = TTF_OpenFont(filename.c_str(), fontSize);
-		if (_font != nullptr)
-		{
-			_fontCache[fontID] = _font;
-			return fontID;
-		}
-		else
-		{
-			project::IILogger* logger = Engine::Get().Logger();
-		}
+    SDL_Texture* _texture = IMG_LoadTexture(m_Renderer, filename.c_str());
+    if (_texture)
+    {
+        m_TextureCache.emplace(_texId, _texture);
+        return _texId;
+    }
 
-		return NULL;
-	}
-	void SDLGraphics::DrawString(const std::string& text, size_t fontId, float x, float y, float w, float h, const Color& color) {
-		SDL_Rect _dst;
-		_dst.x = static_cast<int>(x);
-		_dst.y = static_cast<int>(y);
-		_dst.w = static_cast<int>(w);
-		_dst.h = static_cast<int>(h);
+    project::Engine::Get().Logger().LogMessage("Error with texture: " + filename);
+    return 0;
+}
 
-		SDL_Color sdlcolor = { color.red, color.green, color.blue, color.alpha };
+void project::SdlGraphics::DrawTexture(size_t id, const RectI& src, const RectF& dst, double angle, const Flip& flip, const Color& color)
+{
+    SDL_Rect _src = {
+    static_cast<int>(src.x),
+    static_cast<int>(src.y),
+    static_cast<int>(src.w),
+    static_cast<int>(src.h) };
 
-		if (_fontCache.count(fontId) > 0) {
-			TTF_Font* _font = _fontCache[fontId];
-			SDL_Surface* _surface = TTF_RenderText_Solid(_font, text.c_str(), sdlcolor);
-			_textureBuffer = SDL_CreateTextureFromSurface(_renderer, _surface);
-			SDL_RenderCopy(_renderer, _textureBuffer, nullptr, &_dst);
-			SDL_FreeSurface(_surface);
-		}
-	}
-	void SDLGraphics::GetTextSize(const std::string& text, size_t fontId, int* w, int* h) {
-	
-	}
-	void SDLGraphics::LoadTiledSet(const std::string& image, int tileW, int tileH, int col, int count)
-	{
-		m_TilesetTexture = IMG_LoadTexture(_renderer, image.c_str());
-		if (m_TilesetTexture)
-		{
-			for (int i = 0; i < count; i++)
-			{
-				int _y = i / col;
-				int _x = i - _y * col;
+    SDL_Rect _dst = {
+    static_cast<int>(dst.x),
+    static_cast<int>(dst.y),
+    static_cast<int>(dst.w),
+    static_cast<int>(dst.h) };
 
-				RectI _tile(
-					_x * tileW,
-					_y * tileH,
-					tileW,
-					tileH);
+    int _flip = SDL_FLIP_NONE;
+    if (flip.h)
+    {
+        _flip = SDL_FLIP_HORIZONTAL;
+    }
 
-				m_Tileset.push_back(_tile);
-			}
-		}
+    if (flip.v)
+    {
+        _flip |= SDL_FLIP_VERTICAL;
+    }
 
-	}
-	void SDLGraphics::RenderFrame()
-	{
-		int testIdx = 32;
-		SDL_Rect _src{
-		m_Tileset[testIdx].x,
-		m_Tileset[testIdx].y,
-		m_Tileset[testIdx].w,
-		m_Tileset[testIdx].h
-		};
-		SDL_Rect _dst{
-		10, 10, 32, 32
-		};
-		SDL_RenderCopyEx(_renderer, m_TilesetTexture,
-			&_src, &_dst, 0.0, nullptr, SDL_FLIP_NONE);
+    const SDL_RendererFlip _rf = static_cast<SDL_RendererFlip>(_flip);
 
-	}
+    SetColorMode(id, color);
+    SDL_RenderCopyEx(m_Renderer, m_TextureCache[id], &_src, &_dst, angle, nullptr, _rf);
+}
 
-	void SDLGraphics::DrawTiles(int tileW, int tileH)
-	{
+void project::SdlGraphics::DrawTexture(size_t id, const RectF& dst, const Color& color)
+{
+    SDL_Rect _dst = {
+        static_cast<int>(dst.x),
+        static_cast<int>(dst.y),
+        static_cast<int>(dst.w),
+        static_cast<int>(dst.h) };
 
-		for (auto layer : m_Tilemap)
-		{
-			for (int y = 0; y < layer.second.size(); y++)
-			{
-				for (int x = 0; x < layer.second[y].size(); x++)
-				{
-					int _index = layer.second[y][x] -1;
-					if (_index >= 0)
-					{
-						SDL_Rect _src{
-						m_Tileset[_index].x,
-						m_Tileset[_index].y,
-						m_Tileset[_index].w,
-						m_Tileset[_index].h
-						};
-						SDL_Rect _dst{
-						x * tileW,
-						y * tileH,
-						tileW, tileH
-						};
-						SDL_RenderCopyEx(_renderer, m_TilesetTexture,
-							&_src, &_dst, 0.0, nullptr, SDL_FLIP_NONE);
-					}
-				}
-			}
-		}
-	}
+    SetColorMode(id, color);
+    SDL_RenderCopy(m_Renderer, m_TextureCache[id], nullptr, &_dst);
+}
 
-	void SDLGraphics::AddLayer(const std::string& layerName, TLayer* layer)
-	{
-		if (m_Tilemap.count(layerName) == 0) {
-			m_Tilemap[layerName] = *layer;
-		}
-	}
+void project::SdlGraphics::DrawTexture(size_t id, const Color& color)
+{
+    SetColorMode(id, color);
+    SDL_RenderCopy(m_Renderer, m_TextureCache[id], nullptr, nullptr);
+}
+
+void project::SdlGraphics::GetTextureSize(size_t id, int* w, int* h)
+{
+    if (m_TextureCache.count(id) > 0)
+    {
+        SDL_QueryTexture(m_TextureCache[id], nullptr, nullptr, w, h);
+    }
+    else
+    {
+        *w = 0;
+        *h = 0;
+    }
+}
+
+size_t project::SdlGraphics::LoadFont(const std::string& filename, int fontSize)
+{
+    const size_t _fntId = std::hash<std::string>()(filename);
+    if (m_FontCache.count(_fntId) > 0)
+    {
+        return _fntId;
+    }
+
+    TTF_Font* _font = TTF_OpenFont(filename.c_str(), fontSize);
+    if (_font)
+    {
+        m_FontCache.emplace(_fntId, _font);
+        return _fntId;
+    }
+
+    project::Engine::Get().Logger().LogMessage("Error with font: " + filename);
+    return 0;
+}
+
+SDL_Texture* g_TextureBuffer;
+
+void project::SdlGraphics::DrawString(const std::string& text, size_t fontId, float x, float y, const Color& color)
+{
+    const SDL_Color _color = {
+        static_cast<Uint8>(color.red),
+        static_cast<Uint8>(color.green),
+        static_cast<Uint8>(color.blue),
+        static_cast<Uint8>(color.alpha)
+    };
+
+    SDL_Surface* _surface = TTF_RenderText_Solid(m_FontCache[fontId], text.c_str(), _color);
+
+    SDL_Rect _dst = {
+        static_cast<int>(x),
+        static_cast<int>(y),
+        _surface->w,
+        _surface->h
+    };
+
+    g_TextureBuffer = SDL_CreateTextureFromSurface(m_Renderer, _surface);
+    SDL_RenderCopy(m_Renderer, g_TextureBuffer, nullptr, &_dst);
+    SDL_FreeSurface(_surface);
+}
+
+void project::SdlGraphics::GetTextSize(const std::string& text, size_t fontId, int* w, int* h)
+{
+    if (m_FontCache.count(fontId) > 0)
+    {
+        TTF_SizeText(m_FontCache[fontId], text.c_str(), w, h);
+    }
+    else
+    {
+        *w = 0;
+        *h = 0;
+    }
+}
+
+void project::SdlGraphics::SetColorMode(size_t id, const Color& color)
+{
+    SDL_Texture* _tex = m_TextureCache[id];
+    SDL_SetTextureBlendMode(_tex, SDL_BLENDMODE_BLEND);
+    SDL_SetTextureAlphaMod(_tex, color.alpha);
+    SDL_SetTextureColorMod(_tex, color.red, color.green, color.blue);
+}
+
+void project::SdlGraphics::Shutdown()
+{
+    TTF_Quit();
+    SDL_DestroyRenderer(m_Renderer);
+    SDL_DestroyWindow(m_Window);
+    SDL_Quit();
 }

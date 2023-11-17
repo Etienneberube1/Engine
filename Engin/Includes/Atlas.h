@@ -1,20 +1,24 @@
 #pragma once
-#include "Sprite.h"
+#include <Sprite.h>
 #include <map>
 #include <string>
+#include <RectI.h>
 
+namespace project
+{
+    class Entity;
 
-namespace project {
+    class Atlas final : public Sprite
+    {
+    public:
+        virtual ~Atlas() = default;
+        Atlas();
+        Atlas(Entity* parent);
 
-	class Atlas : public Sprite {
-	public:
-		Atlas(Entity* entity);
-		virtual ~Atlas() = default;
+        void AddFrame(const std::string& name, int x, int y, int w, int h);
+        void SetFrame(const std::string& name);
 
-		void AddFrame(const std::string& name, int x, int y, int w, int h);
-		void SetFrame(const std::string& name);
-	private:
-		std::map<std::string, RectI> m_frames;
-	};
-
+    private:
+        std::map<std::string, RectI> m_Frames;
+    };
 }

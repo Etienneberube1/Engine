@@ -1,53 +1,54 @@
 #pragma once
-#include "Component.h"
+#include <Sprite.h>
+#include <map>
+#include <string>
+#include <IUpdatable.h>
 
+#include <RectI.h>
+#include <RectF.h>
 
-	typedef std::pair<float, std::vector<project::RectI>> TFrameset;
-	typedef std::map<std::string, TFrameset> TFramemap;
 
 namespace project
 {
 
-	class Animation : public Component, public IDrawable, public IUpdatable
-	{
-	public:
+    class Entity;
 
-		Animation(Entity* _entity);
+    struct AnimationClip
+    {
+        int start;
+        int count;
+        float delay;
+    };
 
-		virtual ~Animation();
+    class Animation final : public Sprite, public IUpdatable
+    {
+    public:
+        virtual ~Animation() = default;
+        Animation();
+        Animation(Entity* parent);
 
-		void SetPath(const std::string path);
+        void Update(float dt) override;
 
-		void InitAnimation(int frameInRows, int frameWidth, int frameHeight);
-		void AddClip(const std::string& name, int start, int count, int row, float delay);
-		void Stop();
-		void Play(const std::string& name, bool loop);
-		virtual void Draw() override;
-		virtual void Update(float dt) override;
+        void Init(int frameInRows, int frameWidth, int frameHeight);
+        void AddClip(const std::string& name, int start, int count, float delay);
+        void Stop();
+        void Play(const std::string& name, bool loop);
 
-		void SetFlip(bool v, bool h) { m_Flip.h = v, m_Flip.h = h; }
+    private:
+        void UpdateFrame();
 
+        std::map<std::string, AnimationClip> m_Clips;
 
-	private:
-
-		TFrameset m_Frameset;
-		TFramemap m_Framemap;
-
-		int m_FrameInRows = 0;
-		int m_FrameWidth = 0;
-		int m_FrameHeight = 0;
-		int m_StartFrame = 0;
-		int m_FrameCount = 0;
-		int m_FramesRow = 0;
-
-		float m_Delay = 0.0f;
-
-		size_t m_Texture;
-		bool m_Loop;
-		bool m_isPlaying;
-		Flip m_Flip;
-		int m_CurrentFrame;
-		float m_Time = 0.0f;
-		int m_NextFrame = 0;
-	};
+        int m_FrameInRowCount = 0;
+        int m_FrameWidth = 0;
+        int m_FrameHeight = 0;
+        int m_FirstFrame = 0;
+        int m_LastFrame = 0;
+        float m_Delay = 0.0f;
+        float m_Elapsed = 0.0f;
+        bool m_Playing = false;
+        bool m_Loop = false;
+        int m_CurrentFrame = 0;
+        std::string m_CurrentClip;
+    };
 }

@@ -1,32 +1,35 @@
 #pragma once
-#include "IGraphics.h"
-#include "IAudio.h"
-#include "IInput.h"
-#include "ILogger.h"
-#include "Entity.h"
-#include "IWorld.h"
+
 
 namespace project {
 
-	class Component
-	{
-	public:
-		Component() = default;
-		Component(Entity* entity);
-		virtual ~Component() = default;
-		virtual void Start() {}
-		virtual void Destroy() {}
+    class Entity;
+    class IInput;
+    class ILogger;
+    class IGraphics;
+    class IAudio;
+    class IWorld;
 
-		virtual IWorld* World() const;
-		virtual IAudio* Audio() const;
-		virtual IInput* Input() const;
-		virtual IGraphics* Graphics() const;
-		virtual IILogger* Logger() const;
+    class Component
+    {
+    public:
+        virtual ~Component() = default;
+        Component();
+        Component(Entity* parent);
 
-	protected:
-		Entity* m_Entity = nullptr;
+        virtual void Start() {}
+        virtual void Destroy() {}
 
-	};
+    protected:
+        void Exit();
+        IInput& Input() const;
+        ILogger& Logger() const;
+        IGraphics& Graphics() const;
+        IAudio& Audio() const;
+        IWorld& World() const;
+
+        Entity* m_Entity = nullptr;
+    };
 }
 
 

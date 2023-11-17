@@ -1,35 +1,39 @@
-#pragma once
 #include "Component.h"
-#include "Engine.h"
+#include <Engine.h>
 
-project::Component::Component(Entity* entity)
-    :m_Entity(entity)
+project::Component::Component() : Component(nullptr)
 {
-    
 }
 
-project::IWorld* project::Component::World() const
+project::Component::Component(Entity* parent) : m_Entity(parent)
 {
-    return project::Engine::Get().World();
 }
 
-project::IAudio* project::Component::Audio() const
+void project::Component::Exit()
 {
-    return project::Engine::Get().Audio();
+    Engine::Get().Exit();
 }
 
-project::IInput* project::Component::Input() const
+project::IInput& project::Component::Input() const
 {
-    return project::Engine::Get().Input();
+    return Engine::Get().Input();
+}
+project::ILogger& project::Component::Logger() const
+{
+    return Engine::Get().Logger();
 }
 
-project::IGraphics* project::Component::Graphics() const
+project::IGraphics& project::Component::Graphics() const
 {
-    return project::Engine::Get().Graphics();
+    return Engine::Get().Graphics();
 }
 
-project::IILogger* project::Component::Logger() const
+project::IAudio& project::Component::Audio() const
 {
-    return project::Engine::Get().Logger();
+    return Engine::Get().Audio();
 }
 
+project::IWorld& project::Component::World() const
+{
+    return Engine::Get().World();
+}

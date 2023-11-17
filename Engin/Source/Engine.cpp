@@ -1,260 +1,140 @@
-#pragma once
-#include "Engine.h"
+#include <Engine.h>
 #include <time.h>
-#include <iostream>
-
-#include "Ilogger.h"
-#include "IGraphics.h"
-#include "Entity.h"
-#include "IWorld.h"
-#include "SDLInput.h"
-#include "Logs.h"
-#include "LogConsole.h"
-#include "SDLGraphics.h"
-#include "SDL_mixer.h"
-#include "SDLMixer.h"
-
-//#include "vld.h"
-
-#include "BoxCollider.h"
-
-
-#include "BaseScene.h"
-#include "MenuScene.h"
-
-float FPS = 60;
-float MS_PER_SEC = 1000 / FPS;
-
-bool project::Engine::Init(const char* name, int w, int h)
-{
-#if _DEBUG
-	m_Logger = new LogConsole;
-	m_Logger->WriteLogText("Engine init");
-#elif RELEASE
-	m_Logger = new Logs();
-	m_Logger->WriteLogText("Engine Initialize");
-#endif  
-
-
-	m_Graphics = new SDLGraphics();
-	m_Graphics->Initialize("Game", 800, 608);
-
-
-	m_Audio = new SDLMixer();
-
-	m_Input = new SdlInput();
-
-	LoadAudio();
-
-
-	// open the audio
-	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024);
-
-
-	// SCENE
-	m_World = new WorldService();
-
-	m_menuScene = new MenuScene();
-	m_World->Register("MenuScene", m_menuScene);
-
-	m_baseScene = new BaseScene();
-	m_World->Register("BaseScene", m_baseScene);
-
-
-	m_IsInit = true;
-
-	return true;
-}
-
-void project::Engine::Start(void) {
-
-
-	m_Audio->PlayMusic(m_Audio->LoadMusic("assets/audio/soundtrack.mp3"), 0);
-
-	m_Graphics->LoadTiledSet("assets/balloonTerrain.png", 32, 32, 25, 450);
-
-	terrain = new TLayer{ {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-						{0,0,0,0,1,2,3,4,0,0,0,0,0,0,0,0,0,1,2,3,4,0,0,0,0},
-						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-						{0,0,0,0,0,0,0,0,1,3,2,3,2,3,2,3,4,0,0,0,0,0,0,0,0},
-						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-						{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-						{28,27,28,27,28,29,0,0,0,0,0,0,0,0,0,0,0,0,0,26,28,27,28,27,28},
-						{53,52,53,52,53,54,0,0,0,0,0,0,0,0,0,0,0,0,0,51,53,52,53,52,53},
-						{78,77,78,77,78,79,0,0,0,0,0,0,0,0,0,0,0,0,0,76,78,77,78,77,78},
-						{101,102,103,104,103,101,102,103,104,102,103,104,103,104,101,102,103,104,101,101,103,102,103,102,103 } };
-
-	m_Graphics->AddLayer("terrain", terrain);
-
-	background = new TLayer{
-		{126, 0, 0, 0, 0, 126, 0, 0, 0, 0, 0, 0, 0, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 126, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 127, 0, 128, 0, 0, 0, 0, 0, 0, 0, 126, 0, 31, 32, 33, 34, 0},
-		{0, 0, 126, 127, 0, 0, 0, 126, 0, 0, 0, 0, 0, 0, 126, 0, 128, 0, 0, 0, 56, 57, 58, 59, 0},
-		{126, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127, 0, 0, 0, 0, 0, 0, 81, 82, 83, 84, 0},
-		{0,0,0,0,0,126,0,0,0,0,0,0,0,0,0,0,0,0,0,0,106,107,108,109,0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 126, 0, 0, 0, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 0},
-		{0, 31, 32, 33, 34, 0, 0, 128, 0, 0, 0, 0, 126, 127, 0, 0, 127, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0,56,57,58,59,0,0,0,0,0,0,0,0,0,0,0,0,0,128,0,127,0,0,0,0},
-		{0, 81, 82, 83, 84, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127},
-		{0, 106, 107, 108, 109, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127, 0, 0, 0, 0, 0},
-		{0, 0, 0, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 126, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 126, 127, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 126, 127, 0, 0, 0, 0, 126, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 126, 0, 0, 0, 0, 126, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} };
-
-	m_Graphics->AddLayer("background", background);
-
-	m_World->Load("MenuScene");
-	std::cout << "loaded scene" << std::endl;
-
-	if (!m_IsInit) {
-		if (!Init("Unknown title", 800, 800)) {
-			return;
-		}
-	}
-	clock_t _end = clock();
-	while (m_Input->m_IsRunning) {
-		const clock_t _start = clock();
-		float dt = (_start - _end ) * 0.001f;
-		float sleepTime = clock() - (_start + MS_PER_SEC);
-
-		ProcessInput();
-		Update(dt);
-		Render();
-
-		_end = _start;
-
-		if (!m_Input->m_IsRunning)
-		{
-			break;
-		}
-		if (sleepTime > 0) {
-			Sleep(sleepTime);
-		}
-	}
-	Shutdown();
-}
-void project::Engine::LoadTexture()
-{
-}
-
-void project::Engine::LoadAudio()
-{
-	m_Audio->LoadMusic("assets/audio/soundtrack.mp3");
-	m_Audio->LoadSound("assets/audio/clicksound.wav");
-}
-
-void project::Engine::ProcessInput(void)
-{
-	m_Input->Update();
+#include <Windows.h>
+#include <SdlInput.h>
+#include <SdlGraphics.h>
+#include <SdlAudio.h>
+#include <EKey.h>
+#include <WorldService.h>
+#include <Physic.h>
 
 #if _DEBUG
-	if (m_Input->IsKeyDown((static_cast<int>(EKey::EKEY_ESCAPE)))) {
-		m_Input->m_IsRunning = false;
-	}
+#include "ConsoleLogger.h"
+#else
+#include "FileLogger.h"
+#endif
+
+bool project::Engine::Init(const std::string& title, int w, int h)
+{
+#if _DEBUG
+    m_Logger = new ConsoleLogger();
+#else
+    m_Logger = new FileLogger("engine.log");
+#endif
+
+    m_Graphics = new SdlGraphics();
+    if (!m_Graphics->Initialize(title, w, h))
+    {
+        m_Logger->LogError("Cannot create window");
+        return false;
+    }
+
+    m_Audio = new SdlAudio();
+    m_Input = new SdlInput();
+    m_World = new WorldService();
+    m_Physics = new Physic();
+
+    m_IsInit = true;
+    return true;
+}
+
+void project::Engine::Start()
+{
+    if (!m_IsInit)
+    {
+        if (!Init("Balloon Fight", 800, 600))
+        {
+            return;
+        }
+    }
+
+    m_IsRunning = true;
+    clock_t _end = clock();
+    const int TARGET_FPS = 60;
+    const int MS_PER_FRAME = 1000 / TARGET_FPS;
+
+    while (m_IsRunning)
+    {
+        const clock_t _start = clock();
+        float _dt = (_start - _end) * 0.001f;
+
+        ProcessInput();
+        Update(_dt);
+        Render();
+
+        int _restTime = _start + MS_PER_FRAME - clock();
+        if (_restTime > 0)
+        {
+            Sleep(_restTime);
+        }
+
+        _end = _start;
+    }
+
+    Shutdown();
+}
+
+void project::Engine::Exit()
+{
+    m_IsRunning = false;
+}
+
+void project::Engine::ProcessInput()
+{
+    m_Input->Update();
+
+#if _DEBUG
+    if (m_Input->IsKeyDown(EKey::EKEY_ESCAPE))
+    {
+        Exit();
+    }
 #endif
 }
 
-bool inScene_1 = true;
-int colCount = 0;
-
 void project::Engine::Update(float dt)
 {
-	m_World->Update(dt);
-
-	if (m_Input->IsKeyDown((static_cast<int>(EKey::EKEY_SPACE)))) {
-		std::cout << "loaded scene" << std::endl;
-		m_World->Load("BaseScene");
-		inScene_1 = false;
-	}
-
-
-
-	if (inScene_1 == true)
-	{
-		Entity* player = m_World->GetEntity("player");
-		Entity* enemy1 = m_World->GetEntity("enemy1");
-
-
-		BoxCollider* playerBox = player->GetComponent<BoxCollider>();
-
-		if (playerBox->CheckRectCollision(player->GetPosX(), player->GetPosY(), player->GetWidth(), player->GetHeight(), enemy1->GetPosX(), enemy1->GetPosY(), enemy1->GetWidth(), enemy1->GetHeight())) {
-			m_World->DestroyEntity("enemy1");
-
-			colCount++;
-			std::cout << "Collison_" << colCount << std::endl;
-		}
-
-	}
-	
+    m_World->Update(dt);
 }
 
-void project::Engine::Render(void)
+void project::Engine::Render()
 {
-	m_Graphics->SetColor(Color::Black);
-	m_Graphics->Clear();
-
-
-	m_Graphics->DrawTiles(32, 32);
-	m_World->Draw();
-
-	m_Graphics->DrawString("Press space to play sound", m_Graphics->LoadFont("assets/ARCADECLASSIC.TTF", 30), 100, 0, 600, 50, Color::Blue);
-
-	m_Graphics->Present();
-
+    m_Graphics->SetColor(Color::CORNFLOWERBLUE);
+    m_Graphics->Clear();
+    m_World->Draw();
+    m_Graphics->Present();
 }
 
-void project::Engine::Shutdown(void)
+void project::Engine::Shutdown()
 {
-	if (m_Input != nullptr) {
-		delete m_Input;
-	}
-	if (m_Audio != nullptr) {
-		m_Audio->ShutDown();
-		delete m_Audio;
-	}
-	if (m_Logger != nullptr) {
-		delete m_Logger;
-	}
-	if (m_World != nullptr) {
-		m_World->Destroy();
-		delete m_World;
-		m_World = nullptr;
-	}
+    if (m_World != nullptr)
+    {
+        m_World->Shutdown();
+        delete m_World;
+    }
 
-	if (m_Graphics != nullptr) {
-		m_Graphics->Shutdown();
-		delete m_Graphics;
-		m_Graphics = nullptr;
-	}
+    if (m_Physics != nullptr)
+    {
+        delete m_Physics;
+    }
 
-	if (terrain != nullptr) {
-		delete terrain;
-	}
+    if (m_Input != nullptr)
+    {
+        delete m_Input;
+    }
 
-	if (background != nullptr) {
-		delete background;
-	}
+    if (m_Audio != nullptr)
+    {
+        delete m_Audio;
+    }
 
-	//if (m_baseScene != nullptr) {
-	//	delete m_baseScene;
-	//}
+    if (m_Graphics != nullptr)
+    {
+        m_Graphics->Shutdown();
+        delete m_Graphics;
+    }
 
-	//if (m_menuScene != nullptr) {
-	//	delete m_menuScene;
-	//}
+    if (m_Logger != nullptr)
+    {
+        delete m_Logger;
+    }
 }

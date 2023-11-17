@@ -1,66 +1,52 @@
 #pragma once
 #include <string>
-#include "IInput.h"
-#include "ILogger.h"
-#include "IGraphics.h"
-#include "IWorld.h"
-#include "IAudio.h"
-#include "Color.h"
-#include "IScene.h"
-#include "BaseScene.h"
-#include "MenuScene.h"
-#include "WorldService.h"
+#include <IInput.h>
+#include <ILogger.h>
+#include <IGraphics.h>
+#include <IAudio.h>
+#include <IWorld.h>
+#include <IPhysic.h>
 
-namespace project {
-	class Engine final {
-
-    // https://stackoverflow.com/questions/1008019/how-do-you-implement-the-singleton-design-pattern
+namespace project
+{
+    class Engine final
+    {
     public:
         static Engine& Get()
         {
-            static Engine instance; // Guaranteed to be destroyed.
-            // Instantiated on first use.
-            return instance;
+            static Engine _instance;
+            return _instance;
         }
+
+        bool Init(const std::string& title, int w, int h);
+        void Start();
+        void Exit();
+
     private:
-        Engine() {}                    
+        Engine() = default;
+
+        void ProcessInput();
+        void Update(float dt);
+        void Render();
+        void Shutdown();
 
     public:
-        Engine(Engine const&) = delete;
-        void operator=(Engine const&) = delete;
+        IInput& Input() const { return *m_Input; }
+        ILogger& Logger() const { return *m_Logger; }
+        IGraphics& Graphics() const { return *m_Graphics; }
+        IAudio& Audio() const { return *m_Audio; }
+        IWorld& World() const { return *m_World; }
+        IPhysic& Physics() const { return *m_Physics; }
 
-    
+    private:
+        bool m_IsRunning = false;
+        bool m_IsInit = false;
 
-	public:
-
-		bool Init(const char* name, int w, int h);
-		void Start(void);
-
-		IWorld* World() const { return m_World; }
-		IAudio* Audio() const { return m_Audio; }
-		IInput* Input() const { return m_Input; }
-        IGraphics* Graphics() const { return m_Graphics; }
-        IILogger* Logger() const { return m_Logger; }
-	private:
-		void ProcessInput(void);
-		void Update(float dt);	
-		void Render(void);
-		void Shutdown(void);
-		void LoadTexture(void);
-		void LoadAudio(void);
-
-		IGraphics* m_Graphics = nullptr;
-		IInput* m_Input = nullptr;
-		IILogger* m_Logger = nullptr;
-		Entity* m_Square1 = nullptr;
-		IWorld* m_World = nullptr;
-		IAudio* m_Audio = nullptr;
-		bool m_IsInit = false;
-
-		BaseScene* m_baseScene = nullptr;
-		MenuScene* m_menuScene = nullptr;
-
-		TLayer* terrain;
-		TLayer* background;
-	};
+        IInput* m_Input = nullptr;
+        ILogger* m_Logger = nullptr;
+        IGraphics* m_Graphics = nullptr;
+        IAudio* m_Audio = nullptr;
+        IWorld* m_World = nullptr;
+        IPhysic* m_Physics = nullptr;
+    };
 }

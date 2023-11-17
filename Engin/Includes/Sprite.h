@@ -1,27 +1,35 @@
 #pragma once
-#include "Component.h"
+#include <Component.h>
+#include <IDrawable.h>
+#include <Color.h>
+#include <Flip.h>
+#include <RectI.h>
+#include <string>
 
-
-struct SDL_Texture;
 
 namespace project {
 
-	class Sprite : public IDrawable, public Component {
-	public:
-		Sprite(Entity* entity);
-		~Sprite() = default;
-		void SetSourceRect(const RectI& src);
-		virtual size_t LoadTexture(const std::string& filename);
-		virtual void Draw() override;
-		virtual void SetSpriteValue(const std::string& filename, const RectF& dst, const Color color);
+    class Sprite : public Component, public IDrawable
+    {
+    public:
+        virtual ~Sprite() = default;
+        Sprite();
+        Sprite(Entity* parent);
 
-		virtual Flip GetSpriteFlip() { return m_spriteflip; }
-		virtual Flip SetSpriteFlip(Flip flip) { m_spriteflip = flip; return m_spriteflip; }
-	private:
-		size_t m_texture;
-		RectF m_dst;
-		RectI m_src;
-		Color m_color;
-		Flip m_spriteflip;
-	};
+        virtual void Draw() override;
+        virtual void Load(const std::string& filename);
+
+        void SetColor(const Color& color);
+        void SetFlip(bool h, bool v);
+        bool GetFlipH() const { return m_Flip.h; }
+        bool GetFlipV() const { return m_Flip.v; }
+
+    private:
+        size_t m_TextureId = 0;
+        Color m_Color{ 255, 255, 255, 255 };
+        Flip m_Flip;
+
+    protected:
+        RectI m_Source{ 0, 0, 0, 0 };
+    };
 }

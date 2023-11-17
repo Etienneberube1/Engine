@@ -1,76 +1,42 @@
-#pragma once 
-#include "Entity.h"
-#include "Engine.h"
-#include <string>
-#include "SDLGraphics.h"
-#include "Component.h"
-#include "BoxCollider.h"
-#include "WorldService.h"
+#include <Entity.h>
 
-namespace project {
+project::Entity::Entity(const std::string& name) : m_Name(name)
+{
+}
 
+void project::Entity::Start()
+{
+    for (auto it = m_ComponentByType.begin(); it != m_ComponentByType.end(); ++it)
+    {
+        it->second->Start();
+    }
+}
 
-	Entity::Entity(std::string name, float posX, float posY, float widht, float height, const Color& color)
-		:m_posX(posX), m_posY(posY), m_entityName(name), m_heigth(height), m_width(widht),
-		m_color(color)
-	{
-	}
+void project::Entity::Update(float dt)
+{
+    for (auto component : m_UpdatableComponents)
+    {
+        component->Update(dt);
+    }
+}
 
-	Entity::~Entity() {
+void project::Entity::Draw()
+{
+    for (auto component : m_DrawableComponents)
+    {
+        component->Draw();
+    }
+}
 
-	}
+void project::Entity::Destroy()
+{
+    for (auto it = m_ComponentByType.begin(); it != m_ComponentByType.end(); ++it)
+    {
+        it->second->Destroy();
+        delete it->second;
+    }
 
-
-	void Entity::Start() {
-
-
-	}
-
-
-	void Entity::Update(float dt) {
-
-		if (!m_Updatables.empty())
-		{
-			for (auto cmp : m_Updatables) {
-				cmp->Update(dt);
-			}
-		}
-	}
-
-	void Entity::Draw() {
-
-		if (!m_Drawables.empty())
-		{
-			for (auto cmp : m_Drawables) {
-				cmp->Draw();
-			}
-		}
-	}
-
-	void Entity::Destroy() {
-
-		for (auto& pair : m_Components) {
-			delete pair.second;
-		}
-		m_Components.clear();
-
-		delete& m_Components;
-
-		m_Updatables.clear();
-		m_Drawables.clear();
-
-
-
-	}
-
-	void Entity::SetPosition(float posX, float posY)
-	{
-		m_posX = posX;
-		m_posY = posY;
-	}
-
-
-
-
-
+    m_ComponentByType.clear();
+    m_DrawableComponents.clear();
+    m_UpdatableComponents.clear();
 }

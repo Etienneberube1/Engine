@@ -1,41 +1,39 @@
 #include "Sprite.h"
+#include "Engine.h"
+#include "Entity.h"
 
-
-project::Sprite::Sprite(Entity* entity) : Component(entity),
-	m_color(Color::White)
+project::Sprite::Sprite() : Sprite(nullptr)
 {
-
-	
 }
 
-void project::Sprite::SetSourceRect(const RectI& src) {
-	m_src = src;
-}
-
-size_t project::Sprite::LoadTexture(const std::string& filename)
+project::Sprite::Sprite(Entity* parent) : Component(parent)
 {
-	return Graphics()->LoadTexture(filename);
+    m_Flip.h = false;
+    m_Flip.v = false;
 }
 
 void project::Sprite::Draw()
 {
-	m_dst.x = m_Entity->GetPosX();
-	m_dst.y = m_Entity->GetPosY();
-	m_dst.w = m_Entity->GetWidth();
-	m_dst.h = m_Entity->GetHeight();
+    double _rot = m_Entity->GetRotation();
+    RectF _dst;
+    m_Entity->GetRect(&_dst);
 
-
-	Graphics()->DrawTexture(m_texture, m_src, m_dst, 0 , m_spriteflip, m_color);
+    Graphics().DrawTexture(m_TextureId, m_Source, _dst, _rot, m_Flip, m_Color);
 }
 
-void project::Sprite::SetSpriteValue(const std::string& filename, const RectF& dst, const Color color)
+void project::Sprite::Load(const std::string& filename)
 {
-	m_texture = LoadTexture(filename);
+    m_TextureId = Graphics().LoadTexture(filename);
+    Graphics().GetTextureSize(m_TextureId, &m_Source.w, &m_Source.h);
+}
 
-	m_dst.x = dst.x;
-	m_dst.y = dst.y;
-	m_dst.w = dst.w;
-	m_dst.h = dst.h;
+void project::Sprite::SetColor(const Color& color)
+{
+    m_Color.Set(color);
+}
 
-	m_color = color;
+void project::Sprite::SetFlip(bool h, bool v)
+{
+    m_Flip.h = h;
+    m_Flip.v = v;
 }

@@ -1,34 +1,41 @@
 #pragma once
-#include "IWorld.h"
-#include "Entity.h"
+
 #include <vector>
-#include "IScene.h"
+#include <string>
 #include <map>
+#include <BaseScene.h>
+#include <IWorld.h>
 
-namespace project {
+namespace project
+{
+    class Entity;
 
+    class WorldService : public IWorld
+    {
+    public:
+        virtual ~WorldService() = default;
 
-	class WorldService : public IWorld
-	{
-	public:
-		virtual Entity* Create(const std::string& name,float posX, float posY, float widht, float height, const Color& color) override;
-		virtual void Start() override;
-		virtual void Update(float dt) override;
-		virtual void Draw() override;
-		virtual void Destroy() override;
-		virtual void Add(Entity* entity) override;
-		virtual void DestroyEntity(std::string name) override;
-		virtual Entity* GetEntity(std::string name) override;
+        virtual Entity* Create(const std::string& name) override;
+        virtual void Update(float dt) override;
+        virtual void Draw() override;
+        virtual void Shutdown() override;
+        virtual Entity* Find(const std::string& name) override;
+        virtual void Remove(const std::string& name) override;
+        virtual void Remove(Entity* entity) override;
+        virtual void Load(const std::string& sceneName) override;
+        virtual void Unload() override;
+        virtual void Register(const std::string& sceneName, BaseScene* scene) override;
 
-		void Load(const std::string& scene);
-		void Register(const std::string& name, IScene* scene);
-		void Unload();
-	private:
-		IScene* m_CurrentScene = nullptr;
-		//std::vector<Entity*> m_entityList;
+    private:
+        void CleanEntities();
+        void StartEntities();
+        void UpdateLoadScene();
 
-		std::map<std::string, Entity*>& m_entityLists = *new std::map<std::string, Entity*>;
-
-		std::map<std::string, IScene*>& m_Scenes = *new std::map<std::string, IScene*>;
-	};
+        std::string m_SceneToLoad;
+        std::vector<Entity*> m_EntityInWorld;
+        std::vector<Entity*> m_EntityToRemove;
+        std::vector<Entity*> m_EntityToStart;
+        std::map<std::string, Entity*> m_EntityMap;
+        std::map<std::string, BaseScene*> m_SceneRegistry;
+    };
 }

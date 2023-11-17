@@ -10,7 +10,7 @@ void InitGameplay(void)
 }
 INT WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ PSTR, _In_ INT) {
 	project::Engine& engine = project::Engine::Get();
-	if (engine.Init("TestGame", 800, 600)) {
+	if (engine.Init("Balloon Fight", 800, 600)) {
 		InitGameplay();
 		engine.Start();
 	}
