@@ -1,40 +1,64 @@
-#include "Engine.h"
 #include "MenuScene.h"
 
-#include "Entity.h"
+#include "Engine.h"
 #include "Animation.h"
-#include "Sprite.h"
 #include "Atlas.h"
+#include "Entity.h"
 #include "Controller.h"
+
+#include <iostream>
+
 
 void project::MenuScene::Load()
 {
+	Entity* player = CreatePlayer();
+
+}
+
+project::Entity* project::MenuScene::CreatePlayer()
+{
+	// Instantiate a new player entity
 	Entity* player = Instantiate("player");
 
-	player->AddComponent<Sprite>();
-	player->AddComponent<Atlas>();
-	player->AddComponent<Animation>();
-	player->AddComponent<Controller>()->SetSpeedValue(1.0f);
+	Sprite* playerSprite = player->AddComponent<Sprite>();
+	Atlas* playerAtlas = player->AddComponent<Atlas>();
+	Animation* playerAnimation = player->AddComponent<Animation>();
 
-	Sprite* sprite = player->GetComponent<Sprite>();
-	Atlas* altas = player->GetComponent<Atlas>();
-	Animation* animation = player->GetComponent<Animation>();
+	Controller* playerController = player->AddComponent<Controller>();
 
-	sprite->Load("assets/player.png");
 
-	player->SetPosition(300.0f, 200.0f);
+	playerSprite->Load("assets/player.png");
+
+	player->SetPosition(200.0f, 200.0f);
 	player->SetSize(43.0f, 64.0f);
 
 
-	//altas->AddFrame("fly", 0, 0, 43, 64);
+	playerController->SetSpeedValue(100.0f);
 
 
 
-	/*animation->Init(3, 43, 64);
+	//playerAtlas->AddFrame("flying", 0, 0, 43, 64);
 
-	animation->AddClip("fly", 0, 3, 0.3f);
 
-	animation->Play("fly", true);*/
 
+	//playerAnimation->Init(3, 43,64);
+	//playerAnimation->AddClip("flying", 0, 3, 0.1f);
+	//playerAnimation->Play("flying", true);
+
+
+
+
+
+	if (!playerSprite) { std::cout << "no sprite"; }
+	if (!playerAtlas) { std::cout << "no atlas"; }
+	if (!playerAnimation) { std::cout << "no animation"; }
+	if (!playerController) { std::cout << "no controller"; }
+
+	if (playerSprite) { std::cout << "as sprite\n"; }
+	if (playerAtlas) { std::cout << "as atlas\n"; }
+	if (playerAnimation) { std::cout << "as animation\n"; }
+	if (playerController) { std::cout << "as controller\n"; }
+
+	return player;
 }
 
