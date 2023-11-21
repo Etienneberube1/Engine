@@ -5,31 +5,36 @@
 #include "Atlas.h"
 #include "Entity.h"
 #include "Controller.h"
+#include "Tilemap.h"
+#include "Vector3.h"
+#include "RigidBody.h"
 
 #include <iostream>
 
 
 void project::MenuScene::Load()
 {
+	Entity* tilemap = CreateTileMap();
 	Entity* player = CreatePlayer();
-
 }
 
 project::Entity* project::MenuScene::CreatePlayer()
 {
 	// Instantiate a new player entity
 	Entity* player = Instantiate("player");
-
-	Sprite* playerSprite = player->AddComponent<Sprite>();
-	Atlas* playerAtlas = player->AddComponent<Atlas>();
 	Animation* playerAnimation = player->AddComponent<Animation>();
-
 	Controller* playerController = player->AddComponent<Controller>();
+	RigidBody* playerRigidBody = player->AddComponent<RigidBody>();
 
 
-	playerSprite->Load("assets/player.png");
 
-	player->SetPosition(200.0f, 200.0f);
+	playerRigidBody->SetVelocity(Vector3(0.0f, 75.0f, 0.0f));
+	playerRigidBody->SetGravityScale(3.0f);
+
+
+	playerAnimation->Load("assets/anim_playerFly.png");
+
+	player->SetPosition(Vector3(200.0f, 200.0f, 0.0f));
 	player->SetSize(43.0f, 64.0f);
 
 
@@ -37,28 +42,45 @@ project::Entity* project::MenuScene::CreatePlayer()
 
 
 
-	//playerAtlas->AddFrame("flying", 0, 0, 43, 64);
+	playerAnimation->AddFrame("flying0", 0, 0, 43, 64);
+	playerAnimation->AddFrame("flying1", 43, 0, 43, 64);
+	playerAnimation->AddFrame("flying2", 86, 0, 43, 64);
+
+
+	playerAnimation->AddFrame("idle0", 129, 0, 43, 64);
+	playerAnimation->AddFrame("idle1", 172, 0, 43, 64);
 
 
 
-	//playerAnimation->Init(3, 43,64);
-	//playerAnimation->AddClip("flying", 0, 3, 0.1f);
-	//playerAnimation->Play("flying", true);
+	playerAnimation->Init(2, 43,64);
+	playerAnimation->AddClip("idle", 0, 2, 0.1f);
 
+	playerAnimation->Play("idle", true);
 
-
-
-
-	if (!playerSprite) { std::cout << "no sprite"; }
-	if (!playerAtlas) { std::cout << "no atlas"; }
-	if (!playerAnimation) { std::cout << "no animation"; }
-	if (!playerController) { std::cout << "no controller"; }
-
-	if (playerSprite) { std::cout << "as sprite\n"; }
-	if (playerAtlas) { std::cout << "as atlas\n"; }
-	if (playerAnimation) { std::cout << "as animation\n"; }
-	if (playerController) { std::cout << "as controller\n"; }
 
 	return player;
 }
+
+project::Entity* project::MenuScene::CreateTileMap()
+{
+	Entity* tilemap = Instantiate("tilemap");
+
+	Tilemap* tilemapCmp = tilemap->AddComponent<Tilemap>();
+
+	tilemapCmp->Load("assets/map/Terrain.png",32,32,8, 43);
+
+	TLayer backgroundLayer = tilemapCmp->CreateLayer("assets/map/map_2_background.csv");
+	TLayer groundLayer = tilemapCmp->CreateLayer("assets/map/map_2_ground.csv");
+	TLayer waterLayer = tilemapCmp->CreateLayer("assets/map/map_2_water.csv");
+
+	tilemapCmp->AddLayer("background", backgroundLayer);
+	tilemapCmp->AddLayer("ground", groundLayer);
+	tilemapCmp->AddLayer("water", waterLayer);
+
+	project::Engine::Get().Physics().AddToLayer("ground", tilemap);
+
+	return tilemap;
+}
+
+
 

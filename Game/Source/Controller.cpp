@@ -1,49 +1,53 @@
 #include "Controller.h"
 #include "Engine.h"
-#include "Sprite.h"
+#include "Animation.h"
 #include "EKey.h"
 #include "Entity.h"
+#include "RigidBody.h"
+
+#include "Physic.h"
+#include "Tilemap.h"
 
 
 #include <iostream>
 
 project::Controller::Controller(Entity* entity) : Component(entity)
 {
-	m_posX = m_Entity->GetX();
-	m_posY = m_Entity->GetY();
 }
 
 void project::Controller::Update(float dt)
 {
-	if (Input().IsKeyDown(EKey::EKEY_D)) {
-		m_posX += m_speed * dt;
+    auto rigidBody = m_Entity->GetComponent<RigidBody>();
+    if (!rigidBody) return; 
 
+    Vector3 velocity = rigidBody->GetVelocity();
 
-		m_Entity->GetComponent<Sprite>()->SetFlip(true, false);
+    // Move right
+    if (Input().IsKeyDown(EKey::EKEY_D)) {
+        velocity.x += m_speed * dt * 2;
+        ChangeFlip(true, false);
+    }
 
-		m_Entity->SetPosition(m_posX, m_posY);
-	}
-	if (Input().IsKeyDown(EKey::EKEY_A)) {
-		m_posX -= m_speed * dt;
+    // Move left
+    if (Input().IsKeyDown(EKey::EKEY_A)) {
+        velocity.x -= m_speed * dt * 2;
+        ChangeFlip(false, false);
+    }
 
+    // Move up
+    if (Input().IsKeyDown(EKey::EKEY_W)) {
+        velocity.y -= m_speed * dt * 4.5f;
+    }
 
-		m_Entity->GetComponent<Sprite>()->SetFlip(false, false);
+    // Move down
+    if (Input().IsKeyDown(EKey::EKEY_S)) {
+        velocity.y += m_speed * dt * 3; 
+    }
 
-		m_Entity->SetPosition(m_posX, m_posY);
-	}
-	if (Input().IsKeyDown(EKey::EKEY_W)) {
-		m_posY -= m_speed * dt;
-
-		m_Entity->SetPosition(m_posX, m_posY);
-
-	}
-	if (Input().IsKeyDown(EKey::EKEY_S)) {
-		m_posY += m_speed * dt;
-
-		m_Entity->SetPosition(m_posX, m_posY);
-	}
-
-	 std::cout << "posX: " << m_posX << "  " << "posY: " << m_posY << std::endl;
+    velocity.y += rigidBody->GetGravityScale();
+    // Set the new velocity
+    rigidBody->SetVelocity(velocity);	
+    
 }
 
 void project::Controller::Start()
@@ -57,4 +61,12 @@ void project::Controller::Destroy()
 void project::Controller::SetSpeedValue(float speed)
 {
 	m_speed = speed;
+}
+
+void project::Controller::ChangeFlip(bool h, bool v)
+{
+	if (m_Entity->GetComponent<Animation>() != nullptr)
+	{
+		m_Entity->GetComponent<Animation>()->SetFlip(h,v);
+	}
 }

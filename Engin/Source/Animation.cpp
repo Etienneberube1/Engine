@@ -5,7 +5,7 @@ project::Animation::Animation() : Animation(nullptr)
 {
 }
 
-project::Animation::Animation(Entity* parent) : Sprite(parent)
+project::Animation::Animation(Entity* parent) : Atlas(parent)
 {
 }
 
@@ -18,10 +18,9 @@ void project::Animation::Update(float dt)
         {
             m_Elapsed = 0.0f;
             m_CurrentFrame++;
-
-            if (m_CurrentFrame > m_LastFrame)
+            if (m_CurrentFrame > m_EndFrame)
             {
-                m_CurrentFrame = m_FirstFrame;
+                m_CurrentFrame = m_StartFrame;
                 if (!m_Loop)
                 {
                     m_Playing = false;
@@ -56,7 +55,7 @@ void project::Animation::Stop()
 {
     m_Playing = false;
     m_CurrentFrame = 0;
-    m_FirstFrame = 0;
+    m_StartFrame = 0;
     m_LastFrame = 0;
     m_Delay = 0.0f;
     m_Loop = false;
@@ -69,10 +68,13 @@ void project::Animation::Play(const std::string& name, bool loop)
     {
         const AnimationClip _clip = m_Clips[name];
         m_CurrentFrame = _clip.start;
-        m_FirstFrame = _clip.start;
-        m_LastFrame = _clip.start + _clip.count - 1;
+        m_StartFrame = _clip.start;
+        m_EndFrame = _clip.start + _clip.count - 1;
         m_Delay = _clip.delay;
         m_Loop = loop;
+
+        m_Elapsed = _clip.delay;
+        m_LastFrame = -1;
 
         UpdateFrame();
         m_Playing = true;
@@ -82,13 +84,7 @@ void project::Animation::Play(const std::string& name, bool loop)
 
 void project::Animation::UpdateFrame()
 {
-    const int _row = m_CurrentFrame / m_FrameInRowCount;
-    const int _col = m_CurrentFrame - m_FrameInRowCount * _row;
-    const int _x = m_FrameWidth * _col;
-    const int _y = m_FrameHeight * _row;
-
-    m_Source.x = _x;
-    m_Source.y = _y;
-    m_Source.w = m_FrameWidth;
-    m_Source.h = m_FrameHeight;
+    char temp[128] = { 0 };
+    snprintf(temp, 128, "%s%d", m_CurrentClip.c_str(), m_CurrentFrame);
+    SetFrame(std::string(temp));
 }

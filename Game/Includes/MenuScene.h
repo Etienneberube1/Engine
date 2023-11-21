@@ -13,5 +13,6 @@ namespace project {
 
 	private:
 		Entity* CreatePlayer();
+		Entity* CreateTileMap();
 	};
 }

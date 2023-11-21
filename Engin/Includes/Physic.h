@@ -2,6 +2,7 @@
 #include <IPhysic.h>
 #include <map>
 #include <vector>
+#include "RectF.h"
 
 namespace project
 {
@@ -16,7 +17,7 @@ namespace project
         virtual void AddToLayer(const std::string& layerName, Entity* entity) override;
         virtual bool CollideWithLayer(Entity* entity, const std::string& layerName, Entity** other) override;
         virtual void Remove(Entity* entity) override;
-
+        virtual bool CheckRects(const RectF& rect1, const RectF& rect2) override;
     private:
         std::map<std::string, std::vector<Entity*>> m_Layers;
     };

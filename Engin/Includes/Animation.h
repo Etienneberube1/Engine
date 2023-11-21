@@ -1,5 +1,5 @@
 #pragma once
-#include <Sprite.h>
+#include "Atlas.h"
 #include <map>
 #include <string>
 #include <IUpdatable.h>
@@ -20,7 +20,7 @@ namespace project
         float delay;
     };
 
-    class Animation final : public Sprite, public IUpdatable
+    class Animation final : public Atlas, public IUpdatable
     {
     public:
         virtual ~Animation() = default;
@@ -42,7 +42,8 @@ namespace project
         int m_FrameInRowCount = 0;
         int m_FrameWidth = 0;
         int m_FrameHeight = 0;
-        int m_FirstFrame = 0;
+        int m_StartFrame = 0;
+        int m_EndFrame = 0;
         int m_LastFrame = 0;
         float m_Delay = 0.0f;
         float m_Elapsed = 0.0f;

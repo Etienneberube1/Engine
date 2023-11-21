@@ -8,7 +8,7 @@ namespace project
 {
     class Entity;
 
-    class Atlas final : public Sprite
+    class Atlas : public Sprite
     {
     public:
         virtual ~Atlas() = default;

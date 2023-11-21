@@ -6,7 +6,7 @@
 #include <IUpdatable.h>
 #include <IDrawable.h>
 #include <RectF.h>
-
+#include "Vector3.h"
 
 namespace project {
 
@@ -23,10 +23,9 @@ namespace project {
 
 		std::string& GetName() { return m_Name; }
 
-		void SetPosition(float x, float y)
-		{
-			m_X = x;
-			m_Y = y;
+		void SetPosition(const Vector3& position) {
+			m_X = position.x;
+			m_Y = position.y;
 		}
 
 		void SetSize(float w, float h)
@@ -61,6 +60,10 @@ namespace project {
 		{
 			*x = m_X;
 			*y = m_Y;
+		}
+
+		Vector3 GetPosition() const {
+			return Vector3(m_X, m_Y, 0.0f);
 		}
 
 		float GetX() const { return m_X; }
