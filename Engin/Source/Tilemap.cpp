@@ -72,15 +72,23 @@ int Clamp(int value, const int min, const int max)
 	return value;
 }
 
-bool project::Tilemap::IsColliding(const RectF& entityRect, RectF* collidingTileRect) {
-	const TLayer& collisionLayer = m_Tilemap["ground"]; 
+bool project::Tilemap::IsColliding(const RectF& entityRect, RectF* collidingTileRect, const std::string& layerName) {
+	const TLayer& collisionLayer = GetLayer(layerName);
+
 	for (int i = 0; i < m_Height; i++) {
+
 		for (int j = 0; j < m_Width; j++) {
+
 			int tileIndex = collisionLayer[i][j];
-			if (tileIndex != -1) { // Check if the tile is not -1 (collidable)
+
+			if (tileIndex > 0) { // Check if the tile is not -1 (collidable)
+
 				RectF tileRect{ j * m_TileWidth, i * m_TileHeight, m_TileWidth, m_TileHeight };
+
 				if (Engine::Get().Physics().CheckRects(entityRect, tileRect)) {
+
 					if (collidingTileRect) {
+
 						*collidingTileRect = tileRect;
 					}
 					return true;

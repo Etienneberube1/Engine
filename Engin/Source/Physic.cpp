@@ -91,7 +91,7 @@ bool project::Physic::CollideWithLayer(Entity* entity, const std::string& layerN
     for (Entity* e : m_Layers[layerName]) {
         if (Tilemap* tilemap = e->GetComponent<Tilemap>()) {
             RectF collidingTile;
-            if (tilemap->IsColliding(entityRect, &collidingTile)) {
+            if (tilemap->IsColliding(entityRect, &collidingTile, layerName)) {
                 *other = e; // The tilemap is the colliding entity
                 return true;
             }

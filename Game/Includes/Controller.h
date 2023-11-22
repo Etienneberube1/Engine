@@ -15,11 +15,13 @@ namespace project {
 		virtual void Destroy() override;
 		virtual void SetSpeedValue(float speed);
 		void ChangeFlip(bool h, bool v);
+		void ChangeAnim();
 	private:
 		float m_posX;
 		float m_posY;
 		float m_speed;
 
-
+		bool m_isFlying;
+		bool m_isMoving;
 	};
 }

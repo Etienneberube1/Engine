@@ -14,7 +14,7 @@
 
 void project::MenuScene::Load()
 {
-	Entity* tilemap = CreateTileMap();
+	Entity* Tilemap = CreateTileMap();
 	Entity* player = CreatePlayer();
 }
 
@@ -47,19 +47,26 @@ project::Entity* project::MenuScene::CreatePlayer()
 	playerAnimation->AddFrame("flying2", 86, 0, 43, 64);
 
 
+	playerAnimation->Init(3, 43, 64);
+	playerAnimation->AddClip("flying", 0, 3, 0.1f);
+
+
+
+
 	playerAnimation->AddFrame("idle0", 129, 0, 43, 64);
 	playerAnimation->AddFrame("idle1", 172, 0, 43, 64);
 
-
-
 	playerAnimation->Init(2, 43,64);
 	playerAnimation->AddClip("idle", 0, 2, 0.1f);
+
+
 
 	playerAnimation->Play("idle", true);
 
 
 	return player;
 }
+
 
 project::Entity* project::MenuScene::CreateTileMap()
 {
@@ -81,6 +88,7 @@ project::Entity* project::MenuScene::CreateTileMap()
 
 	return tilemap;
 }
+
 
 
 
