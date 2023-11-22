@@ -82,22 +82,38 @@ void project::Physic::AddToLayer(const std::string& layerName, Entity* entity)
 	m_Layers[layerName].push_back(entity);
 }
 
+bool project::Physic::CalculateIntersection(const RectF& rect1, const RectF& rect2, RectF* intersection) {
+	float x1 = std::max(rect1.x, rect2.x);
+	float y1 = std::max(rect1.y, rect2.y);
+	float x2 = std::min(rect1.x + rect1.w, rect2.x + rect2.w);
+	float y2 = std::min(rect1.y + rect1.h, rect2.y + rect2.h);
+
+	if (x2 >= x1 && y2 >= y1) {
+		if (intersection != nullptr) {
+			intersection->x = x1;
+			intersection->y = y1;
+			intersection->w = x2 - x1;
+			intersection->h = y2 - y1;
+		}
+		return true;
+	}
+
+	return false;
+}
 
 
+bool project::Physic::CollideWithLayer(Entity* entity, const std::string& layerName, Entity** other, RectF* collidingTile) {
+	RectF entityRect = entity->GetRect();
 
-bool project::Physic::CollideWithLayer(Entity* entity, const std::string& layerName, Entity** other) {
-    RectF entityRect = entity->GetRect();
-
-    for (Entity* e : m_Layers[layerName]) {
-        if (Tilemap* tilemap = e->GetComponent<Tilemap>()) {
-            RectF collidingTile;
-            if (tilemap->IsColliding(entityRect, &collidingTile, layerName)) {
-                *other = e; // The tilemap is the colliding entity
-                return true;
-            }
-        }
-    }
-    return false;
+	for (Entity* e : m_Layers[layerName]) {
+		if (Tilemap* tilemap = e->GetComponent<Tilemap>()) {
+			if (tilemap->IsColliding(entityRect, collidingTile, layerName)) {
+				*other = e; // The tilemap is the colliding entity
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 

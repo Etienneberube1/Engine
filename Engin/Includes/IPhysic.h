@@ -18,7 +18,8 @@ namespace project
         virtual bool CheckRectCircle(float rx, float ry, float rw, float rh, float cx, float cy, float cr) = 0;
         virtual bool CheckRects(const RectF& rect1, const RectF& rect2) = 0;
         virtual void AddToLayer(const std::string& layerName, Entity* entity) = 0;
-        virtual bool CollideWithLayer(Entity* entity, const std::string& layerName, Entity** other) = 0;
+        virtual bool CollideWithLayer(Entity* entity, const std::string& layerName, Entity** other, RectF* collidingTile) = 0;
         virtual void Remove(Entity* entity) = 0;
+        virtual bool CalculateIntersection(const RectF& rect1, const RectF& rect2, RectF* intersection) = 0;
     };
 }

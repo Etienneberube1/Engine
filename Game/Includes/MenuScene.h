@@ -12,7 +12,8 @@ namespace project {
 		virtual void Load() override;
 
 	private:
-		Entity* CreatePlayer();
-		Entity* CreateTileMap();
+		Entity* CreateMenu();
+
+		size_t m_fontId;
 	};
 }

@@ -23,6 +23,13 @@ namespace project {
         Vector3 operator / (float scalar) const {
             return Vector3(x / scalar, y / scalar, z / scalar);
         }
+
+        Vector3& operator += (const Vector3& other) {
+            x += other.x;
+            y += other.y;
+            z += other.z;
+            return *this;
+        }
     };
 
 }

@@ -45,6 +45,15 @@ namespace project {
 			m_Y += dy;
 		}
 
+		void SetY(float y)
+		{
+			m_Y = y;
+		}
+		void SetX(float x)
+		{
+			m_X = x;
+		}
+		
 		void Scale(float dw, float dh)
 		{
 			m_Width *= dw;

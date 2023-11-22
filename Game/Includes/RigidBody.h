@@ -21,7 +21,7 @@ namespace project {
         void SetGravityScale(float gravityMass);
         void ApplyGravity();
         void Integrate(float dt);
-
+        
         float GetGravityScale() { return m_GravityScale; }
         Vector3 GetVelocity() { return  m_Velocity; }
     private:
@@ -29,7 +29,8 @@ namespace project {
         Vector3 m_Forces;
         float m_Mass;
         float m_GravityScale;
-
+        Vector3 m_previousPosition;
+        const float collisionThreshold = 2.0f;
     };
 
 }
