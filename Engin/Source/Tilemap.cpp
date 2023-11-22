@@ -72,16 +72,13 @@ int Clamp(int value, const int min, const int max)
 	return value;
 }
 
-bool project::Tilemap::IsColliding(const std::string& layerName, const RectF& entityRect, RectF* collidingTileRect) {
-	// Access the specific layer
-	const TLayer& layer = m_Tilemap[layerName];
-
-	// Iterate through the tiles in the layer
-	for (int y = 0; y < m_Height; y++) {
-		for (int x = 0; x < m_Width; x++) {
-			int tileIndex = layer[y][x];
-			if (IsTileCollidable(tileIndex)) {
-				RectF tileRect{ x * m_TileWidth, y * m_TileHeight, m_TileWidth, m_TileHeight };
+bool project::Tilemap::IsColliding(const RectF& entityRect, RectF* collidingTileRect) {
+	const TLayer& collisionLayer = m_Tilemap["ground"]; 
+	for (int i = 0; i < m_Height; i++) {
+		for (int j = 0; j < m_Width; j++) {
+			int tileIndex = collisionLayer[i][j];
+			if (tileIndex != -1) { // Check if the tile is not -1 (collidable)
+				RectF tileRect{ j * m_TileWidth, i * m_TileHeight, m_TileWidth, m_TileHeight };
 				if (Engine::Get().Physics().CheckRects(entityRect, tileRect)) {
 					if (collidingTileRect) {
 						*collidingTileRect = tileRect;
@@ -93,42 +90,67 @@ bool project::Tilemap::IsColliding(const std::string& layerName, const RectF& en
 	}
 	return false;
 }
+//project::TLayer project::Tilemap::CreateLayer(const std::string& filename)
+//{
+//	TLayer newLayer = TLayer();
+//
+//	std::ifstream myFile(filename);
+//
+//	
+//	std::string line;
+//	int temp;
+//
+//	while (std::getline(myFile, line))
+//	{
+//		std::stringstream file(line);
+//		int colIdx = 0;
+//
+//		std::vector<int> row;
+//		while (file >> temp)
+//		{
+//			row.push_back(temp + 1);
+//
+//			if (file.peek() == ',') file.ignore();
+//
+//			colIdx++;
+//		}
+//		newLayer.push_back(row);
+//	}
+//	myFile.close();
+//
+//	return newLayer;
+//}
 
-project::TLayer project::Tilemap::CreateLayer(const std::string& filename)
-{
+project::TLayer project::Tilemap::CreateLayer(const std::string& filename) {
 	TLayer newLayer = TLayer();
-
 	std::ifstream myFile(filename);
-
-	
 	std::string line;
-	int temp;
+	int temp, rowCount = 0, colCount = 0;
 
-	while (std::getline(myFile, line))
-	{
-		std::stringstream ss(line);
-		int colIdx = 0;
-
+	while (std::getline(myFile, line)) {
+		std::stringstream file(line);
 		std::vector<int> row;
-		while (ss >> temp)
-		{
+		colCount = 0; // Reset column count for each row
+
+		while (file >> temp) {
 			row.push_back(temp + 1);
-
-			if (ss.peek() == ',') ss.ignore();
-
-			colIdx++;
+			if (file.peek() == ',') file.ignore();
+			colCount++;
 		}
+
+		rowCount++; // Increase row count
 		newLayer.push_back(row);
 	}
+
 	myFile.close();
+
+	// Update the tilemap's dimensions if this layer is larger
+	m_Width = std::max(m_Width, colCount);
+	m_Height = std::max(m_Height, rowCount);
 
 	return newLayer;
 }
 
-bool project::Tilemap::IsTileCollidable(int tileIndex) {
-	// tile indices 1-43 are collidable
-	return tileIndex > 0;
-}
 
 void project::Tilemap::Draw()
 {

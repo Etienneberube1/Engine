@@ -25,9 +25,8 @@ namespace project
         void Load(const std::string& filename, int mapW, int mapH, int tileW, int tileH);
         void AddLayer(const std::string& layer, TLayer tiles);
         TLayer GetLayer(const std::string& name);
-        bool IsColliding(const std::string& layerName, const RectF& entityRect, RectF* collidingTileRect);
+        bool IsColliding(const RectF& entityRect, RectF* collidingTileRect);
         TLayer CreateLayer(const std::string& filename);
-        bool IsTileCollidable(int tileIndex);
     private:
         TTilemap m_Tilemap;
         int m_Width = 0;

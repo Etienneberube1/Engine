@@ -88,6 +88,19 @@ namespace project {
 			};
 		}
 
+
+
+		RectF GetRect() 
+		{
+			RectF tmp = {
+						m_X, m_Y,
+				m_Width, m_Height
+				
+			};
+			return tmp;
+		}
+
+
 		template <typename T>
 		T* AddComponent()
 		{

@@ -69,9 +69,9 @@ project::Entity* project::MenuScene::CreateTileMap()
 
 	tilemapCmp->Load("assets/map/Terrain.png",32,32,8, 43);
 
-	TLayer backgroundLayer = tilemapCmp->CreateLayer("assets/map/map_2_background.csv");
-	TLayer groundLayer = tilemapCmp->CreateLayer("assets/map/map_2_ground.csv");
-	TLayer waterLayer = tilemapCmp->CreateLayer("assets/map/map_2_water.csv");
+	TLayer backgroundLayer = tilemapCmp->CreateLayer("assets/map/map_1_background.csv");
+	TLayer groundLayer = tilemapCmp->CreateLayer("assets/map/map_1_ground.csv");
+	TLayer waterLayer = tilemapCmp->CreateLayer("assets/map/map_1_water.csv");
 
 	tilemapCmp->AddLayer("background", backgroundLayer);
 	tilemapCmp->AddLayer("ground", groundLayer);

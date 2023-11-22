@@ -44,6 +44,8 @@ void project::Controller::Update(float dt)
         velocity.y += m_speed * dt * 3; 
     }
 
+
+
     velocity.y += rigidBody->GetGravityScale();
     // Set the new velocity
     rigidBody->SetVelocity(velocity);	

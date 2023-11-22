@@ -33,21 +33,17 @@ void project::RigidBody::SetGravityScale(float gravityScale)
     m_GravityScale = gravityScale;
 }
 
-
+int temp;
 void project::RigidBody::Update(float dt) {
     ApplyGravity();
     Integrate(dt);
 
-    //m_Forces = Vector3(); 
-    std::cout << "posX: " << m_Entity->GetX() <<"  " << "posY: " << m_Entity->GetY() << std::endl;
-   
     Entity* other;
     if (Engine::Get().Physics().CollideWithLayer(m_Entity, "ground", &other)) {
-        
-        std::cout << "collided with ground\n";
+        temp++;
+        std::cout << "Collided with ground_" << temp << std::endl;
     }
 }
-
 
 void project::RigidBody::ApplyGravity() {
     Vector3 gravity(0.0f, -1 * m_GravityScale, 0.0f);
