@@ -36,47 +36,54 @@ namespace project {
 	}
 
     void project::RigidBody::Update(float dt) {
-        // Store the position at the beginning of the update
-        Vector3 lastPosition = m_Entity->GetPosition();
-
-        ApplyGravity(); // Apply gravity every frame
+        ApplyGravity();
 
         Entity* other = nullptr;
         RectF collidingTile;
         bool onGround = false;
-
+        bool hitCeiling = false;
 
         if (Engine::Get().Physics().CollideWithLayer(m_Entity, "ground", &other, &collidingTile)) {
-            // Now, collidingTile contains the specific tile's rect that you're colliding with
             auto entityRect = m_Entity->GetRect();
 
-            // Check if the player's bottom is currently below the top of the colliding tile
-            if (entityRect.y + entityRect.h > collidingTile.y) {
-                m_Entity->SetY(collidingTile.y - entityRect.h); // Position on top of the colliding tile
-                m_Velocity.y = 0; // Reset vertical velocity
+            // Collision detection logic
+            if (m_Velocity.y >= 0 && entityRect.y + entityRect.h > collidingTile.y &&
+                entityRect.y < collidingTile.y) {
+                // Collision from above
+                m_Entity->SetY(collidingTile.y - entityRect.h);
+                m_Velocity.y = 0;
                 onGround = true;
-                Engine::Get().Logger().LogMessage("Should stay on ground");
+                Engine::Get().Logger().LogMessage("Player is above the platform");
+            }
+            else if (m_Velocity.y < 0 && entityRect.y < collidingTile.y + collidingTile.h &&
+                entityRect.y + entityRect.h > collidingTile.y + collidingTile.h) {
+                // Collision from below
+                m_Entity->SetY(collidingTile.y + collidingTile.h);
+                m_Velocity.y = 0;
+                hitCeiling = true;
+                Engine::Get().Logger().LogMessage("Player is below the platform");
             }
         }
 
-        if (!onGround) {
-            Integrate(dt); // Integrate to update position only if not on ground
+        if (!onGround && !hitCeiling) {
+            Integrate(dt);
         }
         else {
-            // Even if on ground, update horizontal position based on horizontal velocity
+            // Update horizontal position
             Vector3 newPosition = m_Entity->GetPosition();
             newPosition.x += m_Velocity.x * dt;
             m_Entity->SetPosition(newPosition);
         }
 
         // Update previous position for the next frame
-        m_previousPosition = lastPosition;
-
-        // Reset forces after integration
+        m_previousPosition = m_Entity->GetPosition();
         m_Forces = Vector3(0.0f, 0.0f, 0.0f);
     }
 
-	void RigidBody::Integrate(float dt) {
+
+    
+    
+    void RigidBody::Integrate(float dt) {
 		m_Velocity += (m_Forces / m_Mass) * dt;
 		Vector3 newPosition = m_Entity->GetPosition() + m_Velocity * dt;
 		m_Entity->SetPosition(newPosition);
