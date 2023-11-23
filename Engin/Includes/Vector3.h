@@ -1,4 +1,5 @@
 #pragma once
+#include <math.h>
 
 namespace project {
 
@@ -29,6 +30,21 @@ namespace project {
             y += other.y;
             z += other.z;
             return *this;
+        }
+
+        void Vector3::Normalize() {
+            float length = sqrt(x * x + y * y + z * z);
+            if (length != 0) {
+                x /= length;
+                y /= length;
+                z /= length;
+            }
+        }
+
+        Vector3 Vector3::Normalized() const {
+            Vector3 temp = *this;
+            temp.Normalize();
+            return temp;
         }
     };
 

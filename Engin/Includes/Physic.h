@@ -19,6 +19,7 @@ namespace project
         virtual void Remove(Entity* entity) override;
         virtual bool CheckRects(const RectF& rect1, const RectF& rect2) override;
         virtual bool CalculateIntersection(const RectF& rect1, const RectF& rect2, RectF* intersection) override;
+        virtual float CalculateDistance(const Vector3& point1, const Vector3& point2) override;
     private:
         std::map<std::string, std::vector<Entity*>> m_Layers;
     };

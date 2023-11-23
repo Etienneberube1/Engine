@@ -14,5 +14,6 @@ namespace project {
 	private:
 		Entity* CreatePlayer();
 		Entity* CreateTileMap();
+		Entity* CreateEnemy(const std::string enemyName);
 	};
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "RectF.h"
+#include "Vector3.h"
 
 namespace project
 {
@@ -21,5 +22,7 @@ namespace project
         virtual bool CollideWithLayer(Entity* entity, const std::string& layerName, Entity** other, RectF* collidingTile) = 0;
         virtual void Remove(Entity* entity) = 0;
         virtual bool CalculateIntersection(const RectF& rect1, const RectF& rect2, RectF* intersection) = 0;
+        virtual float CalculateDistance(const Vector3& point1, const Vector3& point2) = 0;
+
     };
 }

@@ -7,12 +7,13 @@
 #include "Tilemap.h"
 #include "Vector3.h"
 #include "RigidBody.h"
-
+#include "BaseAI.h"
 
 void project::GameScene::Load()
 {
 	Entity* Tilemap = CreateTileMap();
 	Entity* player = CreatePlayer();
+	Entity* enemy1 = CreateEnemy("enemy1");
 }
 
 project::Entity* project::GameScene::CreatePlayer()
@@ -84,6 +85,21 @@ project::Entity* project::GameScene::CreateTileMap()
 	project::Engine::Get().Physics().AddToLayer("ground", tilemap);
 
 	return tilemap;
+}
+
+project::Entity* project::GameScene::CreateEnemy(const std::string enemyName)
+{
+	Entity* enemy = Instantiate(enemyName);
+
+	enemy->AddComponent<BaseAI>();
+	Sprite* enemySprite = enemy->AddComponent<Sprite>();
+
+	enemySprite->Load("assets/playerAssets/player.png");
+
+	enemy->SetPosition(Vector3(400.0f, 300.0f, 0.0f));
+	enemy->SetSize(43.0f, 64.0f);
+
+	return enemy;
 }
 
 

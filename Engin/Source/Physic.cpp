@@ -101,6 +101,12 @@ bool project::Physic::CalculateIntersection(const RectF& rect1, const RectF& rec
 	return false;
 }
 
+float project::Physic::CalculateDistance(const Vector3& point1, const Vector3& point2) {
+	float dx = point1.x - point2.x;
+	float dy = point1.y - point2.y;
+	float dz = point1.z - point2.z;
+	return sqrt(dx * dx + dy * dy + dz * dz);
+}
 
 bool project::Physic::CollideWithLayer(Entity* entity, const std::string& layerName, Entity** other, RectF* collidingTile) {
 	RectF entityRect = entity->GetRect();
