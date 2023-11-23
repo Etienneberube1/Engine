@@ -87,12 +87,21 @@ project::Entity* project::GameScene::CreateTileMap()
 	return tilemap;
 }
 
+
+
 project::Entity* project::GameScene::CreateEnemy(const std::string enemyName)
 {
 	Entity* enemy = Instantiate(enemyName);
 
 	enemy->AddComponent<BaseAI>();
+
+	RigidBody* enemyRigidBody = enemy->AddComponent<RigidBody>();
 	Sprite* enemySprite = enemy->AddComponent<Sprite>();
+
+
+	enemyRigidBody->SetVelocity(Vector3(0.0f, 45.0f, 0.0f));
+	enemyRigidBody->SetGravityScale(2.0f);
+
 
 	enemySprite->Load("assets/playerAssets/player.png");
 
