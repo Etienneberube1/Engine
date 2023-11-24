@@ -99,13 +99,13 @@ project::Entity* project::GameScene::CreateEnemy(const std::string enemyName)
 	Sprite* enemySprite = enemy->AddComponent<Sprite>();
 
 
-	enemyRigidBody->SetVelocity(Vector3(0.0f, 45.0f, 0.0f));
+	enemyRigidBody->SetVelocity(Vector3(30.0f, 30.0f, 0.0f));
 	enemyRigidBody->SetGravityScale(2.0f);
 
 
 	enemySprite->Load("assets/playerAssets/player.png");
 
-	enemy->SetPosition(Vector3(400.0f, 300.0f, 0.0f));
+	enemy->SetPosition(Vector3(400.0f,100.0f, 0.0f));
 	enemy->SetSize(43.0f, 64.0f);
 
 	return enemy;

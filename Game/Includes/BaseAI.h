@@ -14,18 +14,24 @@ namespace project {
 		virtual ~BaseAI() =  default;
 		
 		virtual void Update(float DeltaTime) override;
+		virtual void Start() override;
 
-        Vector3 PickRandomPointInMap();
-        void PickNewPoint();
+        void PickRandomPointInMap();
         bool IsTargetReached();
-        void MoveToTarget(float DeltaTime);
+        void MoveTowardsTarget(float deltaTime);
+		void SetInitialVelocityTowardsTarget();
 
 	private:
         Vector3 position; // Current position
         Vector3 targetPoint; // Target point to move to
 		float StoppingDistance; // Distance the AI should stop before reaching is point
+
         float waitTime; // Time to wait at the target point
-        const float waitDuration = 2.0f; // Example wait duration in seconds
+
+        const float waitDuration = 1.0f; // Example wait duration in seconds
+
+		float horizontalSpeed = 50.0f; // Adjust as needed
+		float verticalSpeed = 50.0f; // Adjust as needed
 	};
 
 }

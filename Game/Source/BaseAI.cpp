@@ -8,83 +8,152 @@
 
 
 
-namespace project {
-
-    BaseAI::BaseAI() : BaseAI(nullptr) {}
-
-    BaseAI::BaseAI(Entity* parent) : Component(parent), StoppingDistance(10.0f) {
-        PickNewPoint();
-        srand(time(NULL));
-    }
-
-    void BaseAI::Update(float DeltaTime) {
-        if (!IsTargetReached()) {
-            MoveToTarget(DeltaTime);
-        }
-        else {
-            waitTime -= DeltaTime;
-            if (waitTime <= 0) {
-                PickNewPoint();
-            }
-        }
-    }
-
-    Vector3 BaseAI::PickRandomPointInMap() {
-        // Implement logic to pick a random point in the upper part of the map
-        // This is just a placeholder. You'll need to replace it with your actual map dimensions
-        float x = rand() % 800; // picking map width
-        float y = (rand() % 400); // picking in the upper half
-        float z = 0; // Assuming a 2D game
-        return Vector3(x, y, z);
-    }
-
-    void BaseAI::PickNewPoint() {
-        const float minDistance = 75.0f; // Minimum distance from the current position
-        bool isPointValid = false;
-
-        while (!isPointValid) {
-            Vector3 newPoint = PickRandomPointInMap();
-
-            // Calculate the distance between the current position and the new point
-            float distance = Engine::Get().Physics().CalculateDistance(position, newPoint);
-
-            if (distance > minDistance) {
-                // If the new point is sufficiently far, use it
-                targetPoint = newPoint;
-                isPointValid = true;
-            }
-            // Otherwise, loop again to pick another point
-        }
-
-        waitTime = waitDuration;
-    }
-    bool BaseAI::IsTargetReached() {
-        float distance = Engine::Get().Physics().CalculateDistance(position, targetPoint);
-        return distance < StoppingDistance;
-    }
-
-    void BaseAI::MoveToTarget(float DeltaTime) {
-        RigidBody* rb = m_Entity->GetComponent<RigidBody>();
-        if (!rb) return;
-
-        Vector3 directionToTarget = (targetPoint - position).Normalized();
-
-        float upwardForceMagnitude = 20.0f; // Value to counteract gravity
-        float forwardForceMagnitude = 5.0f; // Gentle horizontal movement
-
-        Vector3 totalForce(0, 0, 0);
-
-        //if (!rb->IsOnGround()) {
-        //    totalForce.y = upwardForceMagnitude;
-        //}
-
-        directionToTarget.y = 0; // Focus on horizontal direction
-        totalForce += directionToTarget * forwardForceMagnitude;
-
-        rb->AddForce(totalForce);
-    }
-
-
-
+project::BaseAI::BaseAI(Entity* parent) : Component(parent) {
 }
 
+void project::BaseAI::Update(float deltaTime) {
+    RigidBody* rb = m_Entity->GetComponent<RigidBody>();
+    if (!rb) return;
+
+    // Check for collision with specific layers
+    Entity* collidedEntity = nullptr;
+    if (Engine::Get().Physics().CollideWithLayer(m_Entity, "IgnoredLayer", &collidedEntity, nullptr)) 
+    {
+        // Ignore the collision and continue moving
+    }
+    else {
+        // Normal movement logic
+        if (IsTargetReached()) {
+            Engine::Get().Logger().LogMessage("Target reached. Picking a new target.");
+            PickRandomPointInMap();
+        }
+        else {
+            MoveTowardsTarget(deltaTime);
+        }
+    }
+}
+
+
+void project::BaseAI::Start()
+{
+	srand(time(NULL));
+	PickRandomPointInMap();
+
+	//std::string test = std::to_string(targetPoint.x);	
+	//std::string test1 = std::to_string(targetPoint.y);
+	//std::string test2 = std::to_string(targetPoint.z);
+
+	//Engine::Get().Logger().LogMessage(test);
+	//Engine::Get().Logger().LogMessage(test1);
+	//Engine::Get().Logger().LogMessage(test2);
+}
+
+void project::BaseAI::PickRandomPointInMap() {
+    // Pick a new target point
+    float x = static_cast<float>(rand() % 800);
+    float y = static_cast<float>(rand() % 400);
+    targetPoint = Vector3(x, y, 0.0f);
+
+    Engine::Get().Logger().LogMessage("New target point: " + std::to_string(x) + ", " + std::to_string(y));
+
+    // Set the initial velocity towards the target point
+    SetInitialVelocityTowardsTarget();
+}
+
+bool project::BaseAI::IsTargetReached() {
+    float distance = Vector3::Distance(m_Entity->GetPosition(), targetPoint);
+    // Define the threshold distance for picking a new target
+    const float thresholdDistance = 30.0f;
+    if (distance < thresholdDistance) {
+        Engine::Get().Logger().LogMessage("Close to target. Picking a new target.");
+        return true;
+    }
+    return false;
+}
+
+void project::BaseAI::SetInitialVelocityTowardsTarget() {
+    RigidBody* rb = m_Entity->GetComponent<RigidBody>();
+    if (!rb) return;
+
+    Vector3 direction = (targetPoint - m_Entity->GetPosition()).Normalized();
+    float initialHorizontalSpeed = 100.0f; // Adjust this value for desired horizontal speed
+    float initialVerticalSpeed = 100.0f;   // Adjust this value for desired vertical speed
+
+    // Apply horizontal and vertical components of the initial velocity
+    Vector3 initialVelocity = Vector3(direction.x * initialHorizontalSpeed, direction.y * initialVerticalSpeed, 0.0f);
+
+    rb->SetVelocity(initialVelocity);
+}
+
+
+
+
+void project::BaseAI::MoveTowardsTarget(float deltaTime) {
+    RigidBody* rb = m_Entity->GetComponent<RigidBody>();
+    if (!rb) return;
+
+    Vector3 currentVelocity = rb->GetVelocity();
+    Vector3 direction = (targetPoint - m_Entity->GetPosition()).Normalized();
+    float distanceToTarget = Vector3::Distance(m_Entity->GetPosition(), targetPoint);
+
+    // Define base speed values
+    float maxSpeed = 100.0f;
+    float acceleration = 50.0f; // Adjust as needed for smoother acceleration
+
+    // Adjust speed based on distance to the target
+    float speedModifier = std::min(distanceToTarget / 100.0f, 1.0f); // Ensures the speed decreases as it approaches the target
+
+    // Calculate horizontal and vertical forces
+    float horizontalForce = acceleration * direction.x * speedModifier;
+    float verticalForce = acceleration * direction.y * speedModifier;
+
+    // Apply the forces to the current velocity
+    currentVelocity.x += horizontalForce * deltaTime;
+    currentVelocity.y += verticalForce * deltaTime;
+
+    // Limit the maximum speed
+    if (currentVelocity.Length() > maxSpeed) {
+        currentVelocity = currentVelocity.Normalized() * maxSpeed;
+    }
+
+    // Set the new velocity
+    rb->SetVelocity(currentVelocity);
+}
+
+//void project::BaseAI::MoveTowardsTarget(float deltaTime) {
+//    RigidBody* rb = m_Entity->GetComponent<RigidBody>();
+//    if (!rb) return;
+//
+//    Vector3 currentVelocity = rb->GetVelocity();
+//    Vector3 direction = (targetPoint - m_Entity->GetPosition()).Normalized();
+//
+//    // Define base speed values
+//    float baseHorizontalSpeed = 100.0f;
+//    float baseUpwardSpeedAdjustment = 30.0f;
+//
+//    // Calculate horizontal force needed to move towards the target
+//    float horizontalForce = baseHorizontalSpeed * direction.x;
+//    // Adjust horizontal force based on current velocity to change direction if needed
+//    horizontalForce -= currentVelocity.x;
+//
+//    // Apply the horizontal force
+//    currentVelocity.x += horizontalForce * deltaTime;
+//
+//    // Vertical movement control
+//    float verticalDistance = targetPoint.y - m_Entity->GetPosition().y;
+//    float verticalForce = baseUpwardSpeedAdjustment * verticalDistance - currentVelocity.y;
+//    // Apply gravity
+//    verticalForce -= rb->GetGravityScale() * deltaTime;
+//
+//    // Apply the vertical force
+//    currentVelocity.y += verticalForce * deltaTime;
+//
+//    // Limit the downward speed to prevent too fast falling
+//    const float maxDownwardSpeed = -5.0f;
+//    if (currentVelocity.y < maxDownwardSpeed) {
+//        currentVelocity.y = maxDownwardSpeed;
+//    }
+//
+//    // Set the new velocity
+//    rb->SetVelocity(currentVelocity);
+//}

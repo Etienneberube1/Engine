@@ -46,6 +46,17 @@ namespace project {
             temp.Normalize();
             return temp;
         }
+
+        static float Distance(const Vector3& a, const Vector3& b) {
+            float dx = a.x - b.x;
+            float dy = a.y - b.y;
+            float dz = a.z - b.z;
+            return sqrt(dx * dx + dy * dy + dz * dz);
+        }
+
+        float Length() const {
+            return sqrt(x * x + y * y + z * z);
+        }
     };
 
 }

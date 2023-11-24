@@ -53,7 +53,6 @@ namespace project {
                 m_Entity->SetY(collidingTile.y - entityRect.h);
                 m_Velocity.y = 0;
                 onGround = true;
-                Engine::Get().Logger().LogMessage("Player is above the platform");
             }
             else if (m_Velocity.y < 0 && entityRect.y < collidingTile.y + collidingTile.h &&
                 entityRect.y + entityRect.h > collidingTile.y + collidingTile.h) {
@@ -61,7 +60,6 @@ namespace project {
                 m_Entity->SetY(collidingTile.y + collidingTile.h);
                 m_Velocity.y = 0;
                 hitCeiling = true;
-                Engine::Get().Logger().LogMessage("Player is below the platform");
             }
         }
 
