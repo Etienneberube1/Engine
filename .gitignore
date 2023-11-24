@@ -1,5 +1,8 @@
 build/**
 Deployment/**
 !Deployment/Keepme/**
-!Deployment/assets/**
+!Deployment/assets/map/**
+!Deployment/assets/fonts/**
+!Deployment/assets/audio/**
+!Deployment/assets/playerAssets/**
 
