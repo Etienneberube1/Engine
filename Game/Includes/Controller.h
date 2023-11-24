@@ -16,6 +16,12 @@ namespace project {
 		virtual void SetSpeedValue(float speed);
 		void ChangeFlip(bool h, bool v);
 		void ChangeAnim();
+
+		void SetOnGroundBool(bool isOnGround)
+		{
+			m_isOnGround = isOnGround;
+		}
+
 	private:
 		float m_posX;
 		float m_posY;
@@ -23,5 +29,6 @@ namespace project {
 
 		bool m_isFlying;
 		bool m_isMoving;
+		bool m_isOnGround;
 	};
 }

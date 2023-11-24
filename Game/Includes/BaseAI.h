@@ -26,14 +26,14 @@ namespace project {
         Vector3 targetPoint; // Target point to move to
 		float StoppingDistance; // Distance the AI should stop before reaching is point
 
-        float waitTime; // Time to wait at the target point
-
-        const float waitDuration = 0.5f; // Example wait duration in seconds
+        const float waitDuration = 1.0f; // Example wait duration in seconds
 
 		float elapsed;
 
-		float horizontalSpeed = 50.0f; // Adjust as needed
-		float verticalSpeed = 50.0f; // Adjust as needed
+		bool asReachedPoint;
+
+		float horizontalSpeed = 70.0f; // Adjust as needed
+		float verticalSpeed = 70.0f; // Adjust as needed
 	};
 
 }

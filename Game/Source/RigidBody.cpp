@@ -2,8 +2,7 @@
 #include "Engine.h"
 #include "Entity.h"
 #include "Physic.h"
-
-#include <iostream>
+#include "Controller.h"
 
 namespace project {
 
@@ -79,10 +78,18 @@ namespace project {
             newPosition.x += m_Velocity.x * dt;
             m_Entity->SetPosition(newPosition);
         }
+        
 
         // Update previous position for the next frame
         m_previousPosition = m_Entity->GetPosition();
         m_Forces = Vector3(0.0f, 0.0f, 0.0f);
+
+
+        // setting the on ground to change animation in controller
+        if (Controller* playerController = m_Entity->GetComponent<Controller>()) 
+        {
+           playerController->SetOnGroundBool(onGround);
+        }
     }
 
 

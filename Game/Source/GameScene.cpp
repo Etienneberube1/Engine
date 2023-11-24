@@ -14,6 +14,10 @@ void project::GameScene::Load()
 	Entity* Tilemap = CreateTileMap();
 	Entity* player = CreatePlayer();
 	Entity* enemy1 = CreateEnemy("enemy1");
+	Entity* enemy2 = CreateEnemy("enemy2");
+	Entity* enemy3 = CreateEnemy("enemy3");
+	Entity* enemy4 = CreateEnemy("enemy4");
+	Entity* enemy5 = CreateEnemy("enemy5");
 }
 
 project::Entity* project::GameScene::CreatePlayer()
@@ -30,7 +34,7 @@ project::Entity* project::GameScene::CreatePlayer()
 	playerRigidBody->SetGravityScale(3.0f);
 
 
-	playerAnimation->Load("assets/playerAssets/anim_playerFly.png");
+	playerAnimation->Load("assets/playerAssets/playerSpriteSheet.png");
 
 	player->SetPosition(Vector3(200.0f, 200.0f, 0.0f));
 	player->SetSize(43.0f, 64.0f);
@@ -40,26 +44,66 @@ project::Entity* project::GameScene::CreatePlayer()
 
 
 
-	playerAnimation->AddFrame("flying0", 0, 0, 43, 64);
-	playerAnimation->AddFrame("flying1", 43, 0, 43, 64);
-	playerAnimation->AddFrame("flying2", 86, 0, 43, 64);
+
+	// ===========================PLAYER_FLY_ANIM==========================
+	playerAnimation->AddFrame("flying0", 0, 128, 43, 64);
+	playerAnimation->AddFrame("flying1", 43, 128, 43, 64);
+	playerAnimation->AddFrame("flying2", 86, 128, 43, 64);
 
 
 	playerAnimation->Init(3, 43, 64);
 	playerAnimation->AddClip("flying", 0, 3, 0.1f);
+	// ====================================================================
 
 
 
 
-	playerAnimation->AddFrame("idle0", 129, 0, 43, 64);
-	playerAnimation->AddFrame("idle1", 172, 0, 43, 64);
-
-	playerAnimation->Init(2, 43, 64);
-	playerAnimation->AddClip("idle", 0, 2, 0.1f);
 
 
+	// ===========================PLAYER_FLY_IDLE_ANIM=====================
+	playerAnimation->AddFrame("flyIdle0", 0, 192, 43, 64);
+	playerAnimation->AddFrame("flyIdle1", 43, 192, 43, 64);
+	playerAnimation->AddFrame("flyIdle2", 86, 192, 43, 64);
 
-	playerAnimation->Play("idle", true);
+	playerAnimation->Init(3, 43, 64);
+	playerAnimation->AddClip("flyIdle", 0, 3, 0.1f);
+	// ====================================================================
+
+
+
+
+
+
+
+	// ==========================PLAYER_GROUND_IDLE_ANIM===================
+	playerAnimation->AddFrame("groundIdle0", 0, 64, 43, 64);
+	playerAnimation->AddFrame("groundIdle1", 43, 64, 43, 64);
+	playerAnimation->AddFrame("groundIdle2", 86, 64, 43, 64);
+
+	playerAnimation->Init(3, 43, 64);
+	playerAnimation->AddClip("groundIdle", 0, 3, 0.1f);
+	// ====================================================================
+
+
+
+
+
+
+	// ==========================PLAYER_GROUND_RUN_ANIM====================
+	playerAnimation->AddFrame("groundRun0", 0, 0, 43, 64);
+	playerAnimation->AddFrame("groundRun1", 43, 0, 43, 64);
+	playerAnimation->AddFrame("groundRun2", 86, 0, 43, 64);
+
+	playerAnimation->Init(3, 43, 64);
+	playerAnimation->AddClip("groundRun", 0, 3, 0.1f);
+	// ====================================================================
+
+
+
+
+
+
+	playerAnimation->Play("flyIdle", true);
 
 
 	return player;
@@ -88,28 +132,46 @@ project::Entity* project::GameScene::CreateTileMap()
 }
 
 
-
 project::Entity* project::GameScene::CreateEnemy(const std::string enemyName)
 {
 	Entity* enemy = Instantiate(enemyName);
 
 	enemy->AddComponent<BaseAI>();
 
+	Animation* enemyAnimation = enemy->AddComponent<Animation>();
 	RigidBody* enemyRigidBody = enemy->AddComponent<RigidBody>();
-	Sprite* enemySprite = enemy->AddComponent<Sprite>();
 
 
 	enemyRigidBody->SetVelocity(Vector3(30.0f, 30.0f, 0.0f));
 	enemyRigidBody->SetGravityScale(2.0f);
 
 
-	enemySprite->Load("assets/playerAssets/player.png");
+	enemyAnimation->Load("assets/playerAssets/enemySpriteSheet.png");
+
+
+
+	// ===========================PLAYER_FLY_ANIM==========================
+	enemyAnimation->AddFrame("flying0", 0, 0, 37, 63);
+	enemyAnimation->AddFrame("flying1", 37, 0, 37, 63);
+	enemyAnimation->AddFrame("flying2", 79, 0, 37, 63);
+	
+
+
+	enemyAnimation->Init(3, 37, 63);
+	enemyAnimation->AddClip("flying", 0, 3, 0.1f);
+	// ====================================================================
+
+	enemyAnimation->Play("flying", true);
+
 
 	enemy->SetPosition(Vector3(400.0f,100.0f, 0.0f));
 	enemy->SetSize(43.0f, 64.0f);
 
+
+
 	return enemy;
 }
+
 
 
 

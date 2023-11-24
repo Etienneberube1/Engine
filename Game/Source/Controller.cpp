@@ -12,7 +12,7 @@
 #include <iostream>
 
 project::Controller::Controller(Entity* entity) : Component(entity),
-m_isFlying(false), m_isMoving(false)
+m_isFlying(false), m_isMoving(false), m_isOnGround(false)
 {
 }
 
@@ -46,6 +46,8 @@ void project::Controller::Update(float dt)
         isMoving = true;
     }
 
+
+
     // Trigger flying animation if any movement key is pressed
     if (isMoving && !m_isFlying) {
         playerAnimation->Play("flying", true);
@@ -54,13 +56,43 @@ void project::Controller::Update(float dt)
 
     // Revert back to idle animation if no movement key is pressed
     if (!isMoving && m_isFlying) {
-        playerAnimation->Play("idle", true);
+        playerAnimation->Play("groundIdle", true);
         m_isFlying = false;
+    }
+
+    if (isMoving && m_isOnGround) {
+        playerAnimation->Play("groundRun", true);
+        m_isOnGround = true;
+    }
+
+    if (!isMoving && m_isOnGround) {
+       // playerAnimation->Play("groundIdle", true);
+        m_isOnGround = false;
     }
 
     // Apply gravity and set new velocity
     velocity.y += rigidBody->GetGravityScale();
     rigidBody->SetVelocity(velocity);
+
+
+    
+    if (m_Entity->GetX()  >= 800)
+    {
+        m_Entity->SetPosition(Vector3(0.0f, m_Entity->GetY(), 0.0f));
+    }
+    else if(m_Entity->GetX() < -10 - m_Entity->GetWidth() )
+    {
+        m_Entity->SetPosition(Vector3(800.0f, m_Entity->GetY(), 0.0f));
+    }
+    else if (m_Entity->GetY() <= 0.0f )
+    {
+        Vector3 v3 = rigidBody->GetVelocity();       
+        m_Entity->SetPosition(Vector3(m_Entity->GetX(), 0.0f, 0.0f));
+        rigidBody->SetVelocity(Vector3(v3.x, 0.0f,v3.z));
+    }
+
+
+
 }
 
 void project::Controller::Start()
