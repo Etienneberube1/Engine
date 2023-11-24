@@ -21,7 +21,7 @@ namespace project {
         void SetGravityScale(float gravityMass);
         void ApplyGravity();
         void Integrate(float dt);
-        
+        void RigidBody::ApplySideCollisionBoost();
         float GetGravityScale() { return m_GravityScale; }
         Vector3 GetVelocity() { return  m_Velocity; }
     private:

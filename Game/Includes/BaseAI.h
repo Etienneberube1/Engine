@@ -28,7 +28,9 @@ namespace project {
 
         float waitTime; // Time to wait at the target point
 
-        const float waitDuration = 1.0f; // Example wait duration in seconds
+        const float waitDuration = 0.5f; // Example wait duration in seconds
+
+		float elapsed;
 
 		float horizontalSpeed = 50.0f; // Adjust as needed
 		float verticalSpeed = 50.0f; // Adjust as needed

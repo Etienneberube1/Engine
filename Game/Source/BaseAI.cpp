@@ -16,21 +16,22 @@ void project::BaseAI::Update(float deltaTime) {
     if (!rb) return;
 
     // Check for collision with specific layers
-    Entity* collidedEntity = nullptr;
-    if (Engine::Get().Physics().CollideWithLayer(m_Entity, "IgnoredLayer", &collidedEntity, nullptr)) 
-    {
-        // Ignore the collision and continue moving
-    }
-    else {
+
         // Normal movement logic
         if (IsTargetReached()) {
             Engine::Get().Logger().LogMessage("Target reached. Picking a new target.");
-            PickRandomPointInMap();
+
+
+            elapsed -= deltaTime;
+            if (elapsed < 0) {
+                PickRandomPointInMap();
+                elapsed = waitDuration;
+            }
         }
         else {
             MoveTowardsTarget(deltaTime);
         }
-    }
+
 }
 
 
@@ -38,32 +39,25 @@ void project::BaseAI::Start()
 {
 	srand(time(NULL));
 	PickRandomPointInMap();
-
-	//std::string test = std::to_string(targetPoint.x);	
-	//std::string test1 = std::to_string(targetPoint.y);
-	//std::string test2 = std::to_string(targetPoint.z);
-
-	//Engine::Get().Logger().LogMessage(test);
-	//Engine::Get().Logger().LogMessage(test1);
-	//Engine::Get().Logger().LogMessage(test2);
+    elapsed = waitDuration;
 }
 
 void project::BaseAI::PickRandomPointInMap() {
     // Pick a new target point
     float x = static_cast<float>(rand() % 800);
-    float y = static_cast<float>(rand() % 400);
+    float y = static_cast<float>(rand() % 300);
     targetPoint = Vector3(x, y, 0.0f);
 
     Engine::Get().Logger().LogMessage("New target point: " + std::to_string(x) + ", " + std::to_string(y));
 
     // Set the initial velocity towards the target point
-    SetInitialVelocityTowardsTarget();
+    //SetInitialVelocityTowardsTarget();
 }
 
 bool project::BaseAI::IsTargetReached() {
     float distance = Vector3::Distance(m_Entity->GetPosition(), targetPoint);
     // Define the threshold distance for picking a new target
-    const float thresholdDistance = 30.0f;
+    const float thresholdDistance = 60.0f;
     if (distance < thresholdDistance) {
         Engine::Get().Logger().LogMessage("Close to target. Picking a new target.");
         return true;
@@ -71,19 +65,35 @@ bool project::BaseAI::IsTargetReached() {
     return false;
 }
 
+
 void project::BaseAI::SetInitialVelocityTowardsTarget() {
     RigidBody* rb = m_Entity->GetComponent<RigidBody>();
     if (!rb) return;
 
+    Vector3 currentVelocity = rb->GetVelocity(); // Get the current velocity
     Vector3 direction = (targetPoint - m_Entity->GetPosition()).Normalized();
-    float initialHorizontalSpeed = 100.0f; // Adjust this value for desired horizontal speed
-    float initialVerticalSpeed = 100.0f;   // Adjust this value for desired vertical speed
 
-    // Apply horizontal and vertical components of the initial velocity
-    Vector3 initialVelocity = Vector3(direction.x * initialHorizontalSpeed, direction.y * initialVerticalSpeed, 0.0f);
+    // Adjust the current velocity to point towards the new target
+    // Keep the current speed (magnitude of the velocity) constant
+    float currentSpeed = currentVelocity.Length();
+    Vector3 newVelocity = direction * currentSpeed;
 
-    rb->SetVelocity(initialVelocity);
+    rb->SetVelocity(newVelocity);
 }
+
+//void project::BaseAI::SetInitialVelocityTowardsTarget() {
+//    RigidBody* rb = m_Entity->GetComponent<RigidBody>();
+//    if (!rb) return;
+//
+//    Vector3 direction = (targetPoint - m_Entity->GetPosition()).Normalized();
+//    float initialHorizontalSpeed = 20.0f; // Adjust this value for desired horizontal speed
+//    float initialVerticalSpeed = 20.0f;   // Adjust this value for desired vertical speed
+//
+//    // Apply horizontal and vertical components of the initial velocity
+//    Vector3 initialVelocity = Vector3(direction.x * initialHorizontalSpeed, direction.y * initialVerticalSpeed, 0.0f);
+//
+//    rb->SetVelocity(initialVelocity);
+//}
 
 
 

@@ -57,6 +57,12 @@ namespace project {
         float Length() const {
             return sqrt(x * x + y * y + z * z);
         }
+
+
+        Vector3 operator - () const {
+            return Vector3(-x, -y, -z);
+
+        }
     };
 
 }

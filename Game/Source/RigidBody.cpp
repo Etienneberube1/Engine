@@ -35,6 +35,12 @@ namespace project {
 		}
 	}
 
+
+
+
+
+
+
     void project::RigidBody::Update(float dt) {
         ApplyGravity();
 
@@ -55,7 +61,8 @@ namespace project {
                 onGround = true;
             }
             else if (m_Velocity.y < 0 && entityRect.y < collidingTile.y + collidingTile.h &&
-                entityRect.y + entityRect.h > collidingTile.y + collidingTile.h) {
+                entityRect.y + entityRect.h > collidingTile.y + collidingTile.h) 
+            {
                 // Collision from below
                 m_Entity->SetY(collidingTile.y + collidingTile.h);
                 m_Velocity.y = 0;
