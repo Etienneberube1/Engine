@@ -5,19 +5,27 @@
 #include <cstdlib>  // For rand() and srand()
 #include <ctime>    // For time()
 #include "RigidBody.h"
+#include "Animation.h"
+
+
 
 
 
 project::BaseAI::BaseAI(Entity* parent) : Component(parent) ,
 asReachedPoint(false)
 {
+    std::srand(time(NULL));
 }
 
 void project::BaseAI::Update(float deltaTime) {
     RigidBody* rb = m_Entity->GetComponent<RigidBody>();
-    if (!rb) return;
+    auto aiAnimation = m_Entity->GetComponent<Animation>(); // Assuming AI also has an Animation component
 
-    // Check for collision with specific layers
+    if (!rb || !aiAnimation) return;
+
+
+    HandleWorldBoundaries(rb);
+
 
         // Normal movement logic
         if (IsTargetReached()) {
@@ -32,26 +40,18 @@ void project::BaseAI::Update(float deltaTime) {
             elapsed -= deltaTime;
             if (elapsed < 0) {
                 PickRandomPointInMap();
-                asReachedPoint = false;
                 elapsed = waitDuration;
+                asReachedPoint = false;
             }
         }
 
 
 
-        if (m_Entity->GetX() >= 800)
-        {
-            m_Entity->SetPosition(Vector3(0.0f, m_Entity->GetY(), 0.0f));
+        if (rb->GetVelocity().x > 0) {
+            aiAnimation->SetFlip(true, false); // Facing right
         }
-        else if (m_Entity->GetX() < 0 - m_Entity->GetWidth())
-        {
-            m_Entity->SetPosition(Vector3(800.0f, m_Entity->GetY(), 0.0f));
-        }
-        else if (m_Entity->GetY() <= 0.0f)
-        {
-            Vector3 v3 = rb->GetVelocity();
-            m_Entity->SetPosition(Vector3(m_Entity->GetX(), 0.0f, 0.0f));
-            rb->SetVelocity(Vector3(v3.x, 0.0f, v3.z));
+        else if (rb->GetVelocity().x < 0) {
+            aiAnimation->SetFlip(false, false); // Facing left
         }
 
 }
@@ -59,7 +59,6 @@ void project::BaseAI::Update(float deltaTime) {
 
 void project::BaseAI::Start()
 {
-	srand(time(NULL));
 	PickRandomPointInMap();
 
     elapsed = waitDuration;
@@ -120,4 +119,24 @@ void project::BaseAI::MoveTowardsTarget(float deltaTime) {
 
     // Set the new velocity
     rb->SetVelocity(currentVelocity);
+}
+
+
+void project::BaseAI::HandleWorldBoundaries(RigidBody* rb)
+{
+    if (m_Entity->GetX() >= 800)
+    {
+        m_Entity->SetPosition(Vector3(0.0f, m_Entity->GetY(), 0.0f));
+    }
+    else if (m_Entity->GetX() < -10 - m_Entity->GetWidth())
+    {
+        m_Entity->SetPosition(Vector3(800.0f, m_Entity->GetY(), 0.0f));
+    }
+    else if (m_Entity->GetY() <= 0.0f)
+    {
+        Vector3 v3 = rb->GetVelocity();
+        m_Entity->SetPosition(Vector3(m_Entity->GetX(), 0.0f, 0.0f));
+        rb->SetVelocity(Vector3(v3.x, 0.0f, v3.z));
+    }
+
 }

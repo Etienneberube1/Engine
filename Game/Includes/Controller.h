@@ -4,6 +4,10 @@
 
 namespace project {
 
+	class Animation;
+	class RigidBody;
+
+
 	class Controller : public IUpdatable, public Component {
 
 	public:
@@ -13,9 +17,12 @@ namespace project {
 		virtual void Update(float dt) override;
 		virtual void Start() override;
 		virtual void Destroy() override;
-		virtual void SetSpeedValue(float speed);
-		void ChangeFlip(bool h, bool v);
-		void ChangeAnim();
+
+		virtual void SetSpeedValue(float speed) { m_speed = speed; };
+
+		void HandleWorldBoundaries(RigidBody* rb);
+
+
 
 		void SetOnGroundBool(bool isOnGround)
 		{
@@ -23,12 +30,14 @@ namespace project {
 		}
 
 	private:
+
 		float m_posX;
 		float m_posY;
 		float m_speed;
 
-		bool m_isFlying;
 		bool m_isMoving;
+		bool m_isFlying;
 		bool m_isOnGround;
+		bool m_isRunningAnimationActive;
 	};
 }

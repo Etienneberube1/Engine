@@ -5,6 +5,7 @@
 
 
 namespace project {
+	class RigidBody;
 
 	class BaseAI : public Component, public IUpdatable
 	{
@@ -19,7 +20,7 @@ namespace project {
         void PickRandomPointInMap();
         bool IsTargetReached();
         void MoveTowardsTarget(float deltaTime);
-		void SetInitialVelocityTowardsTarget();
+		void HandleWorldBoundaries(RigidBody* rb);
 
 	private:
         Vector3 position; // Current position
