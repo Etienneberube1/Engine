@@ -10,12 +10,13 @@
 
 
 project::Controller::Controller(Entity* entity) : Component(entity),
-m_isFlying(false), m_isMoving(false), m_isOnGround(false)
+m_isFlying(false), m_isMoving(false), m_isOnGround(false), m_isPlayerAlive(true), m_numberOfBalloon(2)
 {
 }
 
 void project::Controller::Update(float dt)
 {
+
     auto rigidBody = m_Entity->GetComponent<RigidBody>();
     auto playerAnimation = m_Entity->GetComponent<Animation>();
 
@@ -93,6 +94,9 @@ void project::Controller::Update(float dt)
 }
 
 
+
+
+
 void project::Controller::HandleWorldBoundaries(RigidBody* rb)
 {
     if (m_Entity->GetX() >= 800)
@@ -109,6 +113,21 @@ void project::Controller::HandleWorldBoundaries(RigidBody* rb)
         m_Entity->SetPosition(Vector3(m_Entity->GetX(), 0.0f, 0.0f));
         rb->SetVelocity(Vector3(v3.x, 0.0f, 0.0f));
     }
+}
+
+void project::Controller::TakeDamage()
+{
+    m_numberOfBalloon--;
+    if (m_numberOfBalloon <= 0) {
+        m_isPlayerAlive = false;
+    }
+    return;
+}
+
+void project::Controller::CheckEnemyCol()
+{
+    //Engine::Get().Physics().CheckRects(m_Entity->GetRect(), )
+
 }
 
 

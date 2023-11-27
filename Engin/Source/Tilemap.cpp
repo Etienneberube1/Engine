@@ -81,7 +81,7 @@ bool project::Tilemap::IsColliding(const RectF& entityRect, RectF* collidingTile
 
 			int tileIndex = collisionLayer[i][j];
 
-			if (tileIndex > 0) { // Check if the tile is not -1 (collidable)
+			if (tileIndex > 0) { 
 
 				RectF tileRect{ j * m_TileWidth, i * m_TileHeight, m_TileWidth, m_TileHeight };
 
@@ -98,36 +98,7 @@ bool project::Tilemap::IsColliding(const RectF& entityRect, RectF* collidingTile
 	}
 	return false;
 }
-//project::TLayer project::Tilemap::CreateLayer(const std::string& filename)
-//{
-//	TLayer newLayer = TLayer();
-//
-//	std::ifstream myFile(filename);
-//
-//	
-//	std::string line;
-//	int temp;
-//
-//	while (std::getline(myFile, line))
-//	{
-//		std::stringstream file(line);
-//		int colIdx = 0;
-//
-//		std::vector<int> row;
-//		while (file >> temp)
-//		{
-//			row.push_back(temp + 1);
-//
-//			if (file.peek() == ',') file.ignore();
-//
-//			colIdx++;
-//		}
-//		newLayer.push_back(row);
-//	}
-//	myFile.close();
-//
-//	return newLayer;
-//}
+
 
 project::TLayer project::Tilemap::CreateLayer(const std::string& filename) {
 	TLayer newLayer = TLayer();

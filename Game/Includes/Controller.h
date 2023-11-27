@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
 #include "IUpdatable.h"
+#include "Subject.h"
+
 
 namespace project {
 
@@ -22,7 +24,9 @@ namespace project {
 
 		void HandleWorldBoundaries(RigidBody* rb);
 
+		void TakeDamage();
 
+		void CheckEnemyCol();
 
 		void SetOnGroundBool(bool isOnGround)
 		{
@@ -39,5 +43,11 @@ namespace project {
 		bool m_isFlying;
 		bool m_isOnGround;
 		bool m_isRunningAnimationActive;
+
+		bool m_isPlayerAlive;
+		int m_numberOfBalloon; // number of life the player as
+
+
+		Subject<int> OnHealthChanged;
 	};
 }

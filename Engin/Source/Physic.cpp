@@ -108,6 +108,7 @@ float project::Physic::CalculateDistance(const Vector3& point1, const Vector3& p
 	return sqrt(dx * dx + dy * dy + dz * dz);
 }
 
+
 bool project::Physic::CollideWithLayer(Entity* entity, const std::string& layerName, Entity** other, RectF* collidingTile) {
 	RectF entityRect = entity->GetRect();
 

@@ -1,23 +1,26 @@
 #include "GameScene.h"
 #include "Engine.h"
 #include "Animation.h"
-#include "Atlas.h"
 #include "Entity.h"
 #include "Controller.h"
 #include "Tilemap.h"
 #include "Vector3.h"
 #include "RigidBody.h"
-#include "BaseAI.h"
+#include "Spawner.h"
+#include "BaseEnemy.h"
 
 void project::GameScene::Load()
 {
 	Entity* Tilemap = CreateTileMap();
 	Entity* player = CreatePlayer();
-	Entity* enemy1 = CreateEnemy("enemy1");
-	Entity* enemy2 = CreateEnemy("enemy2");
-	Entity* enemy3 = CreateEnemy("enemy3");
-	Entity* enemy4 = CreateEnemy("enemy4");
-	Entity* enemy5 = CreateEnemy("enemy5");
+	
+	Spawner* spawner;
+
+	BaseEnemy* baseEnemyPrototype = new BaseEnemy("enemy", Vector3(100.0f, 100.0f, 0.0f), 100.0f);
+
+	spawner->AddPrototype("NormalEnemy", baseEnemyPrototype);
+
+	spawner->Spawn("NormalEnem");
 }
 
 project::Entity* project::GameScene::CreatePlayer()
@@ -132,45 +135,6 @@ project::Entity* project::GameScene::CreateTileMap()
 }
 
 
-project::Entity* project::GameScene::CreateEnemy(const std::string enemyName)
-{
-	Entity* enemy = Instantiate(enemyName);
-
-	enemy->AddComponent<BaseAI>();
-
-	Animation* enemyAnimation = enemy->AddComponent<Animation>();
-	RigidBody* enemyRigidBody = enemy->AddComponent<RigidBody>();
-
-
-	enemyRigidBody->SetVelocity(Vector3(30.0f, 30.0f, 0.0f));
-	enemyRigidBody->SetGravityScale(2.0f);
-
-
-	enemyAnimation->Load("assets/playerAssets/enemySpriteSheet.png");
-
-
-
-	// ===========================PLAYER_FLY_ANIM==========================
-	enemyAnimation->AddFrame("flying0", 0, 0, 37, 63);
-	enemyAnimation->AddFrame("flying1", 37, 0, 37, 63);
-	enemyAnimation->AddFrame("flying2", 79, 0, 37, 63);
-	
-
-
-	enemyAnimation->Init(3, 37, 63);
-	enemyAnimation->AddClip("flying", 0, 3, 0.1f);
-	// ====================================================================
-
-	enemyAnimation->Play("flying", true);
-
-
-	enemy->SetPosition(Vector3(400.0f,100.0f, 0.0f));
-	enemy->SetSize(43.0f, 64.0f);
-
-
-
-	return enemy;
-}
 
 
 
