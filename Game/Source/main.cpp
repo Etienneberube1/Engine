@@ -7,6 +7,9 @@
 #include "GameScene.h"
 #include "MenuScene.h"
 
+
+
+
 void InitGameplay(void)
 {
 
@@ -18,7 +21,7 @@ void InitGameplay(void)
 	project::Engine::Get().World().Register("game", game);
 	project::Engine::Get().World().Register("menu", menu);
 
-	project::Engine::Get().World().Load("game");
+	project::Engine::Get().World().Load("menu");
 }
 
 

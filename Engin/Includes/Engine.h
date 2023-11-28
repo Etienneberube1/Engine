@@ -7,6 +7,9 @@
 #include <IWorld.h>
 #include <IPhysic.h>
 
+#include "vld.h"
+#include "vld_def.h"
+
 namespace project
 {
     class Engine final

@@ -33,6 +33,9 @@ namespace project {
 			m_isOnGround = isOnGround;
 		}
 
+
+		Subject<int> OnScoreChanged;
+
 	private:
 
 		float m_posX;
@@ -47,7 +50,7 @@ namespace project {
 		bool m_isPlayerAlive;
 		int m_numberOfBalloon; // number of life the player as
 
+		int m_Scores;
 
-		Subject<int> OnHealthChanged;
 	};
 }

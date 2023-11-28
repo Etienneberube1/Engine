@@ -3,8 +3,9 @@ const fs = require('fs');
 let project = new Project('engine');
  
 project.addProvider = function(proj, isRoot=false){
-    // proj.addIncludeDir("C:/Program Files (x86)/Visual Leak Detector/include")
-    // proj.addLib("C:/Program Files (x86)/Visual Leak Detector/lib/Win64/vld")
+    
+    proj.addLib("C:/Program Files (x86)/Visual Leak Detector/lib/Win64/vld")
+    proj.addIncludeDir("C:/Program Files (x86)/Visual Leak Detector/include")
     
     const sdl2 = true;//process.argv.indexOf("--sdl2") >= 0;
     if(sdl2){
@@ -32,7 +33,7 @@ project.addDefine("KINC_STATIC_COMPILE");
 project.isStaticLib = true;
 
 project.addIncludeDir(path.resolve("./Engin/Includes"));
-project.addIncludeDir(path.resolve("./Game/Includes"));
+
 project.addFiles('Source/**','Includes/**');
 
 project.addProvider(project,false);

@@ -10,7 +10,7 @@
 
 
 project::Controller::Controller(Entity* entity) : Component(entity),
-m_isFlying(false), m_isMoving(false), m_isOnGround(false), m_isPlayerAlive(true), m_numberOfBalloon(2)
+m_isFlying(false), m_isMoving(false), m_isOnGround(false), m_isPlayerAlive(true), m_numberOfBalloon(2),m_Scores(0)
 {
 }
 
@@ -45,6 +45,10 @@ void project::Controller::Update(float dt)
     if (Input().IsKeyDown(EKey::EKEY_S)) {
         velocity.y += m_speed * dt * 3;
         isMoving = true;
+
+
+        m_Scores += 1000;
+        OnScoreChanged.Invoke(m_Scores);
     }
 
 
@@ -134,6 +138,7 @@ void project::Controller::CheckEnemyCol()
 
 void project::Controller::Start()
 {
+
 }
 
 void project::Controller::Destroy()

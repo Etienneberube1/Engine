@@ -13,20 +13,23 @@ namespace project {
 	class BaseEnemy : public Enemy
 	{
 	public:
+		BaseEnemy(const std::string name, Vector3 pos) : Enemy(name, pos) {}
+		~BaseEnemy() = default;
+
 
 		virtual Enemy* Clone() override
 		{
-			auto instance = new BaseEnemy(m_name, m_position, m_speed);
+			auto instance = new BaseEnemy(m_name, m_position);
 
 			m_Entity = Engine::Get().World().Create(m_name);
 
 
 			m_Entity->AddComponent<BaseAI>();
 
-			Animation* enemyAnimation = m_Entity->AddComponent<Animation>();
-			RigidBody* enemyRigidBody = m_Entity->AddComponent<RigidBody>();
+			auto enemyAnimation = m_Entity->AddComponent<Animation>();
+			auto enemyRigidBody = m_Entity->AddComponent<RigidBody>();
 
-
+			
 			enemyRigidBody->SetVelocity(Vector3(30.0f, 30.0f, 0.0f));
 			enemyRigidBody->SetGravityScale(2.0f);
 
@@ -49,7 +52,7 @@ namespace project {
 			enemyAnimation->Play("flying", true);
 
 
-			m_Entity->SetPosition(Vector3(400.0f, 100.0f, 0.0f));
+			m_Entity->SetPosition(Vector3(m_position));
 			m_Entity->SetSize(43.0f, 64.0f);
 
 

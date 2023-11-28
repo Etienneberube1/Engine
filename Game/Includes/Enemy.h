@@ -1,22 +1,27 @@
 #pragma once 
 #include <string>
 #include "Vector3.h"
-
+#include "Entity.h"
 
 namespace project {
 
 	class Enemy
 	{
 	public:
-		Enemy(const std::string& name, Vector3 pos, float speed) :m_speed(speed), m_position(pos), m_name(name)
+		Enemy(const std::string& name, Vector3 pos) :m_position(pos), m_name(name)
 		{}
 
 
-		virtual ~Enemy() = default;
+		virtual ~Enemy()
+		{
+			//if (m_Entity != nullptr)
+			//{
+			//	delete m_Entity;
+			//}
+		}
 
 		virtual Enemy* Clone() = 0;
 	protected:
-		float m_speed = 0;
 
 		Vector3 m_position;
 
@@ -24,5 +29,7 @@ namespace project {
 
 		Entity* m_Entity = nullptr;
 
-	};}
+	};
+
+}
 

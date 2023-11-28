@@ -8,28 +8,42 @@
 #include "RigidBody.h"
 #include "Spawner.h"
 #include "BaseEnemy.h"
+#include "GameUI.h"
+
 
 void project::GameScene::Load()
 {
-	Entity* Tilemap = CreateTileMap();
-	Entity* player = CreatePlayer();
+	m_gameUI = Instantiate("gameUI");
+
+	auto Tilemap = CreateTileMap();
+	auto player = CreatePlayer();
 	
-	Spawner* spawner;
 
-	BaseEnemy* baseEnemyPrototype = new BaseEnemy("enemy", Vector3(100.0f, 100.0f, 0.0f), 100.0f);
+	Spawner spawner;
 
-	spawner->AddPrototype("NormalEnemy", baseEnemyPrototype);
+	auto baseEnemyPrototype0 = new BaseEnemy("enemy0", Vector3(200.0f, 100.0f, 0.0f));
+	//auto baseEnemyPrototype1 = new BaseEnemy("enemy1", Vector3(300.0f, 100.0f, 0.0f));
+	//auto baseEnemyPrototype2 = new BaseEnemy("enemy2", Vector3(400.0f, 100.0f, 0.0f));
+	//auto baseEnemyPrototype3 = new BaseEnemy("enemy3", Vector3(500.0f, 100.0f, 0.0f));
 
-	spawner->Spawn("NormalEnem");
+	spawner.AddPrototype("NormalEnemy0", baseEnemyPrototype0);
+	//spawner.AddPrototype("NormalEnemy1", baseEnemyPrototype1);
+	//spawner.AddPrototype("NormalEnemy2", baseEnemyPrototype2);
+	//spawner.AddPrototype("NormalEnemy3", baseEnemyPrototype3);
+
+	spawner.Spawn("NormalEnemy0");
+	//spawner.Spawn("NormalEnemy1");
+	//spawner.Spawn("NormalEnemy2");
+	//spawner.Spawn("NormalEnemy3");
 }
 
 project::Entity* project::GameScene::CreatePlayer()
 {
 	// Instantiate a new player entity
-	Entity* player = Instantiate("player");
-	Animation* playerAnimation = player->AddComponent<Animation>();
-	Controller* playerController = player->AddComponent<Controller>();
-	RigidBody* playerRigidBody = player->AddComponent<RigidBody>();
+	auto player = Instantiate("player");
+	auto playerAnimation = player->AddComponent<Animation>();
+	auto playerController = player->AddComponent<Controller>();
+	auto playerRigidBody = player->AddComponent<RigidBody>();
 
 
 
@@ -44,7 +58,9 @@ project::Entity* project::GameScene::CreatePlayer()
 
 
 	playerController->SetSpeedValue(100.0f);
-
+	
+	GameUI* uiCmp = m_gameUI->AddComponent<GameUI>();
+	playerController->OnScoreChanged.AddListener(uiCmp);
 
 
 

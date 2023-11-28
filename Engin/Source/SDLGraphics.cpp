@@ -4,6 +4,9 @@
 #include <SdlGraphics.h>
 #include <Engine.h>
 
+#include <cmath>
+
+
 bool project::SdlGraphics::Initialize(const std::string& title, int w, int h)
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
@@ -243,7 +246,7 @@ void project::SdlGraphics::DrawString(const std::string& text, size_t fontId, fl
         static_cast<Uint8>(color.alpha)
     };
 
-    SDL_Surface* _surface = TTF_RenderText_Solid(m_FontCache[fontId], text.c_str(), _color);
+    SDL_Surface* _surface = TTF_RenderText_Solid(m_FontCache[fontId],text.c_str(), _color);
 
     SDL_Rect _dst = {
         static_cast<int>(x),

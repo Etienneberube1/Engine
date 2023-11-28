@@ -14,6 +14,7 @@ namespace project {
 	private:
 		Entity* CreateMenu();
 
+		Entity* m_menuUI;
 		size_t m_fontId;
 	};
 }

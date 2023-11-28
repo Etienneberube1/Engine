@@ -2,18 +2,27 @@
 #include "Observer.h"
 #include "IDrawable.h"
 #include "Engine.h"
+#include "Component.h"
+
 
 namespace project {
 
-	class GameUI : public Observer<int>, public IDrawable
+	class GameUI : public IDrawable, public Component, public Observer<int>
 	{
-	public:
+	public:		
+		
+		GameUI();
+		GameUI(Entity* parent);
+
 		virtual void OnNotify(const int& value)
 		{
-			Engine::Get().Logger().LogMessage("Change Health");
+			m_playerScore += value;
 		}
 
 		virtual void Draw() override;
+	private:
+		float m_playerScore;
+		size_t m_fontId;
 	};
 
 }
