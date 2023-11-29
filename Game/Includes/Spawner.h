@@ -1,38 +1,26 @@
 #pragma once
 #include "Enemy.h"
 #include <map>
-#include <string>
+#include <memory>
 
 namespace project {
 
-	typedef std::map<std::string, Enemy*> TProtoMap;
+    typedef std::map<std::string, std::unique_ptr<Enemy>> TProtoMap;
 
-	class Spawner
-	{
-	public:
-		~Spawner() 
-		{
-			for (auto proto : m_Prototypes) {
-				delete proto.second;
-			}
-		}
+    class Spawner {
+    public:
+        void AddPrototype(const std::string& name, std::unique_ptr<Enemy> proto) {
+            m_Prototypes[name] = std::move(proto);
+        }
 
-		void AddPrototype(const std::string& name, Enemy* proto)
-		{
-			m_Prototypes[name] = proto;
-		}
+        std::unique_ptr<Enemy> Spawn(const std::string& name) {
+            if (m_Prototypes.count(name) > 0) {
+                return m_Prototypes[name]->Clone();
+            }
+            return nullptr;
+        }
 
-		Enemy* Spawn(const std::string& name)
-		{
-			if (m_Prototypes.count(name) > 0)
-			{
-				return m_Prototypes[name]->Clone();
-			}
-			return nullptr;
-		}
-	private:
-		TProtoMap m_Prototypes;
-	};
-
-
+    private:
+        TProtoMap m_Prototypes;
+    };
 }

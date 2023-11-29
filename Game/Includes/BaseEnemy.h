@@ -10,56 +10,53 @@
 
 namespace project {
 
-	class BaseEnemy : public Enemy
-	{
+	class BaseEnemy : public Enemy {
 	public:
-		BaseEnemy(const std::string name, Vector3 pos) : Enemy(name, pos) {}
+		BaseEnemy(const std::string& name, const Vector3& pos) : Enemy(name, pos) {}
 		~BaseEnemy() = default;
 
 
-		virtual Enemy* Clone() override
-		{
-			auto instance = new BaseEnemy(m_name, m_position);
+		virtual std::unique_ptr<Enemy> Clone() override {
 
-			m_Entity = Engine::Get().World().Create(m_name);
+			auto instance = std::make_unique<BaseEnemy>(m_name, m_position);
+			// Create a new entity for the cloned instance
+			instance->m_Entity = Engine::Get().World().Create(m_name);
 
+			instance->m_Entity->AddComponent<BaseAI>();
+			auto enemyAnimation = instance->m_Entity->AddComponent<Animation>();
+			auto enemyRigidBody = instance->m_Entity->AddComponent<RigidBody>();
 
-			m_Entity->AddComponent<BaseAI>();
-
-			auto enemyAnimation = m_Entity->AddComponent<Animation>();
-			auto enemyRigidBody = m_Entity->AddComponent<RigidBody>();
-
-			
-			enemyRigidBody->SetVelocity(Vector3(30.0f, 30.0f, 0.0f));
+			enemyRigidBody->SetVelocity(Vector3(0.0f, 0.0f, 0.0f));
 			enemyRigidBody->SetGravityScale(2.0f);
-
 
 			enemyAnimation->Load("assets/playerAssets/enemySpriteSheet.png");
 
-
-
-			// ===========================ENEMY_FLY_ANIM==========================
 			enemyAnimation->AddFrame("flying0", 0, 0, 37, 63);
 			enemyAnimation->AddFrame("flying1", 37, 0, 37, 63);
 			enemyAnimation->AddFrame("flying2", 79, 0, 37, 63);
 
-
-
 			enemyAnimation->Init(3, 37, 63);
 			enemyAnimation->AddClip("flying", 0, 3, 0.1f);
-			// ====================================================================
 
-			enemyAnimation->Play("flying", true);
+															  
+			enemyAnimation->AddFrame("startAnim0",  0,  64, 36, 38);
+			enemyAnimation->AddFrame("startAnim1", 36,  64, 36, 38);
+			enemyAnimation->AddFrame("startAnim2", 72,  64, 36, 38);
+			enemyAnimation->AddFrame("startAnim3", 108, 64, 36, 38);
+			enemyAnimation->AddFrame("startAnim4", 144, 64, 36, 38);
+			enemyAnimation->AddFrame("startAnim5", 180, 64, 36, 38);
+			enemyAnimation->AddFrame("startAnim6", 216, 64, 36, 38);			
+			enemyAnimation->AddFrame("startAnim7", 252, 64, 36, 38);
 
+			enemyAnimation->Init(7, 36, 38);
+			enemyAnimation->AddClip("startAnim", 0, 7, 0.3f);
 
-			m_Entity->SetPosition(Vector3(m_position));
-			m_Entity->SetSize(43.0f, 64.0f);
+			enemyAnimation->Play("startAnim", false);
 
-
+			instance->m_Entity->SetPosition(Vector3(m_position));
+			instance->m_Entity->SetSize(43.0f, 40.0f);
 
 			return instance;
-
 		}
-
 	};
 }

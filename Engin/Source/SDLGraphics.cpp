@@ -286,5 +286,9 @@ void project::SdlGraphics::Shutdown()
     TTF_Quit();
     SDL_DestroyRenderer(m_Renderer);
     SDL_DestroyWindow(m_Window);
+
+    m_FontCache.clear();
+    m_TextureCache.clear();
+
     SDL_Quit();
 }

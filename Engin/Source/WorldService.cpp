@@ -75,6 +75,7 @@ void project::WorldService::Load(const std::string& scene)
 {
     if (m_SceneRegistry.count(scene) > 0)
     {
+        Unload();
         m_SceneToLoad = scene;
     }
 }
@@ -163,6 +164,8 @@ void project::WorldService::StartEntities()
             if (m_EntityMap.count(entity->GetName()) > 0)
             {
                 Engine::Get().Logger().LogWarning("Not adding entity with same name");
+                Engine::Get().Logger().LogWarning("Entity name: " + entity->GetName());
+
                 continue;
             }
 

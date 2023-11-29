@@ -31,6 +31,10 @@ namespace project {
 
 		float elapsed;
 
+		const float startingWaitDuration = 2.0f;
+		float startingTimer = 0.0f;
+		bool hasStarted = false;
+
 		bool asReachedPoint;
 
 		float horizontalSpeed = 70.0f; // Adjust as needed

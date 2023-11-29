@@ -76,19 +76,18 @@ bool project::Tilemap::IsColliding(const RectF& entityRect, RectF* collidingTile
 	const TLayer& collisionLayer = GetLayer(layerName);
 
 	for (int i = 0; i < m_Height; i++) {
-
 		for (int j = 0; j < m_Width; j++) {
-
 			int tileIndex = collisionLayer[i][j];
 
-			if (tileIndex > 0) { 
-
-				RectF tileRect{ j * m_TileWidth, i * m_TileHeight, m_TileWidth, m_TileHeight };
+			if (tileIndex > 0) {
+				// Cast int to float
+				RectF tileRect{ static_cast<float>(j * m_TileWidth),
+								static_cast<float>(i * m_TileHeight),
+								static_cast<float>(m_TileWidth),
+								static_cast<float>(m_TileHeight) };
 
 				if (Engine::Get().Physics().CheckRects(entityRect, tileRect)) {
-
 					if (collidingTileRect) {
-
 						*collidingTileRect = tileRect;
 					}
 					return true;
@@ -131,23 +130,18 @@ project::TLayer project::Tilemap::CreateLayer(const std::string& filename) {
 }
 
 
-void project::Tilemap::Draw()
-{
-	for (auto layer : m_Tilemap)
-	{
-		for (int y = 0; y < layer.second.size(); y++)
-		{
-			for (int x = 0; x < layer.second[y].size(); x++)
-			{
+void project::Tilemap::Draw() {
+	for (const auto& layer : m_Tilemap) {
+		for (int y = 0; y < layer.second.size(); y++) {
+			for (int x = 0; x < layer.second[y].size(); x++) {
 				int _index = layer.second[y][x] - 1;
-				if (_index >= 0)
-				{
+				if (_index >= 0) {
 					RectI _src = m_Tileset[_index];
 					RectF _dst{
-					x * m_TileWidth,
-					y * m_TileHeight,
-					m_TileWidth,
-					m_TileHeight
+						static_cast<float>(x * m_TileWidth),
+						static_cast<float>(y * m_TileHeight),
+						static_cast<float>(m_TileWidth),
+						static_cast<float>(m_TileHeight)
 					};
 					Graphics().DrawTexture(m_TilesetId, _src, _dst, 0.0, Flip(), Color::WHITE);
 				}

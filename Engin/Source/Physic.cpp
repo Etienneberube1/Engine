@@ -105,7 +105,7 @@ float project::Physic::CalculateDistance(const Vector3& point1, const Vector3& p
 	float dx = point1.x - point2.x;
 	float dy = point1.y - point2.y;
 	float dz = point1.z - point2.z;
-	return sqrt(dx * dx + dy * dy + dz * dz);
+	return static_cast<float>(sqrt(dx * dx + dy * dy + dz * dz));
 }
 
 

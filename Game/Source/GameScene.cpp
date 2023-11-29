@@ -9,7 +9,7 @@
 #include "Spawner.h"
 #include "BaseEnemy.h"
 #include "GameUI.h"
-
+#include <memory>
 
 void project::GameScene::Load()
 {
@@ -21,20 +21,16 @@ void project::GameScene::Load()
 
 	Spawner spawner;
 
-	auto baseEnemyPrototype0 = new BaseEnemy("enemy0", Vector3(200.0f, 100.0f, 0.0f));
-	//auto baseEnemyPrototype1 = new BaseEnemy("enemy1", Vector3(300.0f, 100.0f, 0.0f));
-	//auto baseEnemyPrototype2 = new BaseEnemy("enemy2", Vector3(400.0f, 100.0f, 0.0f));
-	//auto baseEnemyPrototype3 = new BaseEnemy("enemy3", Vector3(500.0f, 100.0f, 0.0f));
+	auto baseEnemyPrototype = std::make_unique<BaseEnemy>("Normalenemy", Vector3(270.0f, 100.0f, 0.0f));
+	auto fastEnemyPrototype = std::make_unique<BaseEnemy>("Fastenemy", Vector3(300.0f, 100.0f, 0.0f));
 
-	spawner.AddPrototype("NormalEnemy0", baseEnemyPrototype0);
-	//spawner.AddPrototype("NormalEnemy1", baseEnemyPrototype1);
-	//spawner.AddPrototype("NormalEnemy2", baseEnemyPrototype2);
-	//spawner.AddPrototype("NormalEnemy3", baseEnemyPrototype3);
+	spawner.AddPrototype("Normalenemy", std::move(baseEnemyPrototype));
+	spawner.AddPrototype("Fastenemy", std::move(fastEnemyPrototype));
 
-	spawner.Spawn("NormalEnemy0");
-	//spawner.Spawn("NormalEnemy1");
-	//spawner.Spawn("NormalEnemy2");
-	//spawner.Spawn("NormalEnemy3");
+
+	spawner.Spawn("Normalenemy");
+	spawner.Spawn("Fastenemy");
+	
 }
 
 project::Entity* project::GameScene::CreatePlayer()

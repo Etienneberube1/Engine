@@ -32,8 +32,8 @@ namespace project {
             return *this;
         }
 
-        void Vector3::Normalize() {
-            float length = sqrt(x * x + y * y + z * z);
+        void Normalize() {
+            float length = static_cast<float>(sqrt(x * x + y * y + z * z));
             if (length != 0) {
                 x /= length;
                 y /= length;
@@ -41,7 +41,7 @@ namespace project {
             }
         }
 
-        Vector3 Vector3::Normalized() const {
+        Vector3 Normalized() const {
             Vector3 temp = *this;
             temp.Normalize();
             return temp;
@@ -51,11 +51,11 @@ namespace project {
             float dx = a.x - b.x;
             float dy = a.y - b.y;
             float dz = a.z - b.z;
-            return sqrt(dx * dx + dy * dy + dz * dz);
+            return static_cast<float>(sqrt(dx * dx + dy * dy + dz * dz));
         }
 
         float Length() const {
-            return sqrt(x * x + y * y + z * z);
+            return static_cast<float>(sqrt(x * x + y * y + z * z));
         }
 
 
