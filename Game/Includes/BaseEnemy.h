@@ -56,6 +56,8 @@ namespace project {
 			instance->m_Entity->SetPosition(Vector3(m_position));
 			instance->m_Entity->SetSize(43.0f, 40.0f);
 
+			Engine::Get().Physics().AddToEnemyMap(m_name, m_Entity);
+
 			return instance;
 		}
 	};

@@ -82,6 +82,18 @@ void project::Physic::AddToLayer(const std::string& layerName, Entity* entity)
 	m_Layers[layerName].push_back(entity);
 }
 
+void project::Physic::AddToEnemyMap(const std::string& EnemyName, Entity* entity)
+{
+	if (m_Layers.count(EnemyName) == 0)
+	{
+		m_Layers.emplace(EnemyName, std::vector<Entity*>());
+	}
+
+	m_Layers[EnemyName].push_back(entity);
+}
+
+
+
 bool project::Physic::CalculateIntersection(const RectF& rect1, const RectF& rect2, RectF* intersection) {
 	float x1 = std::max(rect1.x, rect2.x);
 	float y1 = std::max(rect1.y, rect2.y);
@@ -123,6 +135,20 @@ bool project::Physic::CollideWithLayer(Entity* entity, const std::string& layerN
 	return false;
 }
 
+bool project::Physic::CollideWithEnemy(Entity* entity, const std::string& EnmemyName, Entity** other)
+{
+	for (Entity* enemies : m_EnemyMap[EnmemyName])
+	{
+		if (CheckRects(enemies->GetRect(), entity->GetRect()))
+		{
+			*other = enemies;
+			return true;
+		}
+	}
+
+	return false;
+}
+
 
 
 
@@ -143,4 +169,22 @@ void project::Physic::Remove(Entity* entity)
 			it++;
 		}
 	}
+
+	for (auto enemy : m_EnemyMap)
+	{
+		std::vector<Entity*>::iterator it = enemy.second.begin();
+		while (it != enemy.second.end())
+		{
+			if (*it == entity)
+			{
+				enemy.second.erase(it);
+				return;
+			}
+
+			it++;
+		}
+	}
+
+
+
 }

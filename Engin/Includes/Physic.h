@@ -15,12 +15,16 @@ namespace project
         virtual bool CheckRects(float r1x, float r1y, float r1w, float r1h, float r2x, float r2y, float r2w, float r2h) override;
         virtual bool CheckRectCircle(float rx, float ry, float rw, float rh, float cx, float cy, float cr) override;
         virtual void AddToLayer(const std::string& layerName, Entity* entity) override;
+        virtual void AddToEnemyMap(const std::string& layerName, Entity* entity) override;
         virtual bool CollideWithLayer(Entity* entity, const std::string& layerName, Entity** other, RectF* collidingTile) override;
+        virtual bool CollideWithEnemy(Entity* entity, const std::string& EnmemyName, Entity** other) override;
         virtual void Remove(Entity* entity) override;
         virtual bool CheckRects(const RectF& rect1, const RectF& rect2) override;
         virtual bool CalculateIntersection(const RectF& rect1, const RectF& rect2, RectF* intersection) override;
         virtual float CalculateDistance(const Vector3& point1, const Vector3& point2) override;
     private:
         std::map<std::string, std::vector<Entity*>> m_Layers;
+        std::map<std::string, std::vector<Entity*>> m_EnemyMap;
+
     };
 }
