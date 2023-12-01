@@ -7,8 +7,8 @@
 #include <IWorld.h>
 #include <IPhysic.h>
 
-//#include "vld.h"
-//#include "vld_def.h"
+#include "vld.h"
+#include "vld_def.h"
 
 namespace project
 {

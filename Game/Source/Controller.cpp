@@ -7,7 +7,7 @@
 #include "RigidBody.h"
 #include "Physic.h"
 #include "Tilemap.h"
-
+#include "memory"
 
 project::Controller::Controller(Entity* entity) : Component(entity),
 m_isFlying(false), m_isMoving(false), m_isOnGround(false), m_isPlayerAlive(true), m_numberOfBalloon(2),m_Scores(0)
@@ -47,8 +47,6 @@ void project::Controller::Update(float dt)
         isMoving = true;
 
 
-        m_Scores += 1000;
-        OnScoreChanged.Invoke(m_Scores);
     }
 
 
@@ -130,7 +128,15 @@ void project::Controller::TakeDamage()
 
 void project::Controller::CheckEnemyCol()
 {
-    //Engine::Get().Physics().CheckRects(m_Entity->GetRect(), )
+    Entity* colEntity = nullptr;
+
+    if (Engine::Get().Physics().CollideWithEnemy(m_Entity, &colEntity))
+    {
+        m_Scores += 1000;
+        OnScoreChanged.Invoke(m_Scores);
+
+        delete colEntity;
+    }
 
 }
 

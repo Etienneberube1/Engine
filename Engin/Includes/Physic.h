@@ -17,8 +17,9 @@ namespace project
         virtual void AddToLayer(const std::string& layerName, Entity* entity) override;
         virtual void AddToEnemyMap(const std::string& layerName, Entity* entity) override;
         virtual bool CollideWithLayer(Entity* entity, const std::string& layerName, Entity** other, RectF* collidingTile) override;
-        virtual bool CollideWithEnemy(Entity* entity, const std::string& EnmemyName, Entity** other) override;
+        virtual bool CollideWithEnemy(Entity* entity, Entity** other) override;
         virtual void Remove(Entity* entity) override;
+        virtual bool CheckRects(Entity* entity1, Entity* entity2) override;
         virtual bool CheckRects(const RectF& rect1, const RectF& rect2) override;
         virtual bool CalculateIntersection(const RectF& rect1, const RectF& rect2, RectF* intersection) override;
         virtual float CalculateDistance(const Vector3& point1, const Vector3& point2) override;

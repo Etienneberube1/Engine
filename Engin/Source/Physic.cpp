@@ -3,6 +3,7 @@
 #include <Entity.h>
 #include "Tilemap.h"
 #include "RectF.h"
+#include "Engine.h"
 
 bool project::Physic::CheckPointCircle(float px, float py, float cx, float cy, float cr)
 {
@@ -48,6 +49,11 @@ bool project::Physic::CheckRects(float r1x, float r1y, float r1w, float r1h, flo
 bool project::Physic::CheckRects(const RectF& rect1, const RectF& rect2) {
 	return (rect1.x <= (rect2.x + rect2.w) && (rect1.x + rect1.w) >= rect2.x &&
 		rect1.y <= (rect2.y + rect2.h) && (rect1.y + rect1.h) >= rect2.y);
+}
+
+
+bool project::Physic::CheckRects(Entity* entity1, Entity* entity2) {
+	return CheckRects(entity1->GetRect(), entity2->GetRect());
 }
 
 
@@ -135,17 +141,21 @@ bool project::Physic::CollideWithLayer(Entity* entity, const std::string& layerN
 	return false;
 }
 
-bool project::Physic::CollideWithEnemy(Entity* entity, const std::string& EnmemyName, Entity** other)
+bool project::Physic::CollideWithEnemy(Entity* entity, Entity** other)
 {
-	for (Entity* enemies : m_EnemyMap[EnmemyName])
+	for (auto enemy : m_EnemyMap)
 	{
-		if (CheckRects(enemies->GetRect(), entity->GetRect()))
+		std::vector<Entity*>::iterator it = enemy.second.begin();
+		if(it != enemy.second.end())
 		{
-			*other = enemies;
-			return true;
+			if (CheckRects(entity->GetRect(), enemy.second.front()->GetRect()))
+			{
+				Engine::Get().Logger().LogMessage(std::to_string(enemy.second.front()->GetX()));
+				Engine::Get().Logger().LogMessage(std::to_string(enemy.second.front()->GetY()));
+				return true;
+			}
 		}
 	}
-
 	return false;
 }
 

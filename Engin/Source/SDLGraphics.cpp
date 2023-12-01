@@ -258,6 +258,7 @@ void project::SdlGraphics::DrawString(const std::string& text, size_t fontId, fl
     g_TextureBuffer = SDL_CreateTextureFromSurface(m_Renderer, _surface);
     SDL_RenderCopy(m_Renderer, g_TextureBuffer, nullptr, &_dst);
     SDL_FreeSurface(_surface);
+    SDL_DestroyTexture(g_TextureBuffer);
 }
 
 void project::SdlGraphics::GetTextSize(const std::string& text, size_t fontId, int* w, int* h)
