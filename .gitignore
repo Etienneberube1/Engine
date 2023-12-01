@@ -1,5 +1,5 @@
 build/**
-# Deployment/**
+Deployment/**
 !Deployment/assets
 !Deployment/assets/**
 # !Deployment/assets/map/**
