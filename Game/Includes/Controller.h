@@ -3,56 +3,78 @@
 #include "IUpdatable.h"
 #include "Subject.h"
 
-
 namespace project {
 
-	class Animation;
-	class RigidBody;
+    class Animation;
+    class RigidBody;
 
+    // Class responsible for controlling an entity, including movement and interactions.
+    class Controller : public IUpdatable, public Component {
 
-	class Controller : public IUpdatable, public Component {
+    public:
+        // Constructor.
+        Controller(Entity* entity);
 
-	public:
-		Controller(Entity* entity);
-		~Controller() = default;
+        // Destructor.
+        ~Controller() = default;
 
-		virtual void Update(float dt) override;
-		virtual void Start() override;
-		virtual void Destroy() override;
+        // Update method called every frame.
+        virtual void Update(float dt) override;
 
-		virtual void SetSpeedValue(float speed) { m_speed = speed; };
+        // Initialization logic for the controller.
+        virtual void Start() override;
 
-		void HandleWorldBoundaries(RigidBody* rb);
+        // Cleanup logic for the controller.
+        virtual void Destroy() override;
 
-		void TakeDamage();
+        // Sets the speed value for the controller.
+        virtual void SetSpeedValue(float speed) { m_speed = speed; };
 
-		void CheckEnemyCol();
+        // Handles entity's interactions with world boundaries.
+        void HandleWorldBoundaries(RigidBody* rb);
 
-		bool CheckIfPlayerIsDead();
+        // Logic for taking damage.
+        void TakeDamage();
 
-		void SetOnGroundBool(bool isOnGround)
-		{
-			m_isOnGround = isOnGround;
-		}
+        // Checks for collisions with enemies.
+        void CheckEnemyCol();
 
+        // Checks if the player is dead.
+        bool CheckIfPlayerIsDead();
 
-		Subject<int> OnScoreChanged;
+        // Sets the ground state of the entity.
+        void SetOnGroundBool(bool isOnGround) {
+            m_isOnGround = isOnGround;
+        }
 
-	private:
+        // Subject for score change notifications.
+        Subject<int> OnScoreChanged;
 
-		float m_posX;
-		float m_posY;
-		float m_speed;
+    private:
+        // Positional variables.
+        float m_posX;
+        float m_posY;
 
-		bool m_isMoving;
-		bool m_isFlying;
-		bool m_isOnGround;
-		bool m_isRunningAnimationActive;
+        // Speed of the entity.
+        float m_speed;
 
-		bool m_isPlayerAlive;
-		int m_numberOfBalloon; // number of life the player as
+        // State variables.
+        bool m_isMoving;
+        bool m_isFlying;
+        bool m_isOnGround;
+        bool m_isRunningAnimationActive;
 
-		int m_Scores;
+        // Player state.
+        bool m_isPlayerAlive;
+        int m_numberOfBalloon; // Number of lives the player has.
 
-	};
+        // Score and timing variables.
+        int m_Scores;
+        float m_elapsed;
+        float m_timeBetweenSound;
+
+        // Sound identifiers.
+        size_t playerFlapSound;
+        size_t killEnemySound;
+    };
 }

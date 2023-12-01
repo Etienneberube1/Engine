@@ -10,156 +10,156 @@
 
 namespace project {
 
-	class Entity final
-	{
-	public:
-		virtual ~Entity() = default;
-		Entity(const std::string& name);
+    // Class representing an entity in the game world.
+    class Entity final
+    {
+    public:
+        // Destructor.
+        virtual ~Entity() = default;
 
-		virtual void Start();
-		virtual void Update(float dt);
-		virtual void Draw();
-		virtual void Destroy();
+        // Constructor with entity name.
+        Entity(const std::string& name);
 
-		std::string& GetName() { return m_Name; }
+        // Lifecycle methods for the entity.
+        virtual void Start();
+        virtual void Update(float dt);
+        virtual void Draw();
+        virtual void Destroy();
 
-		void SetPosition(const Vector3& position) {
-			m_X = position.x;
-			m_Y = position.y;
-		}
+        // Gets the name of the entity.
+        std::string& GetName() { return m_name; }
 
-		void SetSize(float w, float h)
-		{
-			m_Width = w;
-			m_Height = h;
-		}
+        // Sets the position of the entity.
+        void SetPosition(const Vector3& position) {
+            m_x = position.x;
+            m_y = position.y;
+        }
 
-		void SetRotation(double angle)
-		{
-			m_Angle = angle;
-		}
+        // Sets the size of the entity.
+        void SetSize(float w, float h) {
+            m_width = w;
+            m_height = h;
+        }
 
-		void Translate(float dx, float dy)
-		{
-			m_X += dx;
-			m_Y += dy;
-		}
+        // Sets the rotation angle of the entity.
+        void SetRotation(double angle) {
+            m_angle = angle;
+        }
 
-		void SetY(float y)
-		{
-			m_Y = y;
-		}
-		void SetX(float x)
-		{
-			m_X = x;
-		}
-		
-		void Scale(float dw, float dh)
-		{
-			m_Width *= dw;
-			m_Width *= dh;
-		}
+        // Translates the entity by a given delta.
+        void Translate(float dx, float dy) {
+            m_x += dx;
+            m_y += dy;
+        }
 
-		void Rotate(double angle)
-		{
-			m_Angle += angle;
-		}
+        // Sets the x-coordinate of the entity.
+        void SetX(float x) {
+            m_x = x;
+        }
 
-		void GetPosition(float* x, float* y)
-		{
-			*x = m_X;
-			*y = m_Y;
-		}
+        // Sets the y-coordinate of the entity.
+        void SetY(float y) {
+            m_y = y;
+        }
 
-		Vector3 GetPosition() const {
-			return Vector3(m_X, m_Y, 0.0f);
-		}
+        // Scales the entity by a given factor.
+        void Scale(float dw, float dh) {
+            m_width *= dw;
+            m_width *= dh;
+        }
 
-		float GetX() const { return m_X; }
-		float GetY() const { return m_Y; }
+        // Rotates the entity by a given angle.
+        void Rotate(double angle) {
+            m_angle += angle;
+        }
 
-		void GetSize(float* w, float* h)
-		{
-			*w = m_Width;
-			*h = m_Height;
-		}
+        // Gets the position of the entity.
+        void GetPosition(float* x, float* y) {
+            *x = m_x;
+            *y = m_y;
+        }
 
-		float GetWidth() const { return m_Width; }
-		float GetHeight() const { return m_Height; }
+        // Returns the position as a Vector3.
+        Vector3 GetPosition() const {
+            return Vector3(m_x, m_y, 0.0f);
+        }
 
-		double GetRotation() const { return m_Angle; }
+        // Gets the x and y coordinates.
+        float GetX() const { return m_x; }
+        float GetY() const { return m_y; }
 
-		void GetRect(RectF* rect)
-		{
-			*rect = {
-				m_X, m_Y,
-				m_Width, m_Height
-			};
-		}
+        // Gets the width and height of the entity.
+        void GetSize(float* w, float* h) {
+            *w = m_width;
+            *h = m_height;
+        }
 
+        float GetWidth() const { return m_width; }
+        float GetHeight() const { return m_height; }
 
+        // Gets the rotation angle of the entity.
+        double GetRotation() const { return m_angle; }
 
-		RectF GetRect() 
-		{
-			RectF tmp = {
-						m_X, m_Y,
-				m_Width, m_Height
-				
-			};
-			return tmp;
-		}
+        // Gets the RectF representing the entity's bounds.
+        void GetRect(RectF* rect) {
+            *rect = RectF{ m_x, m_y, m_width, m_height };
+        }
 
+        RectF GetRect() {
+            return RectF{ m_x, m_y, m_width, m_height };
+        }
 
-		template <typename T>
-		T* AddComponent()
-		{
-			T* component = new T(this);
-			const type_info* type = &typeid(*component);
-			if (m_ComponentByType.count(type) == 0)
-			{
-				m_ComponentByType.emplace(type, component);
+        // Template methods for adding and getting components.
+        template <typename T>
+        T* AddComponent()
+        {
+            T* component = new T(this);
+            const type_info* type = &typeid(*component);
+            if (m_componentByType.count(type) == 0)
+            {
+                m_componentByType.emplace(type, component);
 
-				auto _updatable = dynamic_cast<IUpdatable*>(component);
-				if (_updatable != nullptr)
-				{
-					m_UpdatableComponents.emplace_back(_updatable);
-				}
+                auto _updatable = dynamic_cast<IUpdatable*>(component);
+                if (_updatable != nullptr)
+                {
+                    m_updatableComponents.emplace_back(_updatable);
+                }
 
-				auto _drawable = dynamic_cast<IDrawable*>(component);
-				if (_drawable != nullptr)
-				{
-					m_DrawableComponents.emplace_back(_drawable);
-				}
+                auto _drawable = dynamic_cast<IDrawable*>(component);
+                if (_drawable != nullptr)
+                {
+                    m_drawableComponents.emplace_back(_drawable);
+                }
 
-				return component;
-			}
+                return component;
+            }
 
-			return nullptr;
-		}
+            return nullptr;
+        }
 
-		template <typename T>
-		T* GetComponent()
-		{
-			const type_info* type = &typeid(T);
-			if (m_ComponentByType.count(type) > 0)
-			{
-				return static_cast<T*>(m_ComponentByType[type]);
-			}
+        template <typename T>
+        T* GetComponent()
+        {
+            const type_info* type = &typeid(T);
+            if (m_componentByType.count(type) > 0)
+            {
+                return static_cast<T*>(m_componentByType[type]);
+            }
 
-			return nullptr;
-		}
+            return nullptr;
+        }
 
-	protected:
-		std::string m_Name;
+    protected:
+        std::string m_name;
 
-		std::map<const type_info*, Component*> m_ComponentByType;
-		std::vector<IUpdatable*> m_UpdatableComponents;
-		std::vector<IDrawable*> m_DrawableComponents;
+        std::map<const type_info*, Component*> m_componentByType;
+        std::vector<IUpdatable*> m_updatableComponents;
+        std::vector<IDrawable*> m_drawableComponents;
 
-		float m_X = 0.0f;
-		float m_Y = 0.0f;
-		double m_Angle = 0.0;
-		float m_Width = 1.0f;
-		float m_Height = 1.0f;
-	};
+        float m_x = 0.0f;
+        float m_y = 0.0f;
+        double m_angle = 0.0;
+        float m_width = 1.0f;
+        float m_height = 1.0f;
+    };
 }

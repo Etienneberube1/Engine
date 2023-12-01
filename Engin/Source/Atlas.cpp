@@ -11,9 +11,10 @@ project::Atlas::Atlas(Entity* parent) : Sprite(parent)
 
 void project::Atlas::AddFrame(const std::string& name, int x, int y, int w, int h)
 {
-    m_Frames.emplace(name, RectI{ x, y, w, h });
+    m_frames.emplace(name, RectI{ x, y, w, h });
 
-    if (m_Frames.size() == 1)
+    // Automatically set the first frame added as the current frame.
+    if (m_frames.size() == 1)
     {
         SetFrame(name);
     }
@@ -21,9 +22,9 @@ void project::Atlas::AddFrame(const std::string& name, int x, int y, int w, int 
 
 void project::Atlas::SetFrame(const std::string& name)
 {
-    RectI _src = m_Frames[name];
-    m_Source.x = _src.x;
-    m_Source.y = _src.y;
-    m_Source.w = _src.w;
-    m_Source.h = _src.h;
+    RectI src = m_frames[name];
+    m_Source.x = src.x;
+    m_Source.y = src.y;
+    m_Source.w = src.w;
+    m_Source.h = src.h;
 }

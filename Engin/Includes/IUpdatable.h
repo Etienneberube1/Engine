@@ -1,9 +1,11 @@
 #pragma once
 
 namespace project {
-	class IUpdatable
-	{
-	public:
-		virtual void Update(float dt) = 0;
-	};
+    // Interface for objects that require regular updates.
+    class IUpdatable
+    {
+    public:
+        // Virtual method to update the object with the elapsed time.
+        virtual void Update(float dt) = 0;
+    };
 }

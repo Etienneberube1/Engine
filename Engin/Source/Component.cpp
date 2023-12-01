@@ -5,7 +5,7 @@ project::Component::Component() : Component(nullptr)
 {
 }
 
-project::Component::Component(Entity* parent) : m_Entity(parent)
+project::Component::Component(Entity* parent) : m_entity(parent)
 {
 }
 

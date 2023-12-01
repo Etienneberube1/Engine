@@ -4,19 +4,29 @@
 #include "IUpdatable.h"
 #include "Entity.h"
 
-
 namespace project {
 
-	class MenuUI : public Component, public IDrawable, public IUpdatable
-	{
-	public:
-		MenuUI();
-		MenuUI(Entity* parent);
-		~MenuUI();
+    // Class representing the user interface (UI) for the main menu.
+    class MenuUI : public Component, public IDrawable, public IUpdatable
+    {
+    public:
+        // Default constructor.
+        MenuUI();
 
-		virtual void Update(float DeltaTime) override;
-		virtual void Draw() override;
-	private:
-		size_t m_fontId;
-	};
+        // Constructor that associates the UI with a parent entity.
+        MenuUI(Entity* parent);
+
+        // Destructor.
+        ~MenuUI();
+
+        // Update method for handling UI interactions and animations.
+        virtual void Update(float DeltaTime) override;
+
+        // Draw method for rendering UI elements.
+        virtual void Draw() override;
+
+    private:
+        // ID for the font used in the menu UI.
+        size_t m_fontId;
+    };
 }

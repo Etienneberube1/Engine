@@ -4,38 +4,38 @@ project::FileLogger::FileLogger() : FileLogger("logs.txt")
 {
 }
 
-project::FileLogger::FileLogger(const std::string& filename) : m_LogFile(filename)
+project::FileLogger::FileLogger(const std::string& filename) : m_logFile(filename)
 {
 }
 
 project::FileLogger::~FileLogger()
 {
-    if (m_LogFile.is_open())
+    if (m_logFile.is_open())
     {
-        m_LogFile.close();
+        m_logFile.close();
     }
 }
 
 void project::FileLogger::LogMessage(const std::string& message)
 {
-    if (m_LogFile.is_open())
+    if (m_logFile.is_open())
     {
-        m_LogFile << message << std::endl;
+        m_logFile << message << std::endl;
     }
 }
 
 void project::FileLogger::LogError(const std::string& message)
 {
-    if (m_LogFile.is_open())
+    if (m_logFile.is_open())
     {
-        m_LogFile << "ERROR : " << message << std::endl;
+        m_logFile << "ERROR : " << message << std::endl;
     }
 }
 
 void project::FileLogger::LogWarning(const std::string& message)
 {
-    if (m_LogFile.is_open())
+    if (m_logFile.is_open())
     {
-        m_LogFile << "WARNING : " << message << std::endl;
+        m_logFile << "WARNING : " << message << std::endl;
     }
 }

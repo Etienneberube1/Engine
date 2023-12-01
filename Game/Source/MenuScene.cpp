@@ -14,6 +14,9 @@ void project::MenuScene::Load()
 	m_menuUI = Instantiate("menuUI");
 	Entity* menu = CreateMenu();
 
+
+	m_menuMusic = Engine::Get().Audio().LoadMusic("assets/audio/MainMenuSound.mp3");
+	Engine::Get().Audio().PlayMusic(m_menuMusic);
 }
 
 

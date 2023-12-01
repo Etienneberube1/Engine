@@ -4,25 +4,31 @@
 #include "Engine.h"
 #include "Component.h"
 
-
 namespace project {
 
-	class GameUI : public IDrawable, public Component, public Observer<int>
-	{
-	public:		
-		
-		GameUI();
-		GameUI(Entity* parent);
+    // Class representing the game's user interface.
+    class GameUI : public IDrawable, public Component, public Observer<int>
+    {
+    public:
+        // Constructors.
+        GameUI();
+        GameUI(Entity* parent);
 
-		virtual void OnNotify(const int& value)
-		{
-			m_playerScore += value;
-		}
+        // Observer method to receive notifications about score changes.
+        virtual void OnNotify(const int& value) override
+        {
+            m_playerScore += value; // Updates the player's score.
+        }
 
-		virtual void Draw() override;
-	private:
-		float m_playerScore;
-		size_t m_fontId;
-	};
+        // Draws the UI elements on the screen.
+        virtual void Draw() override;
+
+    private:
+        // Player's score to be displayed on the UI.
+        float m_playerScore;
+
+        // Font identifier for rendering text in the UI.
+        size_t m_fontId;
+    };
 
 }

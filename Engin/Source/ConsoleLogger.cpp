@@ -13,7 +13,7 @@ project::ConsoleLogger::ConsoleLogger()
     if (_r != 0)
     {
         // Message d'erreur...
-        std::cout << "erreur avec la console" << std::endl;
+        LogError("erreur avec la console");
     }
 
     hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -26,7 +26,7 @@ project::ConsoleLogger::~ConsoleLogger()
     if (_r == 0)
     {
         // Fail message...
-        std::cout << "erreur avec la console" << std::endl;
+        LogError("erreur avec la console");
     }
 }
 

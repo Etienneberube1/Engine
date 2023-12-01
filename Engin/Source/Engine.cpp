@@ -17,30 +17,30 @@
 bool project::Engine::Init(const std::string& title, int w, int h)
 {
 #if _DEBUG
-    m_Logger = new ConsoleLogger();
+    m_logger = new ConsoleLogger();
 #else
-    m_Logger = new FileLogger("engine.log");
+    m_logger = new FileLogger("engine.log");
 #endif
 
-    m_Graphics = new SdlGraphics();
-    if (!m_Graphics->Initialize(title, w, h))
+    m_graphics = new SdlGraphics();
+    if (!m_graphics->Initialize(title, w, h))
     {
-        m_Logger->LogError("Cannot create window");
+        m_logger->LogError("Cannot create window");
         return false;
     }
 
-    m_Audio = new SdlAudio();
-    m_Input = new SdlInput();
-    m_World = new WorldService();
-    m_Physics = new Physic();
+    m_audio = new SdlAudio();
+    m_input = new SdlInput();
+    m_world = new WorldService();
+    m_physics = new Physic();
 
-    m_IsInit = true;
+    m_isInit = true;
     return true;
 }
 
 void project::Engine::Start()
 {
-    if (!m_IsInit)
+    if (!m_isInit)
     {
         if (!Init("Balloon Fight", 800, 600))
         {
@@ -48,27 +48,27 @@ void project::Engine::Start()
         }
     }
 
-    m_IsRunning = true;
-    clock_t _end = clock();
+    m_isRunning = true;
+    clock_t end = clock();
     const int TARGET_FPS = 60;
     const int MS_PER_FRAME = 1000 / TARGET_FPS;
 
-    while (m_IsRunning)
+    while (m_isRunning)
     {
-        const clock_t _start = clock();
-        float _dt = (_start - _end) * 0.001f;
+        const clock_t start = clock();
+        float dt = (start - end) * 0.001f;
 
         ProcessInput();
-        Update(_dt);
+        Update(dt);
         Render();
 
-        int _restTime = _start + MS_PER_FRAME - clock();
-        if (_restTime > 0)
+        int restTime = start + MS_PER_FRAME - clock();
+        if (restTime > 0)
         {
-            Sleep(_restTime);
+            Sleep(restTime);
         }
 
-        _end = _start;
+        end = start;
     }
 
     Shutdown();
@@ -76,15 +76,15 @@ void project::Engine::Start()
 
 void project::Engine::Exit()
 {
-    m_IsRunning = false;
+    m_isRunning = false;
 }
 
 void project::Engine::ProcessInput()
 {
-    m_Input->Update();
+    m_input->Update();
 
 #if _DEBUG
-    if (m_Input->IsKeyDown(EKey::EKEY_ESCAPE))
+    if (m_input->IsKeyDown(EKey::EKEY_ESCAPE))
     {
         Exit();
     }
@@ -93,48 +93,48 @@ void project::Engine::ProcessInput()
 
 void project::Engine::Update(float dt)
 {
-    m_World->Update(dt);
+    m_world->Update(dt);
 }
 
 void project::Engine::Render()
 {
-    m_Graphics->SetColor(Color::BLACK);
-    m_Graphics->Clear();
-    m_World->Draw();
-    m_Graphics->Present();
+    m_graphics->SetColor(Color::BLACK);
+    m_graphics->Clear();
+    m_world->Draw();
+    m_graphics->Present();
 }
 
 void project::Engine::Shutdown()
 {
-    if (m_World != nullptr)
+    if (m_world != nullptr)
     {
-        m_World->Shutdown();
-        delete m_World;
+        m_world->Shutdown();
+        delete m_world;
     }
 
-    if (m_Physics != nullptr)
+    if (m_physics != nullptr)
     {
-        delete m_Physics;
+        delete m_physics;
     }
 
-    if (m_Input != nullptr)
+    if (m_input != nullptr)
     {
-        delete m_Input;
+        delete m_input;
     }
 
-    if (m_Audio != nullptr)
+    if (m_audio != nullptr)
     {
-        delete m_Audio;
+        delete m_audio;
     }
 
-    if (m_Graphics != nullptr)
+    if (m_graphics != nullptr)
     {
-        m_Graphics->Shutdown();
-        delete m_Graphics;
+        m_graphics->Shutdown();
+        delete m_graphics;
     }
 
-    if (m_Logger != nullptr)
+    if (m_logger != nullptr)
     {
-        delete m_Logger;
+        delete m_logger;
     }
 }

@@ -8,9 +8,12 @@ namespace project {
     class Color
     {
     public:
+
+        
         Color(uchar red, uchar green, uchar blue);
         Color(uchar red, uchar green, uchar blue, uchar alpha);
 
+        // set the current color of an object
         void Set(const Color& other);
 
         static const Color& MAROON;

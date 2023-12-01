@@ -14,9 +14,9 @@ project::Sprite::Sprite(Entity* parent) : Component(parent)
 
 void project::Sprite::Draw()
 {
-    double _rot = m_Entity->GetRotation();
+    double _rot = m_entity->GetRotation();
     RectF _dst;
-    m_Entity->GetRect(&_dst);
+    m_entity->GetRect(&_dst);
 
     Graphics().DrawTexture(m_TextureId, m_Source, _dst, _rot, m_Flip, m_Color);
 }

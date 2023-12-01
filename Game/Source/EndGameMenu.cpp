@@ -4,11 +4,16 @@
 #include "EndGameMenuUI.h"
 #include "Sprite.h"
 #include "Animation.h"
+#include "Engine.h"
+
 
 void project::EndGameMenu::Load()
 {
 	m_UI = Instantiate("endMenuUI");
 	Entity* menu = CreateMenu();
+	
+	m_menuMusic = Engine::Get().Audio().LoadMusic("assets/audio/EndGameSound.mp3");
+	Engine::Get().Audio().PlayMusic(m_menuMusic);
 }
 
 project::Entity* project::EndGameMenu::CreateMenu()

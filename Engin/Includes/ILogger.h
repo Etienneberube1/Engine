@@ -3,12 +3,19 @@
 
 namespace project {
 
-	class ILogger {
-	public:
-		virtual ~ILogger() = default;
+    // Interface for logging functionalities.
+    class ILogger {
+    public:
+        // Virtual destructor.
+        virtual ~ILogger() = default;
 
-		virtual void LogMessage(const std::string& message) = 0;
-		virtual void LogError(const std::string& message) = 0;
-		virtual void LogWarning(const std::string& message) = 0;
-	};
+        // Logs a general message.
+        virtual void LogMessage(const std::string& message) = 0;
+
+        // Logs an error message.
+        virtual void LogError(const std::string& message) = 0;
+
+        // Logs a warning message.
+        virtual void LogWarning(const std::string& message) = 0;
+    };
 }

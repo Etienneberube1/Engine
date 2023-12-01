@@ -47,7 +47,8 @@ bool project::Physic::CheckRects(float r1x, float r1y, float r1w, float r1h, flo
 
 
 
-bool project::Physic::CheckRects(const RectF& rect1, const RectF& rect2) {
+bool project::Physic::CheckRects(const RectF& rect1, const RectF& rect2)
+{
 	return (rect1.x <= (rect2.x + rect2.w) && (rect1.x + rect1.w) >= rect2.x &&
 		rect1.y <= (rect2.y + rect2.h) && (rect1.y + rect1.h) >= rect2.y);
 }
@@ -120,6 +121,11 @@ float project::Physic::CalculateDistance(const Vector3& point1, const Vector3& p
 	float dy = point1.y - point2.y;
 	float dz = point1.z - point2.z;
 	return static_cast<float>(sqrt(dx * dx + dy * dy + dz * dz));
+}
+
+int project::Physic::NumberOfEnemyLeft()
+{
+	return static_cast<int>(m_EnemyList.size());
 }
 
 

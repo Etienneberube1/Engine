@@ -2,18 +2,29 @@
 #include "BaseScene.h"
 
 namespace project {
-	class Entity;
+    class Entity;
 
-	class EndGameMenu : public BaseScene
-	{
-	public:
-		~EndGameMenu() = default;
-		virtual void Load() override;
+    // Class representing the end game menu scene.
+    class EndGameMenu : public BaseScene
+    {
+    public:
+        // Destructor.
+        ~EndGameMenu() = default;
 
-	private:
-		Entity* CreateMenu();
+        // Overridden Load method from BaseScene to set up the end game menu.
+        virtual void Load() override;
 
-		Entity* m_UI;
-		size_t m_fontId;
-	};
+    private:
+        // Creates and configures the menu entity.
+        Entity* CreateMenu();
+
+        // Pointer to the UI entity.
+        Entity* m_UI;
+
+        // ID for the font used in the menu.
+        size_t m_fontId;
+
+        // ID for the menu background music.
+        size_t m_menuMusic;
+    };
 }
