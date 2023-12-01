@@ -36,10 +36,6 @@ namespace project {
 
 
 
-
-
-
-
     void project::RigidBody::Update(float dt) {
         ApplyGravity();
 

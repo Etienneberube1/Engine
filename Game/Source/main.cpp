@@ -6,7 +6,7 @@
 #include "WorldService.h"
 #include "GameScene.h"
 #include "MenuScene.h"
-
+#include "EndGameMenu.h"
 
 
 
@@ -17,9 +17,11 @@ void InitGameplay(void)
 
 	project::GameScene* game = new project::GameScene();
 	project::MenuScene* menu = new project::MenuScene();
+	project::EndGameMenu* endmenu = new project::EndGameMenu();
 
 	project::Engine::Get().World().Register("game", game);
 	project::Engine::Get().World().Register("menu", menu);
+	project::Engine::Get().World().Register("endmenu", endmenu);
 
 	project::Engine::Get().World().Load("menu");
 }

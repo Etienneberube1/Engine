@@ -78,9 +78,6 @@ void project::BaseAI::PickRandomPointInMap() {
 	float x = static_cast<float>(rand() % 800);
 	float y = static_cast<float>(rand() % 500);
 	targetPoint = Vector3(x, y, 0.0f);
-
-	Engine::Get().Logger().LogMessage("New target point: " + std::to_string(x) + ", " + std::to_string(y));
-
 }
 
 bool project::BaseAI::IsTargetReached() {

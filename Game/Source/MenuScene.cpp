@@ -21,8 +21,8 @@ void project::MenuScene::Load()
 project::Entity* project::MenuScene::CreateMenu()
 {
 	Entity* menu = Instantiate("menu");
-	Entity* selectBallon = Instantiate("selectBalloon");
-	selectBallon->AddComponent<MenuUI>();
+	Entity* selectBalloon = Instantiate("selectBalloon");
+	selectBalloon->AddComponent<MenuUI>();
 
 	MenuUI* menuUI = m_menuUI->AddComponent<MenuUI>();
 	Sprite* menuBackGroundSprite = m_menuUI->AddComponent<Sprite>();
@@ -36,7 +36,7 @@ project::Entity* project::MenuScene::CreateMenu()
 
 
 
-	Animation* animationBalloon = selectBallon->AddComponent<Animation>();
+	Animation* animationBalloon = selectBalloon->AddComponent<Animation>();
 	animationBalloon->Load("assets/menu/SelectBalloon.png");
 	
 	animationBalloon->AddFrame("balloonIdle0", 0, 0, 25, 40);	
@@ -49,8 +49,8 @@ project::Entity* project::MenuScene::CreateMenu()
 
 	animationBalloon->Play("balloonIdle", true);
 
-	selectBallon->SetSize(25.0f, 40.0f);
-	selectBallon->SetPosition(Vector3(150.0f, 400.0f, 0.0f));
+	selectBalloon->SetSize(25.0f, 40.0f);
+	selectBalloon->SetPosition(Vector3(150.0f, 400.0f, 0.0f));
 
 
 

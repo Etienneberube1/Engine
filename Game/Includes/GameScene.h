@@ -14,6 +14,7 @@ namespace project {
 	private:
 		Entity* CreatePlayer();
 		Entity* CreateTileMap();
+		void CreateEnemy();
 
 		Entity* m_gameUI;
 		size_t m_fontId;

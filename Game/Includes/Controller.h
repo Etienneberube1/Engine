@@ -28,6 +28,8 @@ namespace project {
 
 		void CheckEnemyCol();
 
+		bool CheckIfPlayerIsDead();
+
 		void SetOnGroundBool(bool isOnGround)
 		{
 			m_isOnGround = isOnGround;

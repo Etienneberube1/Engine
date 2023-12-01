@@ -19,6 +19,7 @@ namespace project {
 		virtual std::unique_ptr<Enemy> Clone() override {
 
 			auto instance = std::make_unique<BaseEnemy>(m_name, m_position);
+
 			// Create a new entity for the cloned instance
 			instance->m_Entity = Engine::Get().World().Create(m_name);
 
@@ -56,8 +57,7 @@ namespace project {
 			instance->m_Entity->SetPosition(Vector3(m_position));
 			instance->m_Entity->SetSize(43.0f, 40.0f);
 
-			Engine::Get().Physics().AddToEnemyMap(m_name, m_Entity);
-
+			Engine::Get().Physics().AddToEnemyList(instance->m_Entity);
 			return instance;
 		}
 	};

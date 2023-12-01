@@ -4,6 +4,7 @@
 #include "Tilemap.h"
 #include "RectF.h"
 #include "Engine.h"
+#include <vector>
 
 bool project::Physic::CheckPointCircle(float px, float py, float cx, float cy, float cr)
 {
@@ -88,14 +89,9 @@ void project::Physic::AddToLayer(const std::string& layerName, Entity* entity)
 	m_Layers[layerName].push_back(entity);
 }
 
-void project::Physic::AddToEnemyMap(const std::string& EnemyName, Entity* entity)
+void project::Physic::AddToEnemyList(Entity* entity)
 {
-	if (m_Layers.count(EnemyName) == 0)
-	{
-		m_Layers.emplace(EnemyName, std::vector<Entity*>());
-	}
-
-	m_Layers[EnemyName].push_back(entity);
+	m_EnemyList.push_back(entity);
 }
 
 
@@ -143,17 +139,12 @@ bool project::Physic::CollideWithLayer(Entity* entity, const std::string& layerN
 
 bool project::Physic::CollideWithEnemy(Entity* entity, Entity** other)
 {
-	for (auto enemy : m_EnemyMap)
+	for (auto enemy : m_EnemyList)
 	{
-		std::vector<Entity*>::iterator it = enemy.second.begin();
-		if(it != enemy.second.end())
+		if (CheckRects(entity, enemy))
 		{
-			if (CheckRects(entity->GetRect(), enemy.second.front()->GetRect()))
-			{
-				Engine::Get().Logger().LogMessage(std::to_string(enemy.second.front()->GetX()));
-				Engine::Get().Logger().LogMessage(std::to_string(enemy.second.front()->GetY()));
-				return true;
-			}
+			*other = enemy;
+			return true;
 		}
 	}
 	return false;
@@ -180,21 +171,19 @@ void project::Physic::Remove(Entity* entity)
 		}
 	}
 
-	for (auto enemy : m_EnemyMap)
+
+	for (auto e : m_EnemyList)
 	{
-		std::vector<Entity*>::iterator it = enemy.second.begin();
-		while (it != enemy.second.end())
+		std::vector<Entity*>::iterator it = m_EnemyList.begin();
+		while (it != m_EnemyList.end())
 		{
 			if (*it == entity)
 			{
-				enemy.second.erase(it);
+				m_EnemyList.erase(it);
 				return;
 			}
 
 			it++;
 		}
 	}
-
-
-
 }

@@ -13,24 +13,12 @@
 
 void project::GameScene::Load()
 {
-	m_gameUI = Instantiate("gameUI");
 
+	m_gameUI = Instantiate("gameUI");
 	auto Tilemap = CreateTileMap();
 	auto player = CreatePlayer();
-	
 
-	Spawner spawner;
-
-	auto baseEnemyPrototype = std::make_unique<BaseEnemy>("Normalenemy", Vector3(270.0f, 100.0f, 0.0f));
-	auto fastEnemyPrototype = std::make_unique<BaseEnemy>("Fastenemy", Vector3(300.0f, 100.0f, 0.0f));
-
-	spawner.AddPrototype("Normalenemy", std::move(baseEnemyPrototype));
-	spawner.AddPrototype("Fastenemy", std::move(fastEnemyPrototype));
-
-
-	spawner.Spawn("Normalenemy");
-	spawner.Spawn("Fastenemy");
-	
+	CreateEnemy();
 }
 
 project::Entity* project::GameScene::CreatePlayer()
@@ -49,12 +37,12 @@ project::Entity* project::GameScene::CreatePlayer()
 
 	playerAnimation->Load("assets/playerAssets/playerSpriteSheet.png");
 
-	player->SetPosition(Vector3(200.0f, 200.0f, 0.0f));
+	player->SetPosition(Vector3(100.0f, 650.0f, 0.0f));
 	player->SetSize(43.0f, 64.0f);
 
 
 	playerController->SetSpeedValue(100.0f);
-	
+
 	GameUI* uiCmp = m_gameUI->AddComponent<GameUI>();
 	playerController->OnScoreChanged.AddListener(uiCmp);
 
@@ -144,6 +132,30 @@ project::Entity* project::GameScene::CreateTileMap()
 	project::Engine::Get().Physics().AddToLayer("ground", tilemap);
 
 	return tilemap;
+}
+
+void project::GameScene::CreateEnemy()
+{
+	Spawner spawner;
+
+	auto enemy_0 = std::make_unique<BaseEnemy>("enemy_0", Vector3(270.0f, 120.0f, 0.0f));
+	auto enemy_1 = std::make_unique<BaseEnemy>("enemy_1", Vector3(600.0f, 155.0f, 0.0f));
+	auto enemy_2 = std::make_unique<BaseEnemy>("enemy_2", Vector3(120.0f, 280.0f, 0.0f));
+	auto enemy_3 = std::make_unique<BaseEnemy>("enemy_3", Vector3(570.0f, 410.0f, 0.0f));
+	auto enemy_4 = std::make_unique<BaseEnemy>("enemy_4", Vector3(240.0f, 470.0f, 0.0f));
+
+	spawner.AddPrototype("enemy_0", std::move(enemy_0));
+	spawner.AddPrototype("enemy_1", std::move(enemy_1));
+	spawner.AddPrototype("enemy_2", std::move(enemy_2));
+	spawner.AddPrototype("enemy_3", std::move(enemy_3));
+	spawner.AddPrototype("enemy_4", std::move(enemy_4));
+
+
+	spawner.Spawn("enemy_0");
+	spawner.Spawn("enemy_1");
+	spawner.Spawn("enemy_2");
+	spawner.Spawn("enemy_3");
+	spawner.Spawn("enemy_4");
 }
 
 

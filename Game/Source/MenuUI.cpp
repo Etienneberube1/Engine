@@ -19,6 +19,7 @@ project::MenuUI::~MenuUI()
 void project::MenuUI::Update(float dt)
 {
 	if (Input().IsKeyDown(EKey::EKEY_RETURN)) {
+		Engine::Get().World().Unload();
 		Engine::Get().World().Load("game");
 	}
 }

@@ -7,7 +7,6 @@
 #include "RigidBody.h"
 #include "Physic.h"
 #include "Tilemap.h"
-#include "memory"
 
 project::Controller::Controller(Entity* entity) : Component(entity),
 m_isFlying(false), m_isMoving(false), m_isOnGround(false), m_isPlayerAlive(true), m_numberOfBalloon(2),m_Scores(0)
@@ -16,11 +15,20 @@ m_isFlying(false), m_isMoving(false), m_isOnGround(false), m_isPlayerAlive(true)
 
 void project::Controller::Update(float dt)
 {
+    if (CheckIfPlayerIsDead())
+    {
+        Engine::Get().World().Load("endmenu");
+        return;
+    }
 
     auto rigidBody = m_Entity->GetComponent<RigidBody>();
     auto playerAnimation = m_Entity->GetComponent<Animation>();
 
     if (!rigidBody || !playerAnimation) return;
+
+    CheckEnemyCol();
+    HandleWorldBoundaries(rigidBody);
+
 
     Vector3 velocity = rigidBody->GetVelocity();
     bool isMoving = false;
@@ -92,7 +100,6 @@ void project::Controller::Update(float dt)
     }
 
 
-    HandleWorldBoundaries(rigidBody);
 }
 
 
@@ -135,10 +142,23 @@ void project::Controller::CheckEnemyCol()
         m_Scores += 1000;
         OnScoreChanged.Invoke(m_Scores);
 
-        delete colEntity;
+        Engine::Get().Physics().Remove(colEntity);
+        colEntity->Destroy();
+        
     }
 
 }
+
+bool project::Controller::CheckIfPlayerIsDead()
+{
+    if (m_Entity->GetY() >= 770)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 
 
 
